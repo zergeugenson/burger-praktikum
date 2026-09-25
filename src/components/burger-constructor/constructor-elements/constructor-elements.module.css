@@ -1,0 +1,14 @@
+.tops {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: grab;
+}
+
+.tops svg {
+  flex-shrink: 0;
+}
+
+.elem {
+  min-width: 0;
+}
