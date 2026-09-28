@@ -1,5 +1,33 @@
 # Стартер на JavaScript для проекта Stellar Burger
 
+Учебный проект для "Курс по React" Yandex-practicum
+
+## Стек
+
+- React 19, Javascript, Vite
+- UI-kit [`@krgaa/react-developer-burger-ui-components`](https://react-burger-ui-components.education-services.ru/)
+- Norma API: `https://new-stellarburgers.education-services.ru/api`
+
+## Запуск
+
+```bash
+npm install
+npm run dev
+```
+
+Сборка: `npm run build`. Превью продакшен-сборки: `npm run preview` (открыть путь `/react-burger-ts/`).
+
+## GitHub
+
+https://github.com/zergeugenson/burger-praktikum
+
+```bash
+npm run deploy
+```
+
+Скрипт собирает `dist` с `base: '/react-burger-ts/'`, копирует `index.html` в `404.html` для SPA-переходов и публикует ветку `gh-pages`.
+
+
 ## Процедура создания коммита с проверками
 
 При создании коммита автоматически запускаются проверка линтерами `stylelint`, `eslint` и форматирование `prettier`.
