@@ -7,7 +7,7 @@ import cn from 'clsx';
 import { useContext, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 
-import { BurgerContext } from '@/context';
+import { BurgerContext } from '@/contexts';
 import { useOrder } from '@hooks/useOrder.js';
 import { DND_TYPES } from '@utils/dnd';
 

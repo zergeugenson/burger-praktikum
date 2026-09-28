@@ -1,7 +1,7 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useMemo, useCallback, useRef, useContext } from 'react';
 
-import { BurgerContext } from '../../context';
+import { BurgerContext } from '../../contexts';
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 

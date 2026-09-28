@@ -6,7 +6,7 @@ import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredi
 import { useApi } from '@hooks/useApi.js';
 import BurgerApi from '@utils/api.js';
 
-import { BurgerContext } from '../../context';
+import { BurgerContext } from '../../contexts';
 import { Modal } from '../modal/modal.jsx';
 
 import styles from './app.module.css';
