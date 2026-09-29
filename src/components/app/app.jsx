@@ -7,7 +7,7 @@ import { useApi } from '@hooks/useApi.js';
 import BurgerApi from '@utils/api.js';
 import { BurgerContext } from '../../contexts';
 import { Modal } from '../modal/modal.jsx';
-import { getIngredients } from '@services/ingredients-actions';
+import { getIngredients } from '@services/ingredients/ingredients-actions';
 import { useDispatch} from 'react-redux';
 
 export const App = () => {

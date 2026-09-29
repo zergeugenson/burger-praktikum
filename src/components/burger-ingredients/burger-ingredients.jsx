@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { BurgerContext } from '../../contexts';
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { IngredientsItem } from './ingredients-item/ingredients-item';
-import { selectIngredients } from '@services/ingredients-slice';
+import { selectIngredients } from '@services/ingredients/ingredients-slice';
 import { ieGroups } from '@utils/constants.js';
 
 export const BurgerIngredients = () => {

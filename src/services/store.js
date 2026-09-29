@@ -1,5 +1,5 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
-import { ingredientsSlice } from './ingredients-slice';
+import { ingredientsSlice } from './ingredients/ingredients-slice';
 
 export const rootReducer = combineSlices(
 	ingredientsSlice,

@@ -1,25 +1,22 @@
+import styles from './burger-constructor.module.css';
+import cn from 'clsx';
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import cn from 'clsx';
 import { useContext, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
-
 import { BurgerContext } from '@/contexts';
 import { useOrder } from '@hooks/useOrder.js';
 import { DND_TYPES } from '@utils/dnd';
-
 import { OrderDetails } from '../burger-constructor/order-details/order-details.jsx';
 import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
 
-import styles from './burger-constructor.module.css';
-
 export const BurgerConstructor = () => {
-  const { order, counts, addItem, removeItem, totalPrice, moveIngredient } = useOrder();
-  const { setSharedCounter } = useContext(BurgerContext);
-  const { setOpenModal } = useContext(BurgerContext);
+    const { order, counts, addItem, removeItem, totalPrice, moveIngredient } = useOrder();
+    const { setSharedCounter } = useContext(BurgerContext);
+    const { setOpenModal } = useContext(BurgerContext);
 
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
