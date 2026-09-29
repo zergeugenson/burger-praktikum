@@ -1,18 +1,19 @@
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useMemo, useCallback, useRef, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { BurgerContext } from '../../contexts';
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { IngredientsItem } from './ingredients-item/ingredients-item';
-import { selectIngredients } from '@services/ingredients/ingredients-slice';
+import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
 import { ieGroups } from '@utils/constants.js';
+import {MODAL_TYPES, openModal} from "@services/modal/modal-slice.js";
 
 export const BurgerIngredients = () => {
+  const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
 
   const { sharedCounter } = useContext(BurgerContext);
-  const { setOpenModal } = useContext(BurgerContext);
 
   const [activeTab, setActiveTab] = useState('bun');
   const containerRef = useRef(null);
@@ -72,11 +73,11 @@ export const BurgerIngredients = () => {
   }, [ieGroups]);
 
   const showIngredient = (item) => {
-    setOpenModal({
-      isopen: true,
-      data: <IngredientDetails ingredient={item} />,
+    dispatch(openModal({
+      type: MODAL_TYPES.INGREDIENT_DETAILS,
+      data: item,
       title: 'Детали ингредиента',
-    });
+    }));
   };
 
   return (
