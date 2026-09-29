@@ -1,17 +1,17 @@
+import styles from './app.module.css';
 import { useState, useEffect } from 'react';
-
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 import { useApi } from '@hooks/useApi.js';
 import BurgerApi from '@utils/api.js';
-
 import { BurgerContext } from '../../contexts';
 import { Modal } from '../modal/modal.jsx';
-
-import styles from './app.module.css';
+import { getIngredients } from '@services/ingredients-actions';
+import { useDispatch} from 'react-redux';
 
 export const App = () => {
+  const dispatch = useDispatch();
   const initOpen = { isopen: false, data: {}, title: null };
   const [ingredients, setIngredients] = useState([]);
   const [sharedCounter, setSharedCounter] = useState(0);
@@ -24,6 +24,7 @@ export const App = () => {
 
   useEffect(() => {
     void ieFetch();
+    dispatch(getIngredients());
   }, []);
 
   return (
@@ -41,7 +42,7 @@ export const App = () => {
           Соберите бургер
         </h1>
         <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients />
           <BurgerConstructor ingredients={ingredients} />
         </main>
         {openModal.isopen && (

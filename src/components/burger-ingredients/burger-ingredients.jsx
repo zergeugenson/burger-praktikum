@@ -1,18 +1,15 @@
+import styles from './burger-ingredients.module.css';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useMemo, useCallback, useRef, useContext } from 'react';
-
+import { useSelector } from 'react-redux';
 import { BurgerContext } from '../../contexts';
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { IngredientsItem } from './ingredients-item/ingredients-item';
+import { selectIngredients } from '@services/ingredients-slice';
+import { ieGroups } from '@utils/constants.js';
 
-import styles from './burger-ingredients.module.css';
-
-export const BurgerIngredients = ({ ingredients = [] }) => {
-  const ieGroups = [
-    { label: 'Булки', type: 'bun' },
-    { label: 'Начинки', type: 'main' },
-    { label: 'Соусы', type: 'sauce' },
-  ];
+export const BurgerIngredients = () => {
+  const ingredients = useSelector(selectIngredients);
 
   const { sharedCounter } = useContext(BurgerContext);
   const { setOpenModal } = useContext(BurgerContext);
@@ -22,6 +19,8 @@ export const BurgerIngredients = ({ ingredients = [] }) => {
   const groupRefs = useRef({});
 
   const groupedIe = useMemo(() => {
+    if(!ingredients) return []
+
     const grIngr = ingredients.reduce((acc, item) => {
       if (!acc[item.type]) {
         acc[item.type] = [];

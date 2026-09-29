@@ -1,22 +1,46 @@
 import axios from 'axios';
-
 import { BASE_API_URL } from './constants';
 
 class BurgerApi {
-  /**
-   * Получение данных по URL
-   * @param {string} url - URL для запроса
-   * @returns {Promise<any>} - Данные ответа
-   */
-  static async getIngredients(url) {
-    try {
-      const response = await axios.get(`${BASE_API_URL}${url}`);
-      return response.data;
-    } catch (error) {
-      const errorMessage = `Неизвестная сетевая ошибка', ${error?.message}`;
-      throw new Error(errorMessage);
+  static api = axios.create({
+    baseURL: BASE_API_URL,
+  });
+
+  static handleError(error) {
+    if (error.response) {
+      const serverMessage = error.response.data?.message || error.response.statusText;
+      throw new Error(`Ошибка сервера (${error.response.status}): ${serverMessage}`);
+    } else if (error.request) {
+      throw new Error('Ошибка сети');
+    } else {
+      throw new Error(`Ошибка запроса: ${error.message}`);
     }
   }
+
+  /**
+   * фабрика для GET-ов
+   * @param {string} url - эндпоинт ex. '/ingredients'
+   * @param {object} params - параметры
+   * @returns {Promise<any>} - ответ
+   */
+
+  static async get(url, params = {}) {
+    try {
+      const response = await this.api.get(url, { params });
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  static async getIngredients() {
+    return this.get('/ingredients');
+  }
+
+  static async printError(error) {
+    return this.handleError(error)
+  }
+
 }
 
 export default BurgerApi;

@@ -1,17 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import BurgerApi from '@utils/api';
 
-export const fetchIngredients = createAsyncThunk (
+export const getIngredients = createAsyncThunk (
     'ingredients/get',
-    async (_payload,
-    { rejectWithValue, signal }
+    async (_payload, { rejectWithValue }
     ) => {
   try {
     return await BurgerApi.getIngredients();
   } catch (error) {
-    if (signal.aborted) {
-      throw error;
-    }
     return rejectWithValue(BurgerApi.printError(error));
   }
 });
