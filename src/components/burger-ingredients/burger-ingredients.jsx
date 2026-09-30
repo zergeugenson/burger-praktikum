@@ -1,13 +1,15 @@
-import styles from './burger-ingredients.module.css';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useMemo, useCallback, useRef, useContext } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import { BurgerContext } from '../../contexts';
-import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
-import { IngredientsItem } from './ingredients-item/ingredients-item';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
+import { MODAL_TYPES, openModal } from '@services/modal/modal-slice.js';
 import { ieGroups } from '@utils/constants.js';
-import {MODAL_TYPES, openModal} from "@services/modal/modal-slice.js";
+
+import { BurgerContext } from '../../contexts';
+import { IngredientsItem } from './ingredients-item/ingredients-item';
+
+import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ export const BurgerIngredients = () => {
   const groupRefs = useRef({});
 
   const groupedIe = useMemo(() => {
-    if(!ingredients) return []
+    if (!ingredients) return [];
 
     const grIngr = ingredients.reduce((acc, item) => {
       if (!acc[item.type]) {
@@ -73,11 +75,13 @@ export const BurgerIngredients = () => {
   }, [ieGroups]);
 
   const showIngredient = (item) => {
-    dispatch(openModal({
-      type: MODAL_TYPES.INGREDIENT_DETAILS,
-      data: item,
-      title: 'Детали ингредиента',
-    }));
+    dispatch(
+      openModal({
+        type: MODAL_TYPES.INGREDIENT_DETAILS,
+        data: item,
+        title: 'Детали ингредиента',
+      })
+    );
   };
 
   return (

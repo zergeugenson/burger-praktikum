@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { createOrder } from './order-actions.js';
 
 const initialState = {
@@ -11,7 +12,7 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    clearOrder: (state) => initialState
+    clearOrder: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -37,8 +38,5 @@ export const orderSlice = createSlice({
 });
 
 export const { clearOrder } = orderSlice.actions;
-export const {
-  selectOrderError,
-  selectOrderIsLoading,
-  selectOrderNumber
-} = orderSlice.selectors;
+export const { selectOrderError, selectOrderIsLoading, selectOrderNumber } =
+  orderSlice.selectors;

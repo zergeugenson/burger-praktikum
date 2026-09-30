@@ -1,25 +1,26 @@
-import styles from './app.module.css';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { closeModal } from '@/services/modal/modal-slice.js';
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { BurgerContext } from '../../contexts';
-import { Modal } from '../modal/modal.jsx';
 import { getIngredients } from '@services/ingredients/ingredients-actions.js';
-import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
-import { useDispatch, useSelector} from 'react-redux';
-import {
-  selectIngredientsIsLoading,
-} from '@services/ingredients/ingredients-slice.js';
+import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice.js';
 import {
   clearOrder,
-  selectOrderIsLoading, selectOrderNumber,
+  selectOrderIsLoading,
+  selectOrderNumber,
 } from '@services/order/order-slice.js';
+
+import { BurgerContext } from '../../contexts';
 import { OrderDetails } from '../burger-constructor/order-details/order-details.jsx';
-import { closeModal } from '@/services/modal/modal-slice.js';
+import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
+import { Modal } from '../modal/modal.jsx';
+
+import styles from './app.module.css';
 
 export const App = () => {
-
   const [sharedCounter, setSharedCounter] = useState(0);
   const isOrderLoading = useSelector(selectOrderIsLoading);
   const isIngredientLoading = useSelector(selectIngredientsIsLoading);
@@ -34,11 +35,11 @@ export const App = () => {
   }, []);
 
   const handleCloseModal = () => {
-    dispatch(closeModal())
-    if(modalState.type === 'orderDetails') {
-        dispatch(clearOrder());
+    dispatch(closeModal());
+    if (modalState.type === 'orderDetails') {
+      dispatch(clearOrder());
     }
-  }
+  };
 
   return (
     <BurgerContext.Provider
@@ -56,10 +57,14 @@ export const App = () => {
           <BurgerIngredients />
           <BurgerConstructor />
         </main>
-        { isOpen && !isLoading && (
-          <Modal close={() => handleCloseModal() }  title={modalState.title}>
-            {modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber}  />}
-            {modalState.type === 'ingredientDetails' && <IngredientDetails ingredient={modalState.data} />}
+        {isOpen && !isLoading && (
+          <Modal close={() => handleCloseModal()} title={modalState.title}>
+            {modalState.type === 'orderDetails' && (
+              <OrderDetails OrderId={orderNumber} />
+            )}
+            {modalState.type === 'ingredientDetails' && (
+              <IngredientDetails ingredient={modalState.data} />
+            )}
           </Modal>
         )}
       </div>

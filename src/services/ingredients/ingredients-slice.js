@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { getIngredients } from './ingredients-actions.js';
 
 const initialState = {
@@ -33,8 +34,5 @@ export const ingredientsSlice = createSlice({
   },
 });
 
-export const {
-  selectIngredients,
-  selectIngredientsError,
-  selectIngredientsIsLoading
-} = ingredientsSlice.selectors;
+export const { selectIngredients, selectIngredientsError, selectIngredientsIsLoading } =
+  ingredientsSlice.selectors;

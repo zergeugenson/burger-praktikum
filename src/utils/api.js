@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { BASE_API_URL } from './constants';
 
 class BurgerApi {
@@ -58,7 +59,7 @@ class BurgerApi {
    */
   static async createOrder(ingredientIds) {
     const payload = {
-      ingredients: ingredientIds
+      ingredients: ingredientIds,
     };
     return this.post('/orders', payload);
   }

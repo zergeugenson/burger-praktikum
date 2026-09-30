@@ -1,17 +1,18 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
+
+import { burgerConstructorSlice } from './burger-constructor/burger-constructor-slice.js';
 import { ingredientsSlice } from './ingredients/ingredients-slice.js';
-import { orderSlice } from './order/order-slice.js';
 import { modalSlice } from './modal/modal-slice';
-import { burgerConstructorSlice } from "./burger-constructor/burger-constructor-slice.js";
+import { orderSlice } from './order/order-slice.js';
 
 export const rootReducer = combineSlices(
-	ingredientsSlice,
-	orderSlice,
-	modalSlice,
-	burgerConstructorSlice,
+  ingredientsSlice,
+  orderSlice,
+  modalSlice,
+  burgerConstructorSlice
 );
 
 export const store = configureStore({
-	devTools: true,
-	reducer: rootReducer,
+  devTools: true,
+  reducer: rootReducer,
 });
