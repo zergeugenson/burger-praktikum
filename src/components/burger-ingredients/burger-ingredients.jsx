@@ -1,7 +1,8 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState, useMemo, useCallback, useRef, useContext } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.js';
 import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
 import { MODAL_TYPES, openModal } from '@services/modal/modal-slice.js';
 import { ieGroups } from '@utils/constants.js';
@@ -9,7 +10,6 @@ import { ieGroups } from '@utils/constants.js';
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 
 import styles from './burger-ingredients.module.css';
-import { selectCounts } from "@services/burger-constructor/burger-constructor-slice.js";
 
 export const BurgerIngredients = () => {
   const dispatch = useDispatch();

@@ -4,14 +4,13 @@ import {
   CurrencyIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import cn from 'clsx';
-import { useContext, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { openModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
 import {
   selectOrder,
-  selectCounts,
   selectTotalPrice,
   addItem,
   removeItem,
@@ -28,7 +27,6 @@ import styles from './burger-constructor.module.css';
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const order = useSelector(selectOrder);
-  const counts = useSelector(selectCounts);
   const totalPrice = useSelector(selectTotalPrice);
   const handleAdd = (item) => {
     dispatch(addItem(item));

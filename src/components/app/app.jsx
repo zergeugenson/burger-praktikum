@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { closeModal } from '@/services/modal/modal-slice.js';
@@ -40,25 +40,23 @@ export const App = () => {
   };
 
   return (
-      <div className={styles.app}>
-        <AppHeader />
-        <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-          Соберите бургер
-        </h1>
-        <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </main>
-        {isOpen && !isLoading && (
-          <Modal close={() => handleCloseModal()} title={modalState.title}>
-            {modalState.type === 'orderDetails' && (
-              <OrderDetails OrderId={orderNumber} />
-            )}
-            {modalState.type === 'ingredientDetails' && (
-              <IngredientDetails ingredient={modalState.data} />
-            )}
-          </Modal>
-        )}
-      </div>
+    <div className={styles.app}>
+      <AppHeader />
+      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+        Соберите бургер
+      </h1>
+      <main className={`${styles.main} pl-5 pr-5`}>
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </main>
+      {isOpen && !isLoading && (
+        <Modal close={() => handleCloseModal()} title={modalState.title}>
+          {modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber} />}
+          {modalState.type === 'ingredientDetails' && (
+            <IngredientDetails ingredient={modalState.data} />
+          )}
+        </Modal>
+      )}
+    </div>
   );
 };
