@@ -9,15 +9,14 @@ import { getIngredients } from '@services/ingredients/ingredients-actions.js';
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { useDispatch, useSelector} from 'react-redux';
 import {
-  selectIngredientsError,
   selectIngredientsIsLoading,
 } from '@services/ingredients/ingredients-slice.js';
 import {
-  selectOrderError,
+  clearOrder,
   selectOrderIsLoading, selectOrderNumber,
 } from '@services/order/order-slice.js';
 import { OrderDetails } from '../burger-constructor/order-details/order-details.jsx';
-import { closeModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
+import { closeModal } from '@/services/modal/modal-slice.js';
 
 export const App = () => {
 
@@ -27,11 +26,19 @@ export const App = () => {
   const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const isOpen = modalState.type !== null;
+  const isLoading = isOrderLoading || isIngredientLoading;
   const orderNumber = useSelector(selectOrderNumber);
 
   useEffect(() => {
     dispatch(getIngredients());
   }, []);
+
+  const handleCloseModal = () => {
+    dispatch(closeModal())
+    if(modalState.type === 'orderDetails') {
+        dispatch(clearOrder());
+    }
+  }
 
   return (
     <BurgerContext.Provider
@@ -49,8 +56,8 @@ export const App = () => {
           <BurgerIngredients />
           <BurgerConstructor />
         </main>
-        { isOpen && (
-          <Modal close={() => dispatch(closeModal())}  title={modalState.title}>
+        { isOpen && !isLoading && (
+          <Modal close={() => handleCloseModal() }  title={modalState.title}>
             {modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber}  />}
             {modalState.type === 'ingredientDetails' && <IngredientDetails ingredient={modalState.data} />}
           </Modal>

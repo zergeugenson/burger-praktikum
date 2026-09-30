@@ -8,21 +8,39 @@ import {
 import { useContext, useEffect, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import { BurgerContext } from '@/contexts';
-import { useOrder } from '@hooks/useOrder.js';
 import { DND_TYPES } from '@utils/dnd';
 import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { createOrder } from '@services/order/order-actions.js';
 import { openModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
-
-
-
-
+import { clearOrder } from '@/services/order/order-slice.js';
+import {
+    selectOrder,
+    selectCounts,
+    selectTotalPrice,
+    addItem,
+    removeItem,
+    moveIngredient,
+    clearConstructor,
+} from '@services/burger-constructor/burger-constructor-slice.js';
 
 export const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const { order, counts, addItem, removeItem, totalPrice, moveIngredient } = useOrder();
     const { setSharedCounter } = useContext(BurgerContext);
+    const order = useSelector(selectOrder);
+    const counts = useSelector(selectCounts);
+    const totalPrice = useSelector(selectTotalPrice);
+    const handleAdd = (item) => {
+        dispatch(addItem(item));
+    };
+
+    const handleRemove = (uid) => {
+        dispatch(removeItem(uid));
+    };
+
+    const handleMove = (dragIndex, hoverIndex) => {
+        dispatch(moveIngredient({ dragIndex, hoverIndex }));
+    };
 
     useEffect(() => {
         setSharedCounter(counts);
@@ -32,7 +50,7 @@ export const BurgerConstructor = () => {
         () => ({
           accept: [DND_TYPES.BUN, DND_TYPES.ELEMENTS],
           drop: (item) => {
-            addItem(item.ingredient);
+              handleAdd(item.ingredient);
           },
           collect: (monitor) => ({
             isOver: !!monitor.isOver(), // true, если над зоной
@@ -51,9 +69,12 @@ export const BurgerConstructor = () => {
                 order.bun._id,
             ]
         ));
+
         dispatch(openModal({
             type: MODAL_TYPES.ORDER_DETAILS,
         }));
+
+        dispatch(clearConstructor());
     }, [dispatch, order]);
 
     let borderColor = '#333';
@@ -92,8 +113,8 @@ export const BurgerConstructor = () => {
                             key={ingredient.uid}
                             ingredient={ingredient}
                             index={index}
-                            moveIngredient={moveIngredient} // передаем функцию из хука
-                            removeItem={removeItem}
+                            moveIngredient={handleMove} // передаем функцию из хука
+                            removeItem={handleRemove}
                             styles={styles}
                         />
                     ))}

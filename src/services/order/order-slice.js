@@ -11,7 +11,7 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    clearOrder: (state) => initialState,
+    clearOrder: (state) => initialState
   },
   extraReducers: (builder) => {
     builder

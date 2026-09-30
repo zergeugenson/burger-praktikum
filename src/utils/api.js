@@ -47,8 +47,6 @@ class BurgerApi {
     }
   }
 
-  // --- Специфичные методы API ---
-
   static async getIngredients() {
     return this.get('/ingredients');
   }
@@ -59,12 +57,9 @@ class BurgerApi {
    * @returns {Promise<any>} - ответ сервера (обычно содержит order.number)
    */
   static async createOrder(ingredientIds) {
-    // Формируем тело запроса согласно требованиям API
     const payload = {
       ingredients: ingredientIds
     };
-
-    // Отправляем POST запрос на /orders
     return this.post('/orders', payload);
   }
 
