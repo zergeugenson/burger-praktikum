@@ -13,7 +13,6 @@ import {
   selectOrderNumber,
 } from '@services/order/order-slice.js';
 
-import { BurgerContext } from '../../contexts';
 import { OrderDetails } from '../burger-constructor/order-details/order-details.jsx';
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { Modal } from '../modal/modal.jsx';
@@ -21,7 +20,6 @@ import { Modal } from '../modal/modal.jsx';
 import styles from './app.module.css';
 
 export const App = () => {
-  const [sharedCounter, setSharedCounter] = useState(0);
   const isOrderLoading = useSelector(selectOrderIsLoading);
   const isIngredientLoading = useSelector(selectIngredientsIsLoading);
   const modalState = useSelector((state) => state.modal);
@@ -42,12 +40,6 @@ export const App = () => {
   };
 
   return (
-    <BurgerContext.Provider
-      value={{
-        sharedCounter,
-        setSharedCounter,
-      }}
-    >
       <div className={styles.app}>
         <AppHeader />
         <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
@@ -68,6 +60,5 @@ export const App = () => {
           </Modal>
         )}
       </div>
-    </BurgerContext.Provider>
   );
 };

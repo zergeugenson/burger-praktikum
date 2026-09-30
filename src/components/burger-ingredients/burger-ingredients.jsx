@@ -6,16 +6,16 @@ import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
 import { MODAL_TYPES, openModal } from '@services/modal/modal-slice.js';
 import { ieGroups } from '@utils/constants.js';
 
-import { BurgerContext } from '../../contexts';
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 
 import styles from './burger-ingredients.module.css';
+import { selectCounts } from "@services/burger-constructor/burger-constructor-slice.js";
 
 export const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
 
-  const { sharedCounter } = useContext(BurgerContext);
+  const counts = useSelector(selectCounts);
 
   const [activeTab, setActiveTab] = useState('bun');
   const containerRef = useRef(null);
@@ -112,7 +112,7 @@ export const BurgerIngredients = () => {
                 {items.map((item, index) => (
                   <IngredientsItem
                     ingredient={item}
-                    counter={sharedCounter[item._id] || 0}
+                    counter={counts[item._id] || 0}
                     key={item.id + index.toString()}
                     onClick={() => showIngredient(item)}
                   />

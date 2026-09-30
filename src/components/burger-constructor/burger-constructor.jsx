@@ -8,7 +8,6 @@ import { useContext, useEffect, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { BurgerContext } from '@/contexts';
 import { openModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
 import {
   selectOrder,
@@ -28,7 +27,6 @@ import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const { setSharedCounter } = useContext(BurgerContext);
   const order = useSelector(selectOrder);
   const counts = useSelector(selectCounts);
   const totalPrice = useSelector(selectTotalPrice);
@@ -43,10 +41,6 @@ export const BurgerConstructor = () => {
   const handleMove = (dragIndex, hoverIndex) => {
     dispatch(moveIngredient({ dragIndex, hoverIndex }));
   };
-
-  useEffect(() => {
-    setSharedCounter(counts);
-  }, [counts]);
 
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
