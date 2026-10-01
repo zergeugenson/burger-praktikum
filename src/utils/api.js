@@ -3,19 +3,69 @@ import axios from 'axios';
 import { BASE_API_URL } from './constants';
 
 class BurgerApi {
+  static api = axios.create({
+    baseURL: BASE_API_URL,
+  });
+
+  static handleError(error) {
+    if (error.response) {
+      const serverMessage = error.response.data?.message || error.response.statusText;
+      throw new Error(`Ошибка сервера (${error.response.status}): ${serverMessage}`);
+    } else if (error.request) {
+      throw new Error('Ошибка сети');
+    } else {
+      throw new Error(`Ошибка запроса: ${error.message}`);
+    }
+  }
+
   /**
-   * Получение данных по URL
-   * @param {string} url - URL для запроса
-   * @returns {Promise<any>} - Данные ответа
+   * фабрика для GET-ов
+   * @param {string} url - эндпоинт ex. '/ingredients'
+   * @param {object} params - параметры
+   * @returns {Promise<any>} - ответ
    */
-  static async getIngredients(url) {
+  static async get(url, params = {}) {
     try {
-      const response = await axios.get(`${BASE_API_URL}${url}`);
+      const response = await this.api.get(url, { params });
       return response.data;
     } catch (error) {
-      const errorMessage = `Неизвестная сетевая ошибка', ${error?.message}`;
-      throw new Error(errorMessage);
+      this.handleError(error);
     }
+  }
+
+  /**
+   * фабрика для POST-ов
+   * @param {string} url - эндпоинт ex. '/orders'
+   * @param {object} data - тело запроса
+   * @returns {Promise<any>} - ответ
+   */
+  static async post(url, data = {}) {
+    try {
+      const response = await this.api.post(url, data);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  static async getIngredients() {
+    return this.get('/ingredients');
+  }
+
+  /**
+   * Отправка заказа на сервер
+   * @param {string[]} ingredientIds - массив ID ингредиентов (например, ["609...", "609..."])
+   * @returns {Promise<any>} - ответ сервера (обычно содержит order.number)
+   */
+  static async createOrder(ingredientIds) {
+    const payload = {
+      ingredients: ingredientIds,
+    };
+    return this.post('/orders', payload);
+  }
+
+  static async printError(error) {
+    return this.handleError(error);
   }
 }
 

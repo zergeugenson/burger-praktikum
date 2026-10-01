@@ -1,27 +1,29 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState, useMemo, useCallback, useRef, useContext } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { BurgerContext } from '../../context';
-import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
+import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.js';
+import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
+import { MODAL_TYPES, openModal } from '@services/modal/modal-slice.js';
+import { ieGroups } from '@utils/constants.js';
+
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 
 import styles from './burger-ingredients.module.css';
 
-export const BurgerIngredients = ({ ingredients = [] }) => {
-  const ieGroups = [
-    { label: 'Булки', type: 'bun' },
-    { label: 'Начинки', type: 'main' },
-    { label: 'Соусы', type: 'sauce' },
-  ];
+export const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+  const ingredients = useSelector(selectIngredients);
 
-  const { sharedCounter } = useContext(BurgerContext);
-  const { setOpenModal } = useContext(BurgerContext);
+  const counts = useSelector(selectCounts);
 
   const [activeTab, setActiveTab] = useState('bun');
   const containerRef = useRef(null);
   const groupRefs = useRef({});
 
   const groupedIe = useMemo(() => {
+    if (!ingredients) return [];
+
     const grIngr = ingredients.reduce((acc, item) => {
       if (!acc[item.type]) {
         acc[item.type] = [];
@@ -73,11 +75,13 @@ export const BurgerIngredients = ({ ingredients = [] }) => {
   }, [ieGroups]);
 
   const showIngredient = (item) => {
-    setOpenModal({
-      isopen: true,
-      data: <IngredientDetails ingredient={item} />,
-      title: 'Детали ингредиента',
-    });
+    dispatch(
+      openModal({
+        type: MODAL_TYPES.INGREDIENT_DETAILS,
+        data: item,
+        title: 'Детали ингредиента',
+      })
+    );
   };
 
   return (
@@ -108,7 +112,7 @@ export const BurgerIngredients = ({ ingredients = [] }) => {
                 {items.map((item, index) => (
                   <IngredientsItem
                     ingredient={item}
-                    counter={sharedCounter[item._id] || 0}
+                    counter={counts[item._id] || 0}
                     key={item.id + index.toString()}
                     onClick={() => showIngredient(item)}
                   />

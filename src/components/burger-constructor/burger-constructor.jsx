@@ -4,28 +4,47 @@ import {
   CurrencyIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import cn from 'clsx';
-import { useContext, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useDrop } from 'react-dnd';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { BurgerContext } from '@/context';
-import { useOrder } from '@hooks/useOrder.js';
+import { openModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
+import {
+  selectOrder,
+  selectTotalPrice,
+  addItem,
+  removeItem,
+  moveIngredient,
+  clearConstructor,
+} from '@services/burger-constructor/burger-constructor-slice.js';
+import { createOrder } from '@services/order/order-actions.js';
 import { DND_TYPES } from '@utils/dnd';
 
-import { OrderDetails } from '../burger-constructor/order-details/order-details.jsx';
 import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
 
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = () => {
-  const { order, counts, addItem, removeItem, totalPrice, moveIngredient } = useOrder();
-  const { setSharedCounter } = useContext(BurgerContext);
-  const { setOpenModal } = useContext(BurgerContext);
+  const dispatch = useDispatch();
+  const order = useSelector(selectOrder);
+  const totalPrice = useSelector(selectTotalPrice);
+  const handleAdd = (item) => {
+    dispatch(addItem(item));
+  };
+
+  const handleRemove = (uid) => {
+    dispatch(removeItem(uid));
+  };
+
+  const handleMove = (dragIndex, hoverIndex) => {
+    dispatch(moveIngredient({ dragIndex, hoverIndex }));
+  };
 
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
       accept: [DND_TYPES.BUN, DND_TYPES.ELEMENTS],
       drop: (item) => {
-        addItem(item.ingredient);
+        handleAdd(item.ingredient);
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(), // true, если над зоной
@@ -35,21 +54,28 @@ export const BurgerConstructor = () => {
     []
   );
 
+  const makeOrder = useCallback(() => {
+    if (!order.bun) return null;
+    dispatch(
+      createOrder([
+        order.bun._id,
+        ...order.ingredients.map((ingredient) => ingredient._id),
+        order.bun._id,
+      ])
+    );
+
+    dispatch(
+      openModal({
+        type: MODAL_TYPES.ORDER_DETAILS,
+      })
+    );
+
+    dispatch(clearConstructor());
+  }, [dispatch, order]);
+
   let borderColor = '#333';
   if (canDrop && isOver) borderColor = 'blue';
   else if (canDrop) borderColor = '#777';
-
-  useEffect(() => {
-    setSharedCounter(counts);
-  }, [counts]);
-
-  const makeOrder = () => {
-    setOpenModal({
-      isopen: true,
-      data: <OrderDetails OrderId={999} />,
-      title: null,
-    });
-  };
 
   return (
     <section className={styles.burgerConstructor}>
@@ -83,8 +109,8 @@ export const BurgerConstructor = () => {
               key={ingredient.uid}
               ingredient={ingredient}
               index={index}
-              moveIngredient={moveIngredient} // передаем функцию из хука
-              removeItem={removeItem}
+              moveIngredient={handleMove} // передаем функцию из хука
+              removeItem={handleRemove}
               styles={styles}
             />
           ))}
