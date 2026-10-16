@@ -14,9 +14,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </DndProvider>
     </Provider>
   </StrictMode>
