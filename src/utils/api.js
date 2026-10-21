@@ -1,22 +1,11 @@
 import axios from 'axios';
-
+import {setTokens, clearTokens} from '@/utils/common.js'
 import { BASE_API_URL } from './constants';
 
 class BurgerApi {
   static api = axios.create({
     baseURL: BASE_API_URL,
   });
-
-  static handleError(error) {
-    if (error.response) {
-      const serverMessage = error.response.data?.message || error.response.statusText;
-      throw new Error(`Ошибка сервера (${error.response.status}): ${serverMessage}`);
-    } else if (error.request) {
-      throw new Error('Ошибка сети');
-    } else {
-      throw new Error(`Ошибка запроса: ${error.message}`);
-    }
-  }
 
   /**
    * фабрика для GET-ов
@@ -62,6 +51,41 @@ class BurgerApi {
       ingredients: ingredientIds,
     };
     return this.post('/orders', payload);
+  }
+
+  static async userLogin(data) {
+    return this.post('/auth/login', data)
+        .then((response) => {
+          if (response.success) {
+            console.log("логин", response)
+            setTokens(response.accessToken, response.refreshToken);
+            return response.user;
+          }
+          return Promise.reject(new Error('Не удалось войти'));
+        });
+  }
+
+  static async userRegister(data) {
+    return this.post('auth/register', data)
+        .then((response) => {
+          if (response.success) {
+            console.log("регистрация", response)
+            setTokens(response.accessToken, response.refreshToken);
+            return response.user;
+          }
+          return Promise.reject(new Error('ошибка регистрации'));
+        });
+  }
+
+  static handleError(error) {
+    if (error.response) {
+      const serverMessage = error.response.data?.message || error.response.statusText;
+      throw new Error(`Ошибка сервера (${error.response.status}): ${serverMessage}`);
+    } else if (error.request) {
+      throw new Error('Ошибка сети');
+    } else {
+      throw new Error(`Ошибка запроса: ${error.message}`);
+    }
   }
 
   static async printError(error) {

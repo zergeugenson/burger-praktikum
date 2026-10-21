@@ -1,0 +1,25 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 480px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 80px 16px 40px;
+}
+
+.linkContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  color: #4c4cff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
