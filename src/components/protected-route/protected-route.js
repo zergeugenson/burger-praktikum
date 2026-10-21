@@ -1,7 +1,7 @@
 import {useSelector} from 'react-redux';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import {selectIsAuthChecked, selectUser} from '@services/user/slice.js';
+import { selectIsAuthChecked } from '@services/auth/auth-slice.js';
 
 export const ProtectedRoute = ({component}) => {
 	const isAuthChecked = useSelector(selectIsAuthChecked);
@@ -16,4 +16,4 @@ export const ProtectedRoute = ({component}) => {
 	}
 
 	return component;
-}; 
+};
