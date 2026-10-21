@@ -4,12 +4,14 @@ import { burgerConstructorSlice } from './burger-constructor/burger-constructor-
 import { ingredientsSlice } from './ingredients/ingredients-slice.js';
 import { modalSlice } from './modal/modal-slice';
 import { orderSlice } from './order/order-slice.js';
+import { authSlice, } from './auth/auth-slice.js';
 
 export const rootReducer = combineSlices(
   ingredientsSlice,
   orderSlice,
   modalSlice,
-  burgerConstructorSlice
+  burgerConstructorSlice,
+  authSlice,
 );
 
 export const store = configureStore({

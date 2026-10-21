@@ -28,7 +28,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(userRegister.rejected, (state, action) => {
 				state.isLoading = false;
-				state.error = action.payload ? 'Ошибка регистрации' : null;
+				state.error = action.payload ?? 'Ошибка регистрации';
 			})
 			.addCase(userLogin.pending, (state) => {
 				state.isLoading = true;
@@ -41,14 +41,15 @@ export const authSlice = createSlice({
 			})
 			.addCase(userLogin.rejected, (state, action) => {
 				state.isLoading = false;
-				state.error = action.payload ? 'Ошибка входа' : null;
+				state.error = action.payload ?? 'Ошибка входа';
 			})
 	},
 	selectors: {
 		selectError: (state) => state.error,
 		selectIsLoading: (state) => state.isLoading,
 		selectIsAuthChecked: (state) => state.isAuthChecked,
+		selectUser: (state) => state.user,
 	},
 });
 
-export const { selectError, selectIsLoading, selectIsAuthChecked } = authSlice.selectors;
+export const { selectError, selectIsLoading, selectIsAuthChecked, selectUser } = authSlice.selectors;

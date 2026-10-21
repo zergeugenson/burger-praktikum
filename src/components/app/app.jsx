@@ -9,6 +9,7 @@ import { LostPasswordStep2 } from '@/pages/register/lost-password-step-2.jsx';
 import { Profile } from '@/pages/profile/profile.jsx';
 import { ROUTES } from '@utils/constants';
 import { Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from '@components/protected-route/protected-route'
 
 export const App = () => {
   return (
@@ -21,11 +22,11 @@ export const App = () => {
         <Routes>
           <Route element={<Home />} path={ROUTES.HOME} />
             <Route element={ <IngredientPage /> } path={ROUTES.INGREDIENT} />
-            <Route element={ <Login /> } path={ROUTES.LOGIN} />
-            <Route element={ <Register />} path={ROUTES.REGISTER} />
-            <Route element={ <LostPasswordStep1 /> } path={ROUTES.LOST_PASSWORD} />
-            <Route element={ <LostPasswordStep2 /> } path={ROUTES.RESET_PASSWORD} />
-            <Route element={ <Profile /> } path={ROUTES.PROFILE} />
+            <Route element={ <ProtectedRoute onlyUnAuth><Login /></ProtectedRoute> } path={ROUTES.LOGIN} />
+            <Route element={ <ProtectedRoute onlyUnAuth><Register /></ProtectedRoute> } path={ROUTES.REGISTER} />
+            <Route element={ <ProtectedRoute onlyUnAuth><LostPasswordStep1 /></ProtectedRoute> } path={ROUTES.LOST_PASSWORD} />
+            <Route element={ <ProtectedRoute onlyUnAuth><LostPasswordStep2 /></ProtectedRoute> } path={ROUTES.RESET_PASSWORD} />
+            <Route element={ <ProtectedRoute ><Profile /></ProtectedRoute> } path={ROUTES.PROFILE} />
         </Routes>
       </main>
     </div>
