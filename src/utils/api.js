@@ -6,18 +6,15 @@ import {
   getAccessToken,
 } from '@/utils/common.js';
 import { BASE_API_URL } from './constants';
+import { BaseApiClient } from './base-api-client';
 
-class BurgerApi {
+class BurgerApi extends BaseApiClient {
   static api = axios.create({
     baseURL: BASE_API_URL,
   });
 
   static authHeaders() {
     return { authorization: getAccessToken() ?? '' };
-  }
-
-  static jsonHeaders() {
-    return { 'Content-Type': 'application/json;charset=utf-8' };
   }
 
   static async fetchWithRefresh(requestFn) {
@@ -45,24 +42,6 @@ class BurgerApi {
 
       setTokens(refreshResponse.accessToken, refreshResponse.refreshToken);
       return requestFn();
-    }
-  }
-
-  static async get(url, params = {}, config = {}) {
-    try {
-      const response = await this.api.get(url, { params, ...config });
-      return response.data;
-    } catch (error) {
-      this.handleError(error);
-    }
-  }
-
-  static async post(url, data = {}, config = {}) {
-    try {
-      const response = await this.api.post(url, data, config);
-      return response.data;
-    } catch (error) {
-      this.handleError(error);
     }
   }
 
@@ -122,6 +101,23 @@ class BurgerApi {
     );
   }
 
+  static async changeUserData(payload) {
+    return this.fetchWithRefresh(() =>
+        this.patch('/auth/user', payload, {
+          headers: {
+            ...this.jsonHeaders(),
+            ...this.authHeaders(),
+          },
+        }).then((response) => {
+          if (response.success) {
+            console.log('изменены данные юзера', response);
+            return response.user;
+          }
+          return Promise.reject(new Error('Ошибка изменения данных пользователя'));
+        })
+    );
+  }
+
   static async userLogout() {
     if (!getRefreshToken()) {
       clearTokens();
@@ -139,21 +135,6 @@ class BurgerApi {
       }
       return Promise.reject(new Error('ошибка выхода'));
     });
-  }
-
-  static handleError(error) {
-    if (error.response) {
-      const serverMessage = error.response.data?.message || error.response.statusText;
-      throw new Error(`Ошибка сервера (${error.response.status}): ${serverMessage}`);
-    } else if (error.request) {
-      throw new Error('Ошибка сети');
-    } else {
-      throw new Error(`Ошибка запроса: ${error.message}`);
-    }
-  }
-
-  static async printError(error) {
-    return this.handleError(error);
   }
 }
 

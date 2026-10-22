@@ -37,3 +37,11 @@ export const userLogout = createAsyncThunk('auth/logout', async (payload, { reje
 		return rejectWithValue(BurgerApi.printError(error || 'Ошибка выхода'));
 	}
 });
+
+export const changeUserData = createAsyncThunk('auth/changeUserData', async (payload, { rejectWithValue }) => {
+	try {
+		return await BurgerApi.changeUserData(payload);
+	} catch (error) {
+		return rejectWithValue(BurgerApi.printError(error || 'Ошибка изменения данных пользователя'));
+	}
+});

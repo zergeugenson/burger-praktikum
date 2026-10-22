@@ -4,7 +4,7 @@ import {
 	userLogin,
 	userLogout,
 	userRegister,
-	getUserData,
+	getUserData, changeUserData,
 } from './auth-actions';
 
 const initialState= {
@@ -43,6 +43,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(userLogin.rejected, (state, action) => {
 				state.isLoading = false;
+				state.isAuthChecked = true;
 				state.error = action.payload ?? 'Ошибка входа';
 			})
 			.addCase(userLogout.fulfilled, (state) => {
@@ -58,6 +59,7 @@ export const authSlice = createSlice({
 				state.error = action.payload ?? null;
 			})
 			.addCase(getUserData.pending, (state) => {
+				state.isLoading = true;
 				state.error = null;
 			})
 			.addCase(getUserData.fulfilled, (state, action) => {
@@ -68,6 +70,19 @@ export const authSlice = createSlice({
 				state.user = null;
 				state.isAuthChecked = true;
 			})
+			.addCase(changeUserData.pending, (state) => {
+				state.isLoading = true;
+				state.error = null;
+			})
+			.addCase(changeUserData.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = action.payload;
+			})
+			.addCase(changeUserData.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isAuthChecked = true;
+				state.error = action.payload ?? 'Ошибка сохранения профиля';
+			});
 	},
 	selectors: {
 		selectError: (state) => state.error,
