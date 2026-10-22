@@ -22,21 +22,17 @@ class BurgerApi {
 
   static async fetchWithRefresh(requestFn) {
     try {
-      console.log("АПИ: токены ОК")
       return await requestFn();
     } catch (error) {
-      console.log("АПИ: токены НЕ ОК")
-      if (error?.message !== 'jwt expired') {
-        console.log("АПИ: пиздец")
+      if (!error?.message.includes('expired')) {
         throw error;
       }
 
       const refreshToken = getRefreshToken();
       if (!refreshToken) {
-        throw new Error('Нет refresh-токена для обновления');
+        throw new Error('Нет refresh-токена');
       }
 
-      console.log("АПИ: Шлем токен!")
       const refreshResponse = await this.post(
           '/auth/token',
           JSON.stringify({ token: refreshToken }),
@@ -48,7 +44,6 @@ class BurgerApi {
       }
 
       setTokens(refreshResponse.accessToken, refreshResponse.refreshToken);
-      console.log("АПИ: Запускаем исходный запрос!")
       return requestFn();
     }
   }
