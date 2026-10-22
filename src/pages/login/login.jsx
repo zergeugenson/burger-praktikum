@@ -23,6 +23,10 @@ export const Login = () => {
 	[dispatch, values]
 );
 
+
+	console.log("login")
+
+
 	return (
 		<form onSubmit={onSubmit}>
 			<h1 className={'text text_type_main-medium mb-6 text-center'}>Вход</h1>

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
 	userLogin,
 	userRegister,
+	getUserData,
 } from './auth-actions';
 
 const initialState= {
@@ -42,6 +43,17 @@ export const authSlice = createSlice({
 			.addCase(userLogin.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload ?? 'Ошибка входа';
+			})
+			.addCase(getUserData.pending, (state) => {
+				state.error = null;
+			})
+			.addCase(getUserData.fulfilled, (state, action) => {
+				state.user = action.payload;
+				state.isAuthChecked = true;
+			})
+			.addCase(getUserData.rejected, (state) => {
+				state.user = null;
+				state.isAuthChecked = true;
 			})
 	},
 	selectors: {

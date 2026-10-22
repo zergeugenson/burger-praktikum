@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import BurgerApi from '@utils/api';
+import {setTokens, clearTokens, getRefreshToken} from '@/utils/common.js'
 
 export const userLogin = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
 	try {
@@ -17,3 +18,16 @@ export const userRegister = createAsyncThunk('auth/register', async (payload, { 
 	}
 });
 
+export const getUserData = createAsyncThunk('auth/getUserData', async (payload, { rejectWithValue }) => {
+
+	if (!getRefreshToken()) {
+		return null;
+	}
+
+	try {
+		return await BurgerApi.getUserData(payload);
+	} catch (error) {
+		clearTokens();
+		return rejectWithValue(BurgerApi.printError(error || 'Ошибка данных пользователя'));
+	}
+});

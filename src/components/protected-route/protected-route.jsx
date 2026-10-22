@@ -3,16 +3,21 @@ import {Navigate, useLocation} from 'react-router-dom';
 
 import {selectIsAuthChecked, selectUser} from '@services/auth/auth-slice.js';
 
-export const ProtectedRoute = ({onlyUnAuth = false, component}) => {
+export const ProtectedRoute = ({children, onlyUnAuth = false}) => {
 	const isAuthChecked = useSelector(selectIsAuthChecked);
 	const user = useSelector(selectUser);
 	const location = useLocation();
+
+	console.log("prot-route, isAuthChecked=", isAuthChecked, "user=", user, "onlyUnAuth=", onlyUnAuth)
+
+
 	if (!isAuthChecked) {
 		return null;
 	}
 
 	if (onlyUnAuth && user) {
 		const {from} = location.state || {from: {pathname: '/'}};
+		console.log("prot-route, isAuthChecked=", isAuthChecked, "user=", user, "onlyUnAuth=", onlyUnAuth)
 		return <Navigate to={from} replace />;
 	}
 
@@ -20,5 +25,5 @@ export const ProtectedRoute = ({onlyUnAuth = false, component}) => {
 		return <Navigate to="/login" state={{from: location}} replace />;
 	}
 
-	return component;
+	return children;
 };

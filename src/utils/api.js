@@ -66,7 +66,7 @@ class BurgerApi {
   }
 
   static async userRegister(data) {
-    return this.post('auth/register', data)
+    return this.get('auth/register', data)
         .then((response) => {
           if (response.success) {
             console.log("регистрация", response)
@@ -74,6 +74,17 @@ class BurgerApi {
             return response.user;
           }
           return Promise.reject(new Error('ошибка регистрации'));
+        });
+  }
+
+  static async getUserData(data) {
+    return this.get('auth/user', data)
+        .then((response) => {
+          if (response.success) {
+            console.log("данные юзера", response)
+            return response.user;
+          }
+          return Promise.reject(new Error('Ошибка данных пользователя'));
         });
   }
 

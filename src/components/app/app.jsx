@@ -8,10 +8,26 @@ import { LostPasswordStep1 } from '@/pages/register/lost-password-step-1.jsx';
 import { LostPasswordStep2 } from '@/pages/register/lost-password-step-2.jsx';
 import { Profile } from '@/pages/profile/profile.jsx';
 import { ROUTES } from '@utils/constants';
-import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from '@components/protected-route/protected-route'
+import {useDispatch} from "react-redux";
+import { useEffect } from 'react';
+import { getUserData } from '@services/auth/auth-actions';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 export const App = () => {
+
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const background = (location.state)?.background;
+
+    useEffect(() => {
+        dispatch(getUserData());
+    }, [dispatch]);
+
+
+    console.log("app", location.state)
+
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -19,7 +35,7 @@ export const App = () => {
         Соберите бургер
       </h1>
       <main className={`${styles.main} pl-5 pr-5`}>
-        <Routes>
+        <Routes location={background ?? location}>
           <Route element={<Home />} path={ROUTES.HOME} />
             <Route element={ <IngredientPage /> } path={ROUTES.INGREDIENT} />
             <Route element={ <ProtectedRoute onlyUnAuth><Login /></ProtectedRoute> } path={ROUTES.LOGIN} />
