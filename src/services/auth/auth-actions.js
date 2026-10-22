@@ -20,14 +20,20 @@ export const userRegister = createAsyncThunk('auth/register', async (payload, { 
 
 export const getUserData = createAsyncThunk('auth/getUserData', async (payload, { rejectWithValue }) => {
 
-	if (!getRefreshToken()) {
-		return null;
-	}
+	if (!getRefreshToken())return null;
 
 	try {
 		return await BurgerApi.getUserData(payload);
 	} catch (error) {
 		clearTokens();
 		return rejectWithValue(BurgerApi.printError(error || 'Ошибка данных пользователя'));
+	}
+});
+
+export const userLogout = createAsyncThunk('auth/logout', async (payload, { rejectWithValue }) => {
+	try {
+		return await BurgerApi.userLogout(payload);
+	} catch (error) {
+		return rejectWithValue(BurgerApi.printError(error || 'Ошибка выхода'));
 	}
 });

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {setTokens, clearTokens} from '@/utils/common.js'
+import {setTokens, clearTokens, getRefreshToken} from '@/utils/common.js'
 import { BASE_API_URL } from './constants';
 
 class BurgerApi {
@@ -85,6 +85,18 @@ class BurgerApi {
             return response.user;
           }
           return Promise.reject(new Error('Ошибка данных пользователя'));
+        });
+  }
+
+  static async userLogout(data) {
+    return this.post('/auth/logout', JSON.stringify({ token: getRefreshToken() }))
+        .then((response) => {
+          if (response.success) {
+            console.log("logOut", response)
+            clearTokens();
+            return response.user;
+          }
+          return Promise.reject(new Error('ошибка выхода'));
         });
   }
 

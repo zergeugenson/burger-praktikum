@@ -30,7 +30,7 @@ export const Register = () => {
 );
 
 	return (
-		<form className={styles.form} onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit}>
 			<h1 className={'text text_type_main-medium mb-6 text-center'}>Регистрация</h1>
 			<Input
 				extraClass="mb-6"

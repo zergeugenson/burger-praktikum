@@ -7,6 +7,8 @@ import { Register } from '@/pages/register/register.jsx';
 import { LostPasswordStep1 } from '@/pages/register/lost-password-step-1.jsx';
 import { LostPasswordStep2 } from '@/pages/register/lost-password-step-2.jsx';
 import { Profile } from '@/pages/profile/profile.jsx';
+import { ProfileOrders } from '@/pages/profile/profile-orders.jsx';
+import { ProfileView } from '@/pages/profile/profile-view.jsx';
 import { ROUTES } from '@utils/constants';
 import { ProtectedRoute } from '@components/protected-route/protected-route'
 import {useDispatch} from "react-redux";
@@ -24,10 +26,6 @@ export const App = () => {
         dispatch(getUserData());
     }, [dispatch]);
 
-
-    console.log("app", location.state)
-
-
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -42,7 +40,10 @@ export const App = () => {
             <Route element={ <ProtectedRoute onlyUnAuth><Register /></ProtectedRoute> } path={ROUTES.REGISTER} />
             <Route element={ <ProtectedRoute onlyUnAuth><LostPasswordStep1 /></ProtectedRoute> } path={ROUTES.LOST_PASSWORD} />
             <Route element={ <ProtectedRoute onlyUnAuth><LostPasswordStep2 /></ProtectedRoute> } path={ROUTES.RESET_PASSWORD} />
-            <Route element={ <ProtectedRoute ><Profile /></ProtectedRoute> } path={ROUTES.PROFILE} />
+            <Route element={ <ProtectedRoute ><Profile /></ProtectedRoute> } path={ROUTES.PROFILE}>
+                <Route index element={<ProfileView />} />
+                <Route path="orders" element={<ProfileOrders />} />
+            </Route>
         </Routes>
       </main>
     </div>
