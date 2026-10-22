@@ -14,4 +14,5 @@ export const ROUTES = {
   REGISTER: '/register',
   LOST_PASSWORD: '/lost-password',
   RESET_PASSWORD: '/reset-password',
+  FEED: '/feed',
 };

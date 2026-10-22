@@ -14,6 +14,9 @@ export const Profile = () => {
 		}`;
 
 	const doLogout = async () => {
+
+
+
 		try {
 			await dispatch(userLogout()).unwrap();
 			navigate(ROUTES.LOGIN);

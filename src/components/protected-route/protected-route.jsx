@@ -8,16 +8,12 @@ export const ProtectedRoute = ({children, onlyUnAuth = false}) => {
 	const user = useSelector(selectUser);
 	const location = useLocation();
 
-	console.log("prot-route, isAuthChecked=", isAuthChecked, "user=", user, "onlyUnAuth=", onlyUnAuth)
-
-
 	if (!isAuthChecked) {
 		return null;
 	}
 
 	if (onlyUnAuth && user) {
 		const {from} = location.state || {from: {pathname: '/'}};
-		console.log("prot-route, isAuthChecked=", isAuthChecked, "user=", user, "onlyUnAuth=", onlyUnAuth)
 		return <Navigate to={from} replace />;
 	}
 

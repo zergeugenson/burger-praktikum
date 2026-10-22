@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
 	userLogin,
+	userLogout,
 	userRegister,
 	getUserData,
 } from './auth-actions';
@@ -43,6 +44,18 @@ export const authSlice = createSlice({
 			.addCase(userLogin.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload ?? 'Ошибка входа';
+			})
+			.addCase(userLogout.fulfilled, (state) => {
+				state.user = null;
+				state.error = null;
+				state.isLoading = false;
+				state.isAuthChecked = true;
+			})
+			.addCase(userLogout.rejected, (state, action) => {
+				state.user = null;
+				state.isLoading = false;
+				state.isAuthChecked = true;
+				state.error = action.payload ?? null;
 			})
 			.addCase(getUserData.pending, (state) => {
 				state.error = null;

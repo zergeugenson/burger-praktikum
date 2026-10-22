@@ -9,6 +9,6 @@ export const clearTokens = (accessToken, refreshToken) => {
 	localStorage.removeItem('refreshToken');
 };
 
-export const getRefreshToken = () => {
-	localStorage.getItem('refreshToken');
-}
+export const getRefreshToken = () => localStorage.getItem('refreshToken');
+
+export const getAccessToken = () => localStorage.getItem('accessToken');

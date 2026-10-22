@@ -20,7 +20,7 @@ export const userRegister = createAsyncThunk('auth/register', async (payload, { 
 
 export const getUserData = createAsyncThunk('auth/getUserData', async (payload, { rejectWithValue }) => {
 
-	if (!getRefreshToken())return null;
+	if (!getRefreshToken()) return null;
 
 	try {
 		return await BurgerApi.getUserData(payload);

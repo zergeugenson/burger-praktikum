@@ -1,5 +1,10 @@
 import axios from 'axios';
-import {setTokens, clearTokens, getRefreshToken} from '@/utils/common.js'
+import {
+  setTokens,
+  clearTokens,
+  getRefreshToken,
+  getAccessToken,
+} from '@/utils/common.js';
 import { BASE_API_URL } from './constants';
 
 class BurgerApi {
@@ -7,30 +12,59 @@ class BurgerApi {
     baseURL: BASE_API_URL,
   });
 
-  /**
-   * фабрика для GET-ов
-   * @param {string} url - эндпоинт ex. '/ingredients'
-   * @param {object} params - параметры
-   * @returns {Promise<any>} - ответ
-   */
-  static async get(url, params = {}) {
+  static authHeaders() {
+    return { authorization: getAccessToken() ?? '' };
+  }
+
+  static jsonHeaders() {
+    return { 'Content-Type': 'application/json;charset=utf-8' };
+  }
+
+  static async fetchWithRefresh(requestFn) {
     try {
-      const response = await this.api.get(url, { params });
+      console.log("АПИ: токены ОК")
+      return await requestFn();
+    } catch (error) {
+      console.log("АПИ: токены НЕ ОК")
+      if (error?.message !== 'jwt expired') {
+        console.log("АПИ: пиздец")
+        throw error;
+      }
+
+      const refreshToken = getRefreshToken();
+      if (!refreshToken) {
+        throw new Error('Нет refresh-токена для обновления');
+      }
+
+      console.log("АПИ: Шлем токен!")
+      const refreshResponse = await this.post(
+          '/auth/token',
+          JSON.stringify({ token: refreshToken }),
+          { headers: this.jsonHeaders() }
+      );
+
+      if (!refreshResponse.success) {
+        throw new Error('Не удалось обновить токен');
+      }
+
+      setTokens(refreshResponse.accessToken, refreshResponse.refreshToken);
+      console.log("АПИ: Запускаем исходный запрос!")
+      return requestFn();
+    }
+  }
+
+  static async get(url, params = {}, config = {}) {
+    try {
+      const response = await this.api.get(url, { params, ...config });
       return response.data;
     } catch (error) {
       this.handleError(error);
     }
   }
 
-  /**
-   * фабрика для POST-ов
-   * @param {string} url - эндпоинт ex. '/orders'
-   * @param {object} data - тело запроса
-   * @returns {Promise<any>} - ответ
-   */
-  static async post(url, data = {}) {
+  static async post(url, data = {}, config = {}) {
     try {
-      const response = await this.api.post(url, data);
+      const response = await this.api.post(url, data, config);
       return response.data;
     } catch (error) {
       this.handleError(error);
@@ -41,23 +75,22 @@ class BurgerApi {
     return this.get('/ingredients');
   }
 
-  /**
-   * Отправка заказа на сервер
-   * @param {string[]} ingredientIds - массив ID ингредиентов (например, ["609...", "609..."])
-   * @returns {Promise<any>} - ответ сервера (обычно содержит order.number)
-   */
   static async createOrder(ingredientIds) {
-    const payload = {
-      ingredients: ingredientIds,
-    };
-    return this.post('/orders', payload);
+    return this.fetchWithRefresh(() =>
+        this.post('/orders', { ingredients: ingredientIds }, {
+          headers: {
+            ...this.jsonHeaders(),
+            ...this.authHeaders(),
+          },
+        })
+    );
   }
 
   static async userLogin(data) {
-    return this.post('/auth/login', data)
+    return this.post('/auth/login', data, { headers: this.jsonHeaders() })
         .then((response) => {
           if (response.success) {
-            console.log("логин", response)
+            console.log('логин', response);
             setTokens(response.accessToken, response.refreshToken);
             return response.user;
           }
@@ -66,10 +99,10 @@ class BurgerApi {
   }
 
   static async userRegister(data) {
-    return this.get('auth/register', data)
+    return this.post('/auth/register', data, { headers: this.jsonHeaders() })
         .then((response) => {
           if (response.success) {
-            console.log("регистрация", response)
+            console.log('регистрация', response);
             setTokens(response.accessToken, response.refreshToken);
             return response.user;
           }
@@ -77,27 +110,40 @@ class BurgerApi {
         });
   }
 
-  static async getUserData(data) {
-    return this.get('auth/user', data)
-        .then((response) => {
+  static async getUserData() {
+    return this.fetchWithRefresh(() =>
+        this.get('/auth/user', {}, {
+          headers: {
+            ...this.jsonHeaders(),
+            ...this.authHeaders(),
+          },
+        }).then((response) => {
           if (response.success) {
-            console.log("данные юзера", response)
+            console.log('данные юзера', response);
             return response.user;
           }
           return Promise.reject(new Error('Ошибка данных пользователя'));
-        });
+        })
+    );
   }
 
-  static async userLogout(data) {
-    return this.post('/auth/logout', JSON.stringify({ token: getRefreshToken() }))
-        .then((response) => {
-          if (response.success) {
-            console.log("logOut", response)
-            clearTokens();
-            return response.user;
-          }
-          return Promise.reject(new Error('ошибка выхода'));
-        });
+  static async userLogout() {
+    if (!getRefreshToken()) {
+      clearTokens();
+      return Promise.resolve();
+    }
+
+    return this.post(
+        '/auth/logout',
+        { token: getRefreshToken() },
+        { headers: this.jsonHeaders() }
+    ).then((response) => {
+      if (response.success) {
+        clearTokens();
+        return response.user;
+      }
+      return Promise.reject(new Error('ошибка выхода'));
+    });
   }
 
   static handleError(error) {
