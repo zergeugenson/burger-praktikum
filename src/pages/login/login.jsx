@@ -49,7 +49,7 @@ export const Login = () => {
         name="password"
         placeholder="Пароль"
       />
-      <Button extraClass="mb-20" htmlType="submit" size="medium" type="primary">
+      <Button htmlType="submit" size="medium" type="primary">
         Войти
       </Button>
       {error && (
