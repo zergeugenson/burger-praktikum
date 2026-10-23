@@ -28,7 +28,7 @@ export const AppHeader = () => {
               )}
             </NavLink>
 
-            <NavLink to={ROUTES.FEED} className={linkClass('ml-10')}>
+            <NavLink to={ROUTES.ORDERS} className={linkClass('ml-10')}>
               {({ isActive }) => (
                   <>
                     <ListIcon type={isActive ? 'primary' : 'secondary'} />

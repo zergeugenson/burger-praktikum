@@ -4,10 +4,13 @@ import {
 	userLogin,
 	userLogout,
 	userRegister,
-	getUserData, changeUserData,
+	getUserData,
+	changeUserData,
+	LostPasswordStepOne,
+	LostPasswordStepTwo,
 } from './auth-actions';
 
-const initialState= {
+const initialState = {
 	error: null,
 	isLoading: false,
 	isAuthChecked: false,
@@ -63,12 +66,15 @@ export const authSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(getUserData.fulfilled, (state, action) => {
+				state.isLoading = false;
 				state.user = action.payload;
 				state.isAuthChecked = true;
 			})
-			.addCase(getUserData.rejected, (state) => {
+			.addCase(getUserData.rejected, (state, action) => {
+				state.isLoading = false;
 				state.user = null;
 				state.isAuthChecked = true;
+				state.error = action.payload ?? 'Ошибка сохранения профиля';
 			})
 			.addCase(changeUserData.pending, (state) => {
 				state.isLoading = true;
@@ -82,7 +88,30 @@ export const authSlice = createSlice({
 				state.isLoading = false;
 				state.isAuthChecked = true;
 				state.error = action.payload ?? 'Ошибка сохранения профиля';
-			});
+			})
+			.addCase(LostPasswordStepOne.pending, (state) => {
+				state.isLoading = true;
+				state.error = null;
+			})
+			.addCase(LostPasswordStepOne.fulfilled, (state) => {
+				state.isLoading = false;
+			})
+			.addCase(LostPasswordStepOne.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload ?? 'Ошибка восстановления пароля: имейл юзера не найден';
+			})
+			.addCase(LostPasswordStepTwo.pending, (state) => {
+				state.isLoading = true;
+				state.error = null;
+			})
+			.addCase(LostPasswordStepTwo.fulfilled, (state) => {
+				state.isLoading = false;
+			})
+			.addCase(LostPasswordStepTwo.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload ?? 'Ошибка восстановления пароля: какая-то ошибка на втором шаге';
+			})
+
 	},
 	selectors: {
 		selectError: (state) => state.error,
@@ -92,4 +121,9 @@ export const authSlice = createSlice({
 	},
 });
 
-export const { selectError, selectIsLoading, selectIsAuthChecked, selectUser } = authSlice.selectors;
+export const {
+	selectError,
+	selectIsLoading,
+	selectIsAuthChecked,
+	selectUser,
+} = authSlice.selectors;

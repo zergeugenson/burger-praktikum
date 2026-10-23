@@ -136,6 +136,31 @@ class BurgerApi extends BaseApiClient {
       return Promise.reject(new Error('ошибка выхода'));
     });
   }
+
+  static async LostPasswordStepOne(payload) {
+    return this.post(
+        '/password-reset',
+        JSON.stringify({ payload }),
+        { headers: this.jsonHeaders() }
+    ).then((response) => {
+      if (response.success) {
+        return true
+      }
+      return Promise.reject(new Error('Ошибка восстановления пароля: имейл юзера не найден'));
+    });
+  }
+  static async LostPasswordStepTwo(payload) {
+    return this.post(
+        '/password-reset/reset',
+        JSON.stringify({ payload }),
+        { headers: this.jsonHeaders() }
+    ).then((response) => {
+      if (response.success) {
+        return true
+      }
+      return Promise.reject(new Error('Ошибка восстановления пароля: какая-то ошибка на втором шаге'));
+    });
+  }
 }
 
 export default BurgerApi;

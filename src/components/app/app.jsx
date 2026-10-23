@@ -22,6 +22,8 @@ export const App = () => {
     const location = useLocation();
     const background = (location.state)?.background;
 
+    console.log("location", location)
+
     useEffect(() => {
         dispatch(getUserData());
     }, [dispatch]);
@@ -29,9 +31,13 @@ export const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
+        { location?.pathname === '/' &&
+            (
+                <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+                    Соберите бургер
+                </h1>
+            )
+        }
       <main className={`${styles.main} pl-5 pr-5`}>
         <Routes location={background ?? location}>
           <Route element={<Home />} path={ROUTES.HOME} />

@@ -8,7 +8,7 @@ export const getIngredients = createAsyncThunk(
     try {
       return await BurgerApi.getIngredients();
     } catch (error) {
-      return rejectWithValue(BurgerApi.printError(error));
+      return rejectWithValue(error?.message ?? 'Не удалось получить ингридиенты');
     }
   }
 );

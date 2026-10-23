@@ -33,7 +33,7 @@ export const ProfileView = () => {
 		setDefaults();
 	}, [setDefaults]);
 
-	const handleSubmit = useCallback(
+	const onSubmit = useCallback(
 		(e) => {
 			e.preventDefault();
 			void dispatch(changeUserData({
@@ -51,7 +51,7 @@ export const ProfileView = () => {
 			values.password.length > 0);
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={onSubmit}>
 			<Input
 				icon="EditIcon"
 				name="name"

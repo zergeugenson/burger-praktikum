@@ -8,7 +8,7 @@ export const createOrder = createAsyncThunk(
     try {
       return await BurgerApi.createOrder(_payload);
     } catch (error) {
-      return rejectWithValue(BurgerApi.printError(error));
+      return rejectWithValue(error?.message ?? 'Не удалось сделать заказ');
     }
   }
 );

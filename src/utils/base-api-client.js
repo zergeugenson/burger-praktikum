@@ -45,7 +45,4 @@ export class BaseApiClient {
 		}
 	}
 
-	static async printError(error) {
-		return this.handleError(error);
-	}
 }

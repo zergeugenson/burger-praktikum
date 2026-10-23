@@ -6,6 +6,7 @@ import { ROUTES } from '@utils/constants';
 import {useDispatch, useSelector} from "react-redux";
 import { useCallback } from 'react';
 import {userLogin, userRegister} from '@services/auth/auth-actions';
+import {selectError} from "@services/auth/auth-slice.js";
 
 const formFields = {
 	email: '',
@@ -22,7 +23,8 @@ const formFields = {
 export const Register = () => {
 	const dispatch = useDispatch();
 	const { values, handleChange } = useForm(formFields);
-	const handleSubmit = useCallback((e)=> {
+	const error = useSelector(selectError);
+	const onSubmit = useCallback((e)=> {
 		e.preventDefault();
 		void dispatch(userRegister(values));
 	},
@@ -30,7 +32,7 @@ export const Register = () => {
 );
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={onSubmit}>
 			<h1 className={'text text_type_main-medium mb-6 text-center'}>Регистрация</h1>
 			<Input
 				extraClass="mb-6"
@@ -57,6 +59,11 @@ export const Register = () => {
 			<Button htmlType="submit" size="medium" type="primary">
 				Зарегистрироваться
 			</Button>
+			{error && (
+				<p className="text text_type_main-default text_color_error mt-6">
+					{error}
+				</p>
+			)}
 			<div className={styles.linkContainer}>
 				<p
 					className={`${styles.link} text text_type_main-default text_color_inactive`}

@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 export function useForm(initialValues) {
 	const [values, setValues] = useState(initialValues);
 
-	const handleChange = useCallback((event)=> {
+	const handleChange = useCallback((e)=> {
 		const { name, type, value, checked } = e.target;
 		setValues((prev) => ({
 			...prev,

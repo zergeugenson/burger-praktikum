@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Button, EmailInput, PasswordInput } from '@krgaa/react-developer-burger-ui-components';
 import { useForm } from '@hooks/useForm';
 import { ROUTES } from '@utils/constants';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useCallback } from 'react';
 import { userLogin } from '@services/auth/auth-actions';
+import {selectError} from "@services/auth/auth-slice.js";
 
 const formFields = {
 	email: '',
@@ -14,6 +15,7 @@ const formFields = {
 
 export const Login = () => {
 	const dispatch = useDispatch();
+	const error = useSelector(selectError);
 	const { values, handleChange } = useForm(formFields);
 	const onSubmit = useCallback(
 		e => {
@@ -22,10 +24,6 @@ export const Login = () => {
 	},
 	[dispatch, values]
 );
-
-
-	console.log("login")
-
 
 	return (
 		<form onSubmit={onSubmit}>
@@ -45,6 +43,11 @@ export const Login = () => {
 				placeholder="Пароль"
 			/>
 			<Button extraClass="mb-20" htmlType="submit" size="medium" type="primary">Войти</Button>
+			{error && (
+				<p className="text text_type_main-default text_color_error mt-6">
+					{error}
+				</p>
+			)}
 			<div className={styles.linkContainer}>
 				<div className={'flex text text_type_main-default text_color_inactive m-4'}>
 					Вы — новый пользователь? &nbsp;
