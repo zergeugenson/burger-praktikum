@@ -48,7 +48,7 @@ export const LostPasswordStep2 = () => {
 		return <Navigate replace to={ROUTES.LOST_PASSWORD} />;
 	}
 	return (
-		<form onSubmit={onSubmit}>
+		<form onSubmit={onSubmit}  style={{ alignItems: 'center' }}>
 			<AppHeaderSmall text="Восстановление пароля, шаг 2" />
 			<PasswordInput
 				value={values.password}

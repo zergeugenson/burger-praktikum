@@ -1,0 +1,14 @@
+.backgound {
+	display: flex;
+	flex: 1 1 auto;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	text-align: center;
+}
+
+.item {
+	flex-direction: column;
+	min-height: 0;
+	padding: 120px 16px 40px;
+}

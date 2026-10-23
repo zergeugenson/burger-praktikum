@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { useCallback } from 'react';
 import { userLogin } from '@services/auth/auth-actions';
 import {selectError} from "@services/auth/auth-slice.js";
+import {AppHeaderSmall} from "@components/app-header/app-header-small.jsx";
 
 const formFields = {
 	email: '',
@@ -26,8 +27,8 @@ export const Login = () => {
 );
 
 	return (
-		<form onSubmit={onSubmit}>
-			<h1 className={'text text_type_main-medium mb-6 text-center'}>Вход</h1>
+		<form onSubmit={onSubmit}  style={{ alignItems: 'center' }}>
+			<AppHeaderSmall text="Вход" />
 			<EmailInput
 				onChange={handleChange}
 				value={values.email}

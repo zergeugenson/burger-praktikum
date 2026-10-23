@@ -31,9 +31,7 @@ export const Home = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
+
 
   return (
     <>

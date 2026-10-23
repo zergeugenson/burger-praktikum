@@ -2,6 +2,7 @@ import styles from './app.module.css';
 import { AppHeader } from '@components/app-header/app-header';
 import { Home } from '@/pages/home/home.jsx';
 import { IngredientPage } from '@/pages/ingredient/ingredient-page.jsx';
+import { IngredientModal } from '@/pages/ingredient/ingredient-modal.jsx';
 import { Login } from '@/pages/login/login.jsx';
 import { Register } from '@/pages/register/register.jsx';
 import { LostPasswordStep1 } from '@/pages/register/lost-password-step-1.jsx';
@@ -15,23 +16,22 @@ import {useDispatch} from "react-redux";
 import { useEffect } from 'react';
 import { getUserData } from '@services/auth/auth-actions';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import {getIngredients} from "@services/ingredients/ingredients-actions.js";
 
 export const App = () => {
-
     const dispatch = useDispatch();
     const location = useLocation();
     const background = (location.state)?.background;
 
-    console.log("location", location)
-
     useEffect(() => {
         dispatch(getUserData());
+        dispatch(getIngredients());
     }, [dispatch]);
 
   return (
     <div className={styles.app}>
       <AppHeader />
-        { location?.pathname === '/' &&
+        { (location?.pathname === '/' || location?.pathname.includes('ingredients')) &&
             (
                 <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
                     Соберите бургер
@@ -51,6 +51,11 @@ export const App = () => {
                 <Route path="orders" element={<ProfileOrders />} />
             </Route>
         </Routes>
+      {background && (
+        <Routes>
+          <Route element={<IngredientModal />} path={ROUTES.INGREDIENT} />
+        </Routes>
+      )}
       </main>
     </div>
   );

@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { useCallback } from 'react';
 import {userLogin, userRegister} from '@services/auth/auth-actions';
 import {selectError} from "@services/auth/auth-slice.js";
+import {AppHeaderSmall} from "@components/app-header/app-header-small.jsx";
 
 const formFields = {
 	email: '',
@@ -32,8 +33,8 @@ export const Register = () => {
 );
 
 	return (
-		<form onSubmit={onSubmit}>
-			<h1 className={'text text_type_main-medium mb-6 text-center'}>Регистрация</h1>
+		<form onSubmit={onSubmit} style={{ alignItems: 'center' }}>
+			<AppHeaderSmall text="Регистрация" />
 			<Input
 				extraClass="mb-6"
 				name="name"
@@ -68,7 +69,7 @@ export const Register = () => {
 				<p
 					className={`${styles.link} text text_type_main-default text_color_inactive`}
 				>
-					Уже зарегистрированы?
+					Уже зарегистрированы? &nbsp;
 					<Link className={styles.link} to={ROUTES.LOGIN}>
 						Войти
 					</Link>

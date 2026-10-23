@@ -33,7 +33,7 @@ export const LostPasswordStep1 = () => {
 	);
 
 	return (
-		<form onSubmit={onSubmit}>
+		<form onSubmit={onSubmit}  style={{ alignItems: 'center' }}>
 			<AppHeaderSmall text="Восстановление пароля, шаг 1" />
 			<EmailInput
 				value={values.email}

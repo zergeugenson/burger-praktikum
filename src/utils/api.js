@@ -93,7 +93,6 @@ class BurgerApi extends BaseApiClient {
           },
         }).then((response) => {
           if (response.success) {
-            console.log('данные юзера', response);
             return response.user;
           }
           return Promise.reject(new Error('Ошибка данных пользователя'));
@@ -110,7 +109,6 @@ class BurgerApi extends BaseApiClient {
           },
         }).then((response) => {
           if (response.success) {
-            console.log('изменены данные юзера', response);
             return response.user;
           }
           return Promise.reject(new Error('Ошибка изменения данных пользователя'));
