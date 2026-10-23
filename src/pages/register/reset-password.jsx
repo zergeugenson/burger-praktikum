@@ -19,15 +19,14 @@ const formFields = {
 	password: '',
 }
 
-export const LostPasswordStep2 = () => {
+export const ResetPassword = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isLoading = useSelector(selectIsLoading);
 	const error = useSelector(selectError);
 	const { values, handleChange } = useForm(formFields);
 
-	const onSubmit = useCallback(
-		(e) => {
+	const onSubmit = useCallback((e) => {
 		e.preventDefault();
 
 		void dispatch(LostPasswordStepTwo(values))
@@ -40,13 +39,14 @@ export const LostPasswordStep2 = () => {
 				console.error('Не удалось восстановить пароль:', err);
 			});
 
-	},
-	[dispatch, navigate, values]
-);
+		}, [dispatch, navigate, values]
+	);
 
 	if (!(localStorage.getItem('resetPasswordAllowed') === 'true')) {
-		return <Navigate replace to={ROUTES.LOST_PASSWORD} />;
+		return <Navigate replace to={ROUTES.FORGOT_PASSWORD} />;
 	}
+
+
 	return (
 		<form onSubmit={onSubmit}  style={{ alignItems: 'center' }}>
 			<AppHeaderSmall text="Восстановление пароля, шаг 2" />

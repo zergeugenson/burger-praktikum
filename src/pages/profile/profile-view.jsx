@@ -1,6 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {selectIsAuthChecked, selectUser} from '@services/auth/auth-slice.js';
-import styles from './profile-view.module.css';
+import {selectUser} from '@services/auth/auth-slice.js';
 import {useForm} from "@hooks/useForm.js";
 import {useCallback, useEffect, useMemo} from "react";
 import { Input, Button } from '@krgaa/react-developer-burger-ui-components';

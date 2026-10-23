@@ -5,8 +5,8 @@ import { IngredientPage } from '@/pages/ingredient/ingredient-page.jsx';
 import { IngredientModal } from '@/pages/ingredient/ingredient-modal.jsx';
 import { Login } from '@/pages/login/login.jsx';
 import { Register } from '@/pages/register/register.jsx';
-import { LostPasswordStep1 } from '@/pages/register/lost-password-step-1.jsx';
-import { LostPasswordStep2 } from '@/pages/register/lost-password-step-2.jsx';
+import { ForgotPassword } from '@/pages/register/forgot-password.jsx';
+import { ResetPassword } from '@/pages/register/reset-password.jsx';
 import { Profile } from '@/pages/profile/profile.jsx';
 import { ProfileOrders } from '@/pages/profile/profile-orders.jsx';
 import { ProfileView } from '@/pages/profile/profile-view.jsx';
@@ -44,8 +44,8 @@ export const App = () => {
             <Route element={ <IngredientPage /> } path={ROUTES.INGREDIENT} />
             <Route element={ <ProtectedRoute onlyUnAuth><Login /></ProtectedRoute> } path={ROUTES.LOGIN} />
             <Route element={ <ProtectedRoute onlyUnAuth><Register /></ProtectedRoute> } path={ROUTES.REGISTER} />
-            <Route element={ <ProtectedRoute onlyUnAuth><LostPasswordStep1 /></ProtectedRoute> } path={ROUTES.LOST_PASSWORD} />
-            <Route element={ <ProtectedRoute onlyUnAuth><LostPasswordStep2 /></ProtectedRoute> } path={ROUTES.RESET_PASSWORD} />
+            <Route element={ <ProtectedRoute onlyUnAuth><ForgotPassword /></ProtectedRoute> } path={ROUTES.FORGOT_PASSWORD} />
+            <Route element={ <ProtectedRoute onlyUnAuth><ResetPassword /></ProtectedRoute> } path={ROUTES.RESET_PASSWORD} />
             <Route element={ <ProtectedRoute ><Profile /></ProtectedRoute> } path={ROUTES.PROFILE}>
                 <Route index element={<ProfileView />} />
                 <Route path="orders" element={<ProfileOrders />} />

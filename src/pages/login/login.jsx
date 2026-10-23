@@ -58,7 +58,7 @@ export const Login = () => {
 				</div>
 				<div className={'text text_type_main-default text_color_inactive'}>
 					Забыли пароль? &nbsp;
-					<Link className={styles.link} to={ROUTES.LOST_PASSWORD}>
+					<Link className={styles.link} to={ROUTES.FORGOT_PASSWORD}>
 						 Восстановить пароль
 					</Link>
 				</div>

@@ -12,7 +12,7 @@ export const ROUTES = {
   PROFILE: '/profile',
   PROFILE_ORDERS: '/profile/orders',
   REGISTER: '/register',
-  LOST_PASSWORD: '/lost-password',
+  FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   ORDERS: '/orders',
 };

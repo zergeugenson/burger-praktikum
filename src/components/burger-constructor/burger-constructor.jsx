@@ -19,15 +19,19 @@ import {
 } from '@services/burger-constructor/burger-constructor-slice.js';
 import { createOrder } from '@services/order/order-actions.js';
 import { DND_TYPES } from '@utils/dnd';
-
 import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
-
+import {selectUser} from '@services/auth/auth-slice.js';
+import { ROUTES } from '@utils/constants';
 import styles from './burger-constructor.module.css';
+import {useNavigate} from "react-router-dom";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const order = useSelector(selectOrder);
   const totalPrice = useSelector(selectTotalPrice);
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+
   const handleAdd = (item) => {
     dispatch(addItem(item));
   };
@@ -56,6 +60,11 @@ export const BurgerConstructor = () => {
 
   const makeOrder = useCallback(() => {
     if (!order.bun) return null;
+    if (!user) {
+        navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
+        return;
+    }
+
     dispatch(
       createOrder([
         order.bun._id,

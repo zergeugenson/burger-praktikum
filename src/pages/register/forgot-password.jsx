@@ -9,7 +9,7 @@ import { selectError, selectIsLoading } from '@services/auth/auth-slice';
 import { ROUTES } from '@utils/constants';
 import { AppHeaderSmall } from '@components/app-header/app-header-small';
 
-export const LostPasswordStep1 = () => {
+export const ForgotPassword = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isLoading = useSelector(selectIsLoading);
