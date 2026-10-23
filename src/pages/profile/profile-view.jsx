@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {selectIsAuthChecked, selectUser} from '@services/auth/auth-slice.js';
 import styles from './profile-view.module.css';
 import {useForm} from "@hooks/useForm.js";
-import {useCallback, useEffect} from "react";
+import {useCallback, useEffect, useMemo} from "react";
 import { Input, Button } from '@krgaa/react-developer-burger-ui-components';
 import {changeUserData} from "@services/auth/auth-actions.js";
 
@@ -17,20 +17,21 @@ export const ProfileView = () => {
 	const dispatch = useDispatch();
 	const { values, handleChange, setValues } = useForm(formFields);
 
-	const setDefaults = () => {
+	const setDefaults = useCallback(() => {
 		setValues({
-			email: user.email,
-			name: user.name,
-			password: user.password,
+			email: user.email ?? '',
+			name: user.name ?? '',
+			password: '',
 		});
-	}
-	useEffect(() => {
-		setDefaults();
 	}, [user, setValues]);
+
+	useEffect(() => {
+		setTimeout(()=>{setDefaults();},100)
+	}, []);
 
 	const handleCancel = useCallback(() => {
 		setDefaults();
-	}, [setValues, user]);
+	}, [setDefaults]);
 
 	const handleSubmit = useCallback(
 		(e) => {
@@ -43,6 +44,11 @@ export const ProfileView = () => {
 			);
 		}, [dispatch, values]
 	);
+
+	const isChanged = Boolean(user) &&
+		(values.name !== user?.name ||
+			values.email !== user.email ||
+			values.password.length > 0);
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -74,12 +80,28 @@ export const ProfileView = () => {
 				onChange={handleChange}
 			/>
 			<div>
-				<Button  htmlType="button"  size="medium"  type="primary"  onClick={handleCancel}>
-					Отмена
-				</Button>
-				<Button htmlType="submit" size="medium" type="primary" extraClass="ml-6">
-					Сохранить
-				</Button>
+				{user && (
+					<div>
+						<Button
+							htmlType="button"
+							size="medium"
+							type="primary"
+							onClick={handleCancel}
+							disabled={!isChanged}
+						>
+							Отмена
+						</Button>
+						<Button
+							htmlType="submit"
+							size="medium"
+							type="primary"
+							extraClass="ml-6"
+							disabled={!isChanged}
+						>
+							Сохранить
+						</Button>
+					</div>
+				)}
 			</div>
 		</form>
 	);
