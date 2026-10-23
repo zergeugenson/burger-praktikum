@@ -4,56 +4,54 @@ import {
   ProfileIcon,
   Logo,
 } from '@krgaa/react-developer-burger-ui-components';
-import { ROUTES } from '@utils/constants';
-import styles from './app-header.module.css';
 import { NavLink, Link } from 'react-router-dom';
 
-export const AppHeader = () => {
+import { ROUTES } from '@utils/constants';
 
-  const linkClass = (extra = '') => ({ isActive }) =>
-      [styles.link, extra, isActive ? styles.link_active : '']
-          .filter(Boolean)
-          .join(' ');
+import styles from './app-header.module.css';
+
+export const AppHeader = () => {
+  const linkClass =
+    (extra = '') =>
+    ({ isActive }) =>
+      [styles.link, extra, isActive ? styles.link_active : ''].filter(Boolean).join(' ');
 
   return (
-      <header className={styles.header}>
-        <nav className={`${styles.menu} p-4`}>
-          <div className={styles.menu_part_left}>
-            <NavLink end to={ROUTES.HOME} className={linkClass()}>
-              {({ isActive }) => (
-                  <>
-                    <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
-                    <p className="text text_type_main-default ml-2">Конструктор</p>
-                  </>
-              )}
-            </NavLink>
-
-            <NavLink to={ROUTES.ORDERS} className={linkClass('ml-10')}>
-              {({ isActive }) => (
-                  <>
-                    <ListIcon type={isActive ? 'primary' : 'secondary'} />
-                    <p className="text text_type_main-default ml-2">Лента заказов</p>
-                  </>
-              )}
-            </NavLink>
-          </div>
-
-          <Link to={ROUTES.HOME} className={styles.logo}>
-            <Logo />
-          </Link>
-
-          <NavLink
-              to={ROUTES.PROFILE}
-              className={linkClass(styles.link_position_last)}
-          >
+    <header className={styles.header}>
+      <nav className={`${styles.menu} p-4`}>
+        <div className={styles.menu_part_left}>
+          <NavLink end to={ROUTES.HOME} className={linkClass()}>
             {({ isActive }) => (
-                <>
-                  <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
-                  <p className="text text_type_main-default ml-2">Личный кабинет</p>
-                </>
+              <>
+                <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
+                <p className="text text_type_main-default ml-2">Конструктор</p>
+              </>
             )}
           </NavLink>
-        </nav>
-      </header>
+
+          <NavLink to={ROUTES.ORDERS} className={linkClass('ml-10')}>
+            {({ isActive }) => (
+              <>
+                <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                <p className="text text_type_main-default ml-2">Лента заказов</p>
+              </>
+            )}
+          </NavLink>
+        </div>
+
+        <Link to={ROUTES.HOME} className={styles.logo}>
+          <Logo />
+        </Link>
+
+        <NavLink to={ROUTES.PROFILE} className={linkClass(styles.link_position_last)}>
+          {({ isActive }) => (
+            <>
+              <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
+              <p className="text text_type_main-default ml-2">Личный кабинет</p>
+            </>
+          )}
+        </NavLink>
+      </nav>
+    </header>
   );
 };

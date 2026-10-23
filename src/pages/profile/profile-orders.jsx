@@ -1,7 +1,3 @@
 export const ProfileOrders = () => {
-	return (
-		<>
-			Заглушка заказов
-		</>
-	);
+  return <>Заглушка заказов</>;
 };

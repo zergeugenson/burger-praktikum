@@ -1,17 +1,17 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useMemo, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.js';
 import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
 import { ieGroups } from '@utils/constants.js';
-import { useLocation, useNavigate } from 'react-router-dom';
+
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
-  const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
   const navigate = useNavigate();
   const location = useLocation();

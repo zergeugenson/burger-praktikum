@@ -7,8 +7,10 @@ import cn from 'clsx';
 import { useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { openModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
+import { selectUser } from '@services/auth/auth-slice.js';
 import {
   selectOrder,
   selectTotalPrice,
@@ -18,12 +20,12 @@ import {
   clearConstructor,
 } from '@services/burger-constructor/burger-constructor-slice.js';
 import { createOrder } from '@services/order/order-actions.js';
-import { DND_TYPES } from '@utils/dnd';
-import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
-import {selectUser} from '@services/auth/auth-slice.js';
 import { ROUTES } from '@utils/constants';
+import { DND_TYPES } from '@utils/dnd';
+
+import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
+
 import styles from './burger-constructor.module.css';
-import {useNavigate} from "react-router-dom";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -61,8 +63,8 @@ export const BurgerConstructor = () => {
   const makeOrder = useCallback(() => {
     if (!order.bun) return null;
     if (!user) {
-        navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
-        return;
+      navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
+      return;
     }
 
     dispatch(

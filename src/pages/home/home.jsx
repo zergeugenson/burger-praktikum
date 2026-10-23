@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
@@ -6,7 +5,6 @@ import { OrderDetails } from '@components/burger-constructor/order-details/order
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 import { IngredientDetails } from '@components/burger-ingredients/ingredient-details/ingredient-details.jsx';
 import { Modal } from '@components/modal/modal.jsx';
-import { getIngredients } from '@services/ingredients/ingredients-actions.js';
 import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice.js';
 import { closeModal } from '@services/modal/modal-slice.js';
 import {
@@ -30,8 +28,6 @@ export const Home = () => {
       dispatch(clearOrder());
     }
   };
-
-
 
   return (
     <>
