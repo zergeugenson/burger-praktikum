@@ -1,6 +1,9 @@
 import styles from './ingredient-details.module.css';
 
 export const IngredientDetails = ({ ingredient }) => {
+
+    if(!ingredient) return null
+
   const consistency = [
     { label: 'Калории, ккал', value: ingredient.calories },
     { label: 'Белки, г', value: ingredient.proteins },
