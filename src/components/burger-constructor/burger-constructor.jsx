@@ -94,14 +94,7 @@ export const BurgerConstructor = () => {
       <div
         className={styles.container}
         ref={dropRef}
-        style={{
-          minHeight: '150px',
-          padding: '20px',
-          border: '2px dashed gray',
-          borderRadius: '8px',
-          borderColor,
-          transition: 'border-color 0.2s ease',
-        }}
+        style={{ borderColor }}
       >
         <div className={styles.bun}>
           <ConstructorElement

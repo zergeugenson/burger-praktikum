@@ -39,7 +39,7 @@ export const Register = () => {
   );
 
   return (
-    <form onSubmit={onSubmit} style={{ alignItems: 'center' }}>
+    <form onSubmit={onSubmit} className={styles.form}>
       <AppHeaderSmall text="Регистрация" />
       <Input
         extraClass="mb-6"

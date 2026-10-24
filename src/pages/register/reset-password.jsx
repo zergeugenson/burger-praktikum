@@ -49,7 +49,7 @@ export const ResetPassword = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} style={{ alignItems: 'center' }}>
+    <form onSubmit={onSubmit} className={styles.form}>
       <AppHeaderSmall text="Восстановление пароля, шаг 2" />
       <PasswordInput
         value={values.password}

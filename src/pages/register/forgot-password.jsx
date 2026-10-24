@@ -35,7 +35,7 @@ export const ForgotPassword = () => {
   );
 
   return (
-    <form onSubmit={onSubmit} style={{ alignItems: 'center' }}>
+    <form onSubmit={onSubmit} className={styles.form}>
       <AppHeaderSmall text="Восстановление пароля, шаг 1" />
       <EmailInput
         value={values.email}

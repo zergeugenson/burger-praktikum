@@ -55,10 +55,11 @@
   gap: 16px;
   min-height: 0;
   margin-bottom: 40px;
-  padding: 20px;
   overflow: hidden;
   border-radius: 8px;
-  transition: border 500ms ease-out;
+  padding: 20px;
+  border: 2px dashed gray;
+  transition: border-color 0.2s ease;
 }
 
 .footer {
