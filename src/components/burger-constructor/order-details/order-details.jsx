@@ -1,14 +1,12 @@
-import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
-import {
-    clearConstructor,
-} from '@services/burger-constructor/burger-constructor-slice.js';
 import styles from './order-details.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
+import { clearConstructor } from '@services/burger-constructor/burger-constructor-slice.js';
+import { useDispatch } from 'react-redux';
+
 export const OrderDetails = (props) => {
     const dispatch = useDispatch();
-    if(props.OrderId) {
-        dispatch(clearConstructor());
-    }
+    if(props.OrderId) dispatch(clearConstructor());
+
   return (
     <div className={styles.container}>
       <p className={`${styles.id} text_type_digits-large text`}>{props.OrderId}</p>

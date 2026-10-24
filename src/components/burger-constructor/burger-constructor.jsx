@@ -17,7 +17,6 @@ import {
   addItem,
   removeItem,
   moveIngredient,
-  clearConstructor,
 } from '@services/burger-constructor/burger-constructor-slice.js';
 import { createOrder } from '@services/order/order-actions.js';
 import { ROUTES } from '@utils/constants';
@@ -80,8 +79,6 @@ export const BurgerConstructor = () => {
         type: MODAL_TYPES.ORDER_DETAILS,
       })
     );
-
-    // dispatch(clearConstructor());
   }, [dispatch, order]);
 
   let borderColor = '#333';

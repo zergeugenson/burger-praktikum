@@ -4,7 +4,6 @@ import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { OrderDetails } from '@components/burger-constructor/order-details/order-details.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { IngredientDetails } from '@components/burger-ingredients/ingredient-details/ingredient-details.jsx';
 import { Modal } from '@components/modal/modal.jsx';
 import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice.js';
 import { closeModal } from '@services/modal/modal-slice.js';
@@ -12,10 +11,12 @@ import {
   clearOrder,
   selectOrderIsLoading,
   selectOrderNumber,
+  selectOrderError,
 } from '@services/order/order-slice.js';
 
 export const Home = () => {
   const isOrderLoading = useSelector(selectOrderIsLoading);
+  const orderError = useSelector(selectOrderError);
   const isIngredientLoading = useSelector(selectIngredientsIsLoading);
   const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
@@ -41,7 +42,8 @@ export const Home = () => {
       )}
       {isOpen && !isLoading && (
         <Modal close={() => handleCloseModal()} title={modalState.title}>
-          {modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber} />}
+          {orderError && (<p className="text text_type_main-default text_color_error mt-6">{orderError}</p>)}
+          {!orderError && modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber} />}
         </Modal>
       )}
     </>
