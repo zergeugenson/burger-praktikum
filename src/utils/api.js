@@ -55,7 +55,7 @@ class BurgerApi extends BaseApiClient {
     return this.fetchWithRefresh(() =>
       this.post(
         '/orders',
-
+        { ingredients: ingredientIds },
         {
           headers: {
             ...this.jsonHeaders(),
