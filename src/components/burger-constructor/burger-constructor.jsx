@@ -73,7 +73,7 @@ export const BurgerConstructor = () => {
         ...order.ingredients.map((ingredient) => ingredient._id),
         order.bun._id,
       ])
-    );
+    )
 
     dispatch(
       openModal({
@@ -81,7 +81,7 @@ export const BurgerConstructor = () => {
       })
     );
 
-    dispatch(clearConstructor());
+    // dispatch(clearConstructor());
   }, [dispatch, order]);
 
   let borderColor = '#333';
