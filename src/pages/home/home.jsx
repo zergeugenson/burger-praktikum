@@ -43,7 +43,7 @@ export const Home = () => {
       {isOpen && !isLoading && (
         <Modal close={() => handleCloseModal()} title={modalState.title}>
           {orderError && (<p className="text text_type_main-default text_color_error mt-6">{orderError}</p>)}
-          {!orderError && modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber} />}
+          {!orderError && modalState.type === 'orderDetails' && <OrderDetails orderId={orderNumber} />}
         </Modal>
       )}
     </>
