@@ -1,5 +1,6 @@
+import styles from './home.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { OrderDetails } from '@components/burger-constructor/order-details/order-details.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
@@ -33,12 +34,14 @@ export const Home = () => {
     <>
       <BurgerIngredients />
       <BurgerConstructor />
+      {isOpen && isLoading && (
+          <div className={styles.preloader}>
+            <Preloader />
+          </div>
+      )}
       {isOpen && !isLoading && (
         <Modal close={() => handleCloseModal()} title={modalState.title}>
           {modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber} />}
-          {modalState.type === 'ingredientDetails' && (
-            <IngredientDetails ingredient={modalState.data} />
-          )}
         </Modal>
       )}
     </>
