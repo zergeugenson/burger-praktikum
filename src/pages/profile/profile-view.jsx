@@ -85,14 +85,13 @@ export const ProfileView = () => {
         onChange={handleChange}
       />
       <div>
-        {user && (
+        {user && isChanged && (
           <div>
             <Button
               htmlType="button"
               size="medium"
               type="primary"
               onClick={handleCancel}
-              disabled={!isChanged}
             >
               Отмена
             </Button>
@@ -101,7 +100,6 @@ export const ProfileView = () => {
               size="medium"
               type="primary"
               extraClass="ml-6"
-              disabled={!isChanged}
             >
               Сохранить
             </Button>
