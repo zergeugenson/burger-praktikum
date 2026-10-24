@@ -1,4 +1,3 @@
-// auth-actions.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { clearTokens, getRefreshToken } from '@/utils/common.js';

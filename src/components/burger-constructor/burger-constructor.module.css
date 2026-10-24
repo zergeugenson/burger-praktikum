@@ -55,10 +55,10 @@
   gap: 16px;
   min-height: 0;
   margin-bottom: 40px;
-  overflow: hidden;
-  border-radius: 8px;
   padding: 20px;
+  overflow: hidden;
   border: 2px dashed gray;
+  border-radius: 8px;
   transition: border-color 0.2s ease;
 }
 

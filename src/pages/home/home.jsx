@@ -1,6 +1,6 @@
-import styles from './home.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { OrderDetails } from '@components/burger-constructor/order-details/order-details.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
@@ -13,6 +13,8 @@ import {
   selectOrderNumber,
   selectOrderError,
 } from '@services/order/order-slice.js';
+
+import styles from './home.module.css';
 
 export const Home = () => {
   const isOrderLoading = useSelector(selectOrderIsLoading);
@@ -36,14 +38,20 @@ export const Home = () => {
       <BurgerIngredients />
       <BurgerConstructor />
       {isOpen && isLoading && (
-          <div className={styles.preloader}>
-            <Preloader />
-          </div>
+        <div className={styles.preloader}>
+          <Preloader />
+        </div>
       )}
       {isOpen && !isLoading && (
         <Modal close={() => handleCloseModal()} title={modalState.title}>
-          {orderError && (<p className="text text_type_main-default text_color_error mt-6">{orderError}</p>)}
-          {!orderError && modalState.type === 'orderDetails' && <OrderDetails orderId={orderNumber} />}
+          {orderError && (
+            <p className="text text_type_main-default text_color_error mt-6">
+              {orderError}
+            </p>
+          )}
+          {!orderError && modalState.type === 'orderDetails' && (
+            <OrderDetails orderId={orderNumber} />
+          )}
         </Modal>
       )}
     </>

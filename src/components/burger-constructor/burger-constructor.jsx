@@ -72,7 +72,7 @@ export const BurgerConstructor = () => {
         ...order.ingredients.map((ingredient) => ingredient._id),
         order.bun._id,
       ])
-    )
+    );
 
     dispatch(
       openModal({
@@ -88,11 +88,7 @@ export const BurgerConstructor = () => {
   return (
     <section className={styles.burgerConstructor}>
       {order.length}
-      <div
-        className={styles.container}
-        ref={dropRef}
-        style={{ borderColor }}
-      >
+      <div className={styles.container} ref={dropRef} style={{ borderColor }}>
         <div className={styles.bun}>
           <ConstructorElement
             extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}

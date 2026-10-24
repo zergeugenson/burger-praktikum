@@ -1,23 +1,30 @@
 import { Input, Button } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '@hooks/useForm.js';
 import { changeUserData } from '@services/auth/auth-actions.js';
-import { selectUser } from '@services/auth/auth-slice.js';
+import { selectUser, selectIsLoading, selectError } from '@services/auth/auth-slice.js';
 
-const formFields = {
-  email: '',
-  name: '',
-  password: '',
-};
+import styles from './profile-view.module.css';
 
 export const ProfileView = () => {
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
-  const { values, handleChange, setValues } = useForm(formFields);
+  return <ProfileForm key={user?.email ?? 'no-user'} user={user} />;
+};
 
-  const setDefaults = useCallback(() => {
+const ProfileForm = ({ user }) => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  const { values, handleChange, setValues } = useForm({
+    email: user?.email ?? '',
+    name: user?.name ?? '',
+    password: '',
+  });
+
+  const handleCancel = useCallback(() => {
     setValues({
       email: user.email ?? '',
       name: user.name ?? '',
@@ -25,28 +32,25 @@ export const ProfileView = () => {
     });
   }, [user, setValues]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setDefaults();
-    }, 100);
-  }, []);
-
-  const handleCancel = useCallback(() => {
-    setDefaults();
-  }, [setDefaults]);
-
   const onSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
-      void dispatch(
-        changeUserData({
-          email: values.email,
-          name: values.name,
-          ...(values.password.length > 0 ? { password: values.password } : {}),
-        })
-      );
+
+      try {
+        await dispatch(
+          changeUserData({
+            email: values.email,
+            name: values.name,
+            ...(values.password.length > 0 ? { password: values.password } : {}),
+          })
+        ).unwrap();
+
+        setValues((prev) => ({ ...prev, password: '' }));
+      } catch (error) {
+        console.log('Ошибка сохранения профиля', error);
+      }
     },
-    [dispatch, values]
+    [dispatch, values, setValues]
   );
 
   const isChanged =
@@ -56,7 +60,7 @@ export const ProfileView = () => {
       values.password.length > 0);
 
   return (
-    <form onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmit}>
       <Input
         icon="EditIcon"
         name="name"
@@ -71,8 +75,8 @@ export const ProfileView = () => {
         name="email"
         type="email"
         placeholder="Логин"
-        extraClass="mb-6"
         value={values.email}
+        extraClass="mb-6"
         onChange={handleChange}
       />
       <Input
@@ -80,32 +84,38 @@ export const ProfileView = () => {
         name="password"
         type="password"
         placeholder="Пароль"
-        extraClass="mb-6"
         value={values.password}
+        extraClass="mb-6"
         onChange={handleChange}
+        autoComplete="new-password"
       />
-      <div>
-        {user && isChanged && (
-          <div>
-            <Button
-              htmlType="button"
-              size="medium"
-              type="primary"
-              onClick={handleCancel}
-            >
-              Отмена
-            </Button>
-            <Button
-              htmlType="submit"
-              size="medium"
-              type="primary"
-              extraClass="ml-6"
-            >
-              Сохранить
-            </Button>
-          </div>
-        )}
-      </div>
+
+      {isChanged && (
+        <div>
+          <Button
+            htmlType="button"
+            size="medium"
+            type="primary"
+            onClick={handleCancel}
+            disabled={isLoading}
+          >
+            Отмена
+          </Button>
+          <Button
+            htmlType="submit"
+            size="medium"
+            type="primary"
+            extraClass="ml-6"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Сохранение…' : 'Сохранить'}
+          </Button>
+        </div>
+      )}
+
+      {error && (
+        <p className="text text_type_main-default text_color_error mt-6">{error}</p>
+      )}
     </form>
   );
 };

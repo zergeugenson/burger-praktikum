@@ -88,6 +88,7 @@ export const App = () => {
         </Routes>
         {background && (
           <Routes>
+            {/*  поп-ап ингридиента вызывается только здесь. IngredientModal есть обертка над модал, и больше он нигде не вызывается, см. импорты */}
             <Route element={<IngredientModal />} path={ROUTES.INGREDIENT} />
           </Routes>
         )}

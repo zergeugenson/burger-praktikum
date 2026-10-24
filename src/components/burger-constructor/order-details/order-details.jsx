@@ -1,8 +1,8 @@
-import styles from './order-details.module.css';
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
+import styles from './order-details.module.css';
 
-export const OrderDetails = ({orderId}) => {
+export const OrderDetails = ({ orderId }) => {
   return (
     <div className={styles.container}>
       <p className={`${styles.id} text_type_digits-large text`}>{orderId}</p>
