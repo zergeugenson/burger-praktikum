@@ -57,8 +57,9 @@
   margin-bottom: 40px;
   padding: 20px;
   overflow: hidden;
+  border: 2px dashed gray;
   border-radius: 8px;
-  transition: border 500ms ease-out;
+  transition: border-color 0.2s ease;
 }
 
 .footer {

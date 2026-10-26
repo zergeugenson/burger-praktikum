@@ -1,5 +1,6 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
+import { authSlice } from './auth/auth-slice.js';
 import { burgerConstructorSlice } from './burger-constructor/burger-constructor-slice.js';
 import { ingredientsSlice } from './ingredients/ingredients-slice.js';
 import { modalSlice } from './modal/modal-slice';
@@ -9,7 +10,8 @@ export const rootReducer = combineSlices(
   ingredientsSlice,
   orderSlice,
   modalSlice,
-  burgerConstructorSlice
+  burgerConstructorSlice,
+  authSlice
 );
 
 export const store = configureStore({

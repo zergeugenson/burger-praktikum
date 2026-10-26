@@ -1,50 +1,49 @@
 import axios from 'axios';
 
+import {
+  setTokens,
+  clearTokens,
+  getRefreshToken,
+  getAccessToken,
+} from '@/utils/common.js';
+
+import { BaseApiClient } from './base-api-client';
 import { BASE_API_URL } from './constants';
 
-class BurgerApi {
+class BurgerApi extends BaseApiClient {
   static api = axios.create({
     baseURL: BASE_API_URL,
   });
 
-  static handleError(error) {
-    if (error.response) {
-      const serverMessage = error.response.data?.message || error.response.statusText;
-      throw new Error(`Ошибка сервера (${error.response.status}): ${serverMessage}`);
-    } else if (error.request) {
-      throw new Error('Ошибка сети');
-    } else {
-      throw new Error(`Ошибка запроса: ${error.message}`);
-    }
+  static authHeaders() {
+    return { authorization: getAccessToken() ?? '' };
   }
 
-  /**
-   * фабрика для GET-ов
-   * @param {string} url - эндпоинт ex. '/ingredients'
-   * @param {object} params - параметры
-   * @returns {Promise<any>} - ответ
-   */
-  static async get(url, params = {}) {
+  static async fetchWithRefresh(requestFn) {
     try {
-      const response = await this.api.get(url, { params });
-      return response.data;
+      return await requestFn();
     } catch (error) {
-      this.handleError(error);
-    }
-  }
+      if (!error?.message.includes('expired')) {
+        throw error;
+      }
 
-  /**
-   * фабрика для POST-ов
-   * @param {string} url - эндпоинт ex. '/orders'
-   * @param {object} data - тело запроса
-   * @returns {Promise<any>} - ответ
-   */
-  static async post(url, data = {}) {
-    try {
-      const response = await this.api.post(url, data);
-      return response.data;
-    } catch (error) {
-      this.handleError(error);
+      const refreshToken = getRefreshToken();
+      if (!refreshToken) {
+        throw new Error('Нет refresh-токена');
+      }
+
+      const refreshResponse = await this.post(
+        '/auth/token',
+        JSON.stringify({ token: refreshToken }),
+        { headers: this.jsonHeaders() }
+      );
+
+      if (!refreshResponse.success) {
+        throw new Error('Не удалось обновить токен');
+      }
+
+      setTokens(refreshResponse.accessToken, refreshResponse.refreshToken);
+      return requestFn();
     }
   }
 
@@ -52,20 +51,125 @@ class BurgerApi {
     return this.get('/ingredients');
   }
 
-  /**
-   * Отправка заказа на сервер
-   * @param {string[]} ingredientIds - массив ID ингредиентов (например, ["609...", "609..."])
-   * @returns {Promise<any>} - ответ сервера (обычно содержит order.number)
-   */
   static async createOrder(ingredientIds) {
-    const payload = {
-      ingredients: ingredientIds,
-    };
-    return this.post('/orders', payload);
+    return this.fetchWithRefresh(() =>
+      this.post(
+        '/orders',
+        { ingredients: ingredientIds },
+        {
+          headers: {
+            ...this.jsonHeaders(),
+            ...this.authHeaders(),
+          },
+        }
+      )
+    );
   }
 
-  static async printError(error) {
-    return this.handleError(error);
+  static async userLogin(data) {
+    return this.post('/auth/login', data, { headers: this.jsonHeaders() }).then(
+      (response) => {
+        if (response.success) {
+          console.log('логин', response);
+          setTokens(response.accessToken, response.refreshToken);
+          return response.user;
+        }
+        return Promise.reject(new Error('Не удалось войти'));
+      }
+    );
+  }
+
+  static async userRegister(data) {
+    return this.post('/auth/register', data, { headers: this.jsonHeaders() }).then(
+      (response) => {
+        if (response.success) {
+          console.log('регистрация', response);
+          setTokens(response.accessToken, response.refreshToken);
+          return response.user;
+        }
+        return Promise.reject(new Error('ошибка регистрации'));
+      }
+    );
+  }
+
+  static async getUserData() {
+    return this.fetchWithRefresh(() =>
+      this.get(
+        '/auth/user',
+        {},
+        {
+          headers: {
+            ...this.jsonHeaders(),
+            ...this.authHeaders(),
+          },
+        }
+      ).then((response) => {
+        if (response.success) {
+          return response.user;
+        }
+        return Promise.reject(new Error('Ошибка данных пользователя'));
+      })
+    );
+  }
+
+  static async changeUserData(payload) {
+    return this.fetchWithRefresh(() =>
+      this.patch('/auth/user', payload, {
+        headers: {
+          ...this.jsonHeaders(),
+          ...this.authHeaders(),
+        },
+      }).then((response) => {
+        if (response.success) {
+          return response.user;
+        }
+        return Promise.reject(new Error('Ошибка изменения данных пользователя'));
+      })
+    );
+  }
+
+  static async userLogout() {
+    if (!getRefreshToken()) {
+      clearTokens();
+      return Promise.resolve();
+    }
+
+    return this.post(
+      '/auth/logout',
+      { token: getRefreshToken() },
+      { headers: this.jsonHeaders() }
+    ).then((response) => {
+      if (response.success) {
+        clearTokens();
+        return response.user;
+      }
+      return Promise.reject(new Error('ошибка выхода'));
+    });
+  }
+
+  static async LostPasswordStepOne(payload) {
+    return this.post('/password-reset', JSON.stringify({ payload }), {
+      headers: this.jsonHeaders(),
+    }).then((response) => {
+      if (response.success) {
+        return true;
+      }
+      return Promise.reject(
+        new Error('Ошибка восстановления пароля: имейл юзера не найден')
+      );
+    });
+  }
+  static async LostPasswordStepTwo(payload) {
+    return this.post('/password-reset/reset', JSON.stringify({ payload }), {
+      headers: this.jsonHeaders(),
+    }).then((response) => {
+      if (response.success) {
+        return true;
+      }
+      return Promise.reject(
+        new Error('Ошибка восстановления пароля: какая-то ошибка на втором шаге')
+      );
+    });
   }
 }
 

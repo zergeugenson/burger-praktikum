@@ -1,10 +1,10 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useMemo, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.js';
 import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
-import { MODAL_TYPES, openModal } from '@services/modal/modal-slice.js';
 import { ieGroups } from '@utils/constants.js';
 
 import { IngredientsItem } from './ingredients-item/ingredients-item';
@@ -12,9 +12,9 @@ import { IngredientsItem } from './ingredients-item/ingredients-item';
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
-  const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const counts = useSelector(selectCounts);
 
   const [activeTab, setActiveTab] = useState('bun');
@@ -75,13 +75,9 @@ export const BurgerIngredients = () => {
   }, [ieGroups]);
 
   const showIngredient = (item) => {
-    dispatch(
-      openModal({
-        type: MODAL_TYPES.INGREDIENT_DETAILS,
-        data: item,
-        title: 'Детали ингредиента',
-      })
-    );
+    void navigate(`/ingredients/${item._id}`, {
+      state: { background: location },
+    });
   };
 
   return (

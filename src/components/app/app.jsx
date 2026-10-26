@@ -1,62 +1,98 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
-import { closeModal } from '@/services/modal/modal-slice.js';
+import { Home } from '@/pages/home/home.jsx';
+import { IngredientModal } from '@/pages/ingredient/ingredient-modal.jsx';
+import { IngredientPage } from '@/pages/ingredient/ingredient-page.jsx';
+import { Login } from '@/pages/login/login.jsx';
+import { ProfileOrders } from '@/pages/profile/profile-orders.jsx';
+import { ProfileView } from '@/pages/profile/profile-view.jsx';
+import { Profile } from '@/pages/profile/profile.jsx';
+import { ForgotPassword } from '@/pages/register/forgot-password.jsx';
+import { Register } from '@/pages/register/register.jsx';
+import { ResetPassword } from '@/pages/register/reset-password.jsx';
 import { AppHeader } from '@components/app-header/app-header';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
+import { ProtectedRoute } from '@components/protected-route/protected-route';
+import { getUserData } from '@services/auth/auth-actions';
 import { getIngredients } from '@services/ingredients/ingredients-actions.js';
-import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice.js';
-import {
-  clearOrder,
-  selectOrderIsLoading,
-  selectOrderNumber,
-} from '@services/order/order-slice.js';
-
-import { OrderDetails } from '../burger-constructor/order-details/order-details.jsx';
-import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
-import { Modal } from '../modal/modal.jsx';
+import { ROUTES } from '@utils/constants';
 
 import styles from './app.module.css';
 
 export const App = () => {
-  const isOrderLoading = useSelector(selectOrderIsLoading);
-  const isIngredientLoading = useSelector(selectIngredientsIsLoading);
-  const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  const isOpen = modalState.type !== null;
-  const isLoading = isOrderLoading || isIngredientLoading;
-  const orderNumber = useSelector(selectOrderNumber);
+  const location = useLocation();
+  const background = location.state?.background;
 
   useEffect(() => {
+    dispatch(getUserData());
     dispatch(getIngredients());
-  }, []);
-
-  const handleCloseModal = () => {
-    dispatch(closeModal());
-    if (modalState.type === 'orderDetails') {
-      dispatch(clearOrder());
-    }
-  };
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
-      <main className={`${styles.main} pl-5 pr-5`}>
-        <BurgerIngredients />
-        <BurgerConstructor />
-      </main>
-      {isOpen && !isLoading && (
-        <Modal close={() => handleCloseModal()} title={modalState.title}>
-          {modalState.type === 'orderDetails' && <OrderDetails OrderId={orderNumber} />}
-          {modalState.type === 'ingredientDetails' && (
-            <IngredientDetails ingredient={modalState.data} />
-          )}
-        </Modal>
+      {(location?.pathname === '/' || location?.pathname.includes('ingredients')) && (
+        <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+          Соберите бургер
+        </h1>
       )}
+      <main className={`${styles.main} pl-5 pr-5`}>
+        <Routes location={background ?? location}>
+          <Route element={<Home />} path={ROUTES.HOME} />
+          <Route element={<IngredientPage />} path={ROUTES.INGREDIENT} />
+          <Route
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <Login />
+              </ProtectedRoute>
+            }
+            path={ROUTES.LOGIN}
+          />
+          <Route
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <Register />
+              </ProtectedRoute>
+            }
+            path={ROUTES.REGISTER}
+          />
+          <Route
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <ForgotPassword />
+              </ProtectedRoute>
+            }
+            path={ROUTES.FORGOT_PASSWORD}
+          />
+          <Route
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <ResetPassword />
+              </ProtectedRoute>
+            }
+            path={ROUTES.RESET_PASSWORD}
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+            path={ROUTES.PROFILE}
+          >
+            <Route index element={<ProfileView />} />
+            <Route path="orders" element={<ProfileOrders />} />
+          </Route>
+        </Routes>
+        {background && (
+          <Routes>
+            {/*  поп-ап ингридиента вызывается только здесь. IngredientModal есть обертка над модал, и больше он нигде не вызывается, см. импорты */}
+            <Route element={<IngredientModal />} path={ROUTES.INGREDIENT} />
+          </Routes>
+        )}
+      </main>
     </div>
   );
 };

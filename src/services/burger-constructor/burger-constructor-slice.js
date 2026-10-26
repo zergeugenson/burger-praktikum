@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+import { createOrder } from '@services/order/order-actions.js';
 const generateUid = () => crypto.randomUUID();
 
 const initialState = {
@@ -43,6 +44,9 @@ export const burgerConstructorSlice = createSlice({
 
       state.ingredients = newIngredients;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(createOrder.fulfilled, () => initialState);
   },
 });
 

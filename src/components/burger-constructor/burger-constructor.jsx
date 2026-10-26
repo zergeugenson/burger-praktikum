@@ -7,17 +7,19 @@ import cn from 'clsx';
 import { useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { openModal, MODAL_TYPES } from '@/services/modal/modal-slice.js';
+import { selectUser } from '@services/auth/auth-slice.js';
 import {
   selectOrder,
   selectTotalPrice,
   addItem,
   removeItem,
   moveIngredient,
-  clearConstructor,
 } from '@services/burger-constructor/burger-constructor-slice.js';
 import { createOrder } from '@services/order/order-actions.js';
+import { ROUTES } from '@utils/constants';
 import { DND_TYPES } from '@utils/dnd';
 
 import { ConstructorElements } from './constructor-elements/constructor-elements.jsx';
@@ -28,6 +30,9 @@ export const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const order = useSelector(selectOrder);
   const totalPrice = useSelector(selectTotalPrice);
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+
   const handleAdd = (item) => {
     dispatch(addItem(item));
   };
@@ -56,6 +61,11 @@ export const BurgerConstructor = () => {
 
   const makeOrder = useCallback(() => {
     if (!order.bun) return null;
+    if (!user) {
+      navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
+      return;
+    }
+
     dispatch(
       createOrder([
         order.bun._id,
@@ -69,8 +79,6 @@ export const BurgerConstructor = () => {
         type: MODAL_TYPES.ORDER_DETAILS,
       })
     );
-
-    dispatch(clearConstructor());
   }, [dispatch, order]);
 
   let borderColor = '#333';
@@ -80,18 +88,7 @@ export const BurgerConstructor = () => {
   return (
     <section className={styles.burgerConstructor}>
       {order.length}
-      <div
-        className={styles.container}
-        ref={dropRef}
-        style={{
-          minHeight: '150px',
-          padding: '20px',
-          border: '2px dashed gray',
-          borderRadius: '8px',
-          borderColor,
-          transition: 'border-color 0.2s ease',
-        }}
-      >
+      <div className={styles.container} ref={dropRef} style={{ borderColor }}>
         <div className={styles.bun}>
           <ConstructorElement
             extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}

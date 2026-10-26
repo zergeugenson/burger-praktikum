@@ -2,10 +2,10 @@ import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import styles from './order-details.module.css';
 
-export const OrderDetails = (props) => {
+export const OrderDetails = ({ orderId }) => {
   return (
     <div className={styles.container}>
-      <p className={`${styles.id} text_type_digits-large text`}>{props.OrderId}</p>
+      <p className={`${styles.id} text_type_digits-large text`}>{orderId}</p>
       <p className="text_type_main-medium text mt-8">идентификатор заказа</p>
       <div className={styles.checkMark}>
         <CheckMarkIcon type="primary" />
