@@ -2,19 +2,28 @@ import {
   ConstructorElement,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useRef } from 'react';
+import { useRef, ReactNode } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import {type TConstructorIngredient} from '@services/burger-constructor/burger-constructor-slice';
 
-import { DND_TYPES } from '@utils/dnd';
+import { DND_TYPES } from '@utils/dnd.js';
 
-import styles from './constructor-elements.module.css';
+type TConstructorElementsProps = {
+  ingredient: TConstructorIngredient;
+  index: number;
+  moveIngredient: (dragIndex: number, hoverIndex: number) => void;
+  removeItem: (uid: string) => void;
+  styles: Record<string, string>;
+};
 
 export const ConstructorElements = ({
-  ingredient,
-  index,
-  moveIngredient,
-  removeItem,
-}) => {
+    ingredient,
+    index,
+    moveIngredient,
+    removeItem,
+    styles,
+  }: TConstructorElementsProps): ReactNode => {
+
   const dragRef = useRef(null);
 
   const [, drop] = useDrop({
@@ -58,9 +67,9 @@ export const ConstructorElements = ({
         key={ingredient.uid}
         index={index}
         extraClass={styles.elem}
-        price={ingredient?.price}
-        text={ingredient?.name}
-        thumbnail={ingredient?.image}
+        price={ingredient.price}
+        text={ingredient.name}
+        thumbnail={ingredient.image}
         handleClose={() => removeItem(ingredient.uid)}
       />
     </li>

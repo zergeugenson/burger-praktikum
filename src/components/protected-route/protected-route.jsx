@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { selectIsAuthChecked, selectUser } from '@services/auth/auth-slice.js';
+import { selectIsAuthChecked, selectUser } from '@services/auth/auth-slice';
 
 export const ProtectedRoute = ({ children, onlyUnAuth = false }) => {
   const isAuthChecked = useSelector(selectIsAuthChecked);

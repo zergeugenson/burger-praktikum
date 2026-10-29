@@ -5,8 +5,8 @@ import { BurgerConstructor } from '@components/burger-constructor/burger-constru
 import { OrderDetails } from '@components/burger-constructor/order-details/order-details.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 import { Modal } from '@components/modal/modal.jsx';
-import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice.js';
-import { closeModal } from '@services/modal/modal-slice.js';
+import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice';
+import { closeModal } from '@services/modal/modal-slice';
 import {
   clearOrder,
   selectOrderIsLoading,

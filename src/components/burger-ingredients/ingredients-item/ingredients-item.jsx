@@ -1,7 +1,7 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
 
-import { DND_TYPES } from '@utils/dnd';
+import { DND_TYPES } from '@utils/dnd.js';
 
 import styles from './ingredients-item.module.css';
 

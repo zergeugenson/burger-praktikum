@@ -1,0 +1,155 @@
+import { useCallback, type ReactNode } from 'react';
+import {
+  Button,
+  ConstructorElement,
+  CurrencyIcon,
+} from '@krgaa/react-developer-burger-ui-components';
+import cn from 'clsx';
+import { useDrop } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
+
+import { openModal, MODAL_TYPES } from '@services/modal/modal-slice';
+import { selectUser } from '@services/auth/auth-slice';
+import {
+  selectOrder,
+  selectTotalPrice,
+  addItem,
+  removeItem,
+  moveIngredient,
+} from '@services/burger-constructor/burger-constructor-slice';
+import { createOrder } from '@services/order/order-actions';
+import { ROUTES } from '@utils/constants';
+import { DND_TYPES } from '@utils/dnd';
+import type { TIngredient } from '@/utils/api';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+
+import { ConstructorElements } from './constructor-elements/constructor-elements';
+
+import type { TBurgerConstructorState } from '@services/burger-constructor/burger-constructor-slice';
+
+import styles from './burger-constructor.module.css';
+
+type TDragItem = {
+  ingredient: TIngredient;
+  type: string;
+};
+
+type TCollectedProps = {
+  isOver: boolean;
+  canDrop: boolean;
+};
+
+export const BurgerConstructor = (): ReactNode => {
+  const dispatch = useAppDispatch();
+  const order = useAppSelector<TBurgerConstructorState>(selectOrder);
+  const totalPrice = useAppSelector(selectTotalPrice);
+  const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
+
+  const handleAdd = (item: TIngredient): void => {
+    dispatch(addItem(item));
+  };
+
+  const handleRemove = (uid: string): void => {
+    dispatch(removeItem(uid));
+  };
+
+  const handleMove = (dragIndex: number, hoverIndex: number): void => {
+    dispatch(moveIngredient({ dragIndex, hoverIndex }));
+  };
+
+  const [{ isOver, canDrop }, dropRef] = useDrop<TDragItem, void, TCollectedProps>(
+      () => ({
+        accept: [DND_TYPES.BUN, DND_TYPES.ELEMENTS],
+        drop: (item) => {
+          handleAdd(item.ingredient);
+        },
+        collect: (monitor) => ({
+          isOver: !!monitor.isOver(),
+          canDrop: !!monitor.canDrop(),
+        }),
+      }),
+      []
+  );
+
+  const makeOrder = useCallback((): void => {
+    if (!order.bun) return;
+    if (!user) {
+      navigate(ROUTES.LOGIN, { state: { from: ROUTES.HOME } });
+      return;
+    }
+
+    dispatch(
+        createOrder([
+          order.bun._id,
+          ...order.ingredients.map((ingredient) => ingredient._id),
+          order.bun._id,
+        ])
+    );
+
+    dispatch(
+        openModal({
+          type: MODAL_TYPES.ORDER_DETAILS,
+        })
+    );
+  }, [dispatch, order, user, navigate]);
+
+  let borderColor = '#333';
+  if (canDrop && isOver) borderColor = 'blue';
+  else if (canDrop) borderColor = '#777';
+
+  return (
+      <section className={styles.burgerConstructor}>
+        <div className={styles.container} ref={dropRef} style={{ borderColor }}>
+          <div className={styles.bun}>
+            <ConstructorElement
+                extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
+                isLocked
+                price={order?.bun?.price ?? 0}
+                text={order?.bun?.name ? `${order.bun.name} (верх)` : ''}
+                thumbnail={order?.bun?.image ?? null}
+                type="top"
+            />
+          </div>
+
+          <div className={`${styles.ingredients} custom-scroll`}>
+            {order.ingredients.map((ingredient, index) => (
+                <ConstructorElements
+                    key={ingredient.uid}
+                    ingredient={ingredient}
+                    index={index}
+                    moveIngredient={handleMove}
+                    removeItem={handleRemove}
+                    styles={styles}
+                />
+            ))}
+          </div>
+
+          <div className={styles.bun}>
+            <ConstructorElement
+                extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
+                isLocked
+                price={order?.bun?.price ?? 0}
+                text={order?.bun?.name ? `${order.bun.name} (низ)` : ''}
+                thumbnail={order?.bun?.image ?? null}
+                type="bottom"
+            />
+          </div>
+        </div>
+        <div className={styles.footer}>
+          <div className={styles.totalPrice}>
+            <span className="text_type_digits-medium text">{totalPrice}</span>
+            <CurrencyIcon type="primary" />
+          </div>
+          <Button
+              htmlType="button"
+              size="large"
+              type="primary"
+              onClick={makeOrder}
+          >
+            Оформить заказ
+          </Button>
+        </div>
+      </section>
+  );
+};

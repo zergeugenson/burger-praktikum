@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '@hooks/useForm.js';
-import { changeUserData } from '@services/auth/auth-actions.js';
-import { selectUser, selectIsLoading, selectError } from '@services/auth/auth-slice.js';
+import { changeUserData } from '@services/auth/auth-actions';
+import { selectUser, selectIsLoading, selectError } from '@services/auth/auth-slice';
 
 import styles from './profile-view.module.css';
 

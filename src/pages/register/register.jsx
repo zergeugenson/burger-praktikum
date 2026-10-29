@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { AppHeaderSmall } from '@components/app-header/app-header-small.tsx';
 import { useForm } from '@hooks/useForm';
 import { userRegister } from '@services/auth/auth-actions';
-import { selectError } from '@services/auth/auth-slice.js';
+import { selectError } from '@services/auth/auth-slice';
 import { ROUTES } from '@utils/constants';
 
 import styles from '../login/login.module.css';

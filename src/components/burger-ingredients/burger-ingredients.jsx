@@ -3,9 +3,9 @@ import { useState, useMemo, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.js';
-import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
-import { ieGroups } from '@utils/constants.ts';
+import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.ts';
+import { selectIngredients } from '@services/ingredients/ingredients-slice';
+import { ingredientsGroups } from '@utils/constants.ts';
 
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 
@@ -32,7 +32,7 @@ export const BurgerIngredients = () => {
       return acc;
     }, {});
 
-    return ieGroups.map((item) => ({
+    return ingredientsGroups.map((item) => ({
       type: item.type,
       label: item.label,
       items: grIngr[item.type] || [],
@@ -61,7 +61,7 @@ export const BurgerIngredients = () => {
     let closestType = 'bun';
     let closestDistance = Number.POSITIVE_INFINITY;
 
-    for (const group of ieGroups) {
+    for (const group of ingredientsGroups) {
       const title = groupRefs.current[group.type];
       if (!title) continue;
 
@@ -72,7 +72,7 @@ export const BurgerIngredients = () => {
       }
     }
     setActiveTab(closestType);
-  }, [ieGroups]);
+  }, [ingredientsGroups]);
 
   const showIngredient = (item) => {
     void navigate(`/ingredients/${item._id}`, {
@@ -83,7 +83,7 @@ export const BurgerIngredients = () => {
   return (
     <div className={styles.burgerIngredients}>
       <nav className={styles.tabs}>
-        {ieGroups.map(({ label, type }) => (
+        {ingredientsGroups.map(({ label, type }) => (
           <Tab key={type} active={activeTab === type} onClick={clickTab} value={type}>
             {label}
           </Tab>
