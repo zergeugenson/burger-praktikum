@@ -2,7 +2,7 @@ import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-import { MODALS_ROOT } from '@utils/constants';
+import { MODALS_ROOT } from '@utils/constants.js';
 
 import { ModalOverlay } from '../modal-overlay/modal-overlay.jsx';
 

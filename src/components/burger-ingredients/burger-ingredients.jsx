@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { selectCounts } from '@services/burger-constructor/burger-constructor-slice.js';
 import { selectIngredients } from '@services/ingredients/ingredients-slice.js';
-import { ieGroups } from '@utils/constants.js';
+import { ieGroups } from '@utils/constants.ts';
 
 import { IngredientsItem } from './ingredients-item/ingredients-item';
 

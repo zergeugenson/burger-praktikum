@@ -8,7 +8,7 @@ import {
 } from '@/utils/common.js';
 
 import { BaseApiClient } from './base-api-client';
-import { BASE_API_URL } from './constants';
+import { BASE_API_URL } from './constants.js';
 
 class BurgerApi extends BaseApiClient {
   static api = axios.create({

@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-import { AppHeaderSmall } from '@components/app-header/app-header-small.jsx';
+import { AppHeaderSmall } from '@components/app-header/app-header-small.tsx';
 import { useForm } from '@hooks/useForm';
 import { LostPasswordStepTwo } from '@services/auth/auth-actions';
 import { selectError, selectIsLoading } from '@services/auth/auth-slice.js';

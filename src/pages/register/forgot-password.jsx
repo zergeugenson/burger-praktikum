@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { AppHeaderSmall } from '@components/app-header/app-header-small';
+import { AppHeaderSmall } from '@components/app-header/app-header-small.js';
 import { useForm } from '@hooks/useForm';
 import { LostPasswordStepOne } from '@services/auth/auth-actions';
 import { selectError, selectIsLoading } from '@services/auth/auth-slice';
