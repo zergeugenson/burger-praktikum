@@ -1,4 +1,43 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    /* Модули */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*":               ["./src/*"],
+      "@components/*":      ["./src/components/*"],
+      "@hooks/*":          ["./src/hooks/*"],
+      "@services/*":       ["./src/services/*"],
+      "@utils/*":          ["./src/utils/*"]
+    },
+
+    /* Типы окружения */
+    "types": ["node"],
+    "allowJs": true,        // 2DO: убрать разрешение .js
+    "checkJs": false        // 2DO: убрать не тайп-чекать .js
+  },
+
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

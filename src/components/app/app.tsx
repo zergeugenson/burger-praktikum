@@ -1,29 +1,32 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Route, Routes, useLocation } from 'react-router-dom';
-
-import { Home } from '@/pages/home/home.jsx';
-import { IngredientModal } from '@/pages/ingredient/ingredient-modal.jsx';
-import { IngredientPage } from '@/pages/ingredient/ingredient-page.jsx';
-import { Login } from '@/pages/login/login.jsx';
-import { ProfileOrders } from '@/pages/profile/profile-orders.jsx';
-import { ProfileView } from '@/pages/profile/profile-view.jsx';
-import { Profile } from '@/pages/profile/profile.jsx';
-import { ForgotPassword } from '@/pages/register/forgot-password.jsx';
-import { Register } from '@/pages/register/register.jsx';
-import { ResetPassword } from '@/pages/register/reset-password.jsx';
+import { useEffect, type ReactNode } from 'react';
+import { useAppDispatch } from '@hooks/hooks';
+import { Route, Routes, useLocation, type Location } from 'react-router-dom';
+import { Home } from '@/pages/home/home';
+import { IngredientModal } from '@/pages/ingredient/ingredient-modal';
+import { IngredientPage } from '@/pages/ingredient/ingredient-page';
+import { Login } from '@/pages/login/login';
+import { ProfileOrders } from '@/pages/profile/profile-orders';
+import { ProfileView } from '@/pages/profile/profile-view';
+import { Profile } from '@/pages/profile/profile';
+import { ForgotPassword } from '@/pages/register/forgot-password';
+import { Register } from '@/pages/register/register';
+import { ResetPassword } from '@/pages/register/reset-password';
 import { AppHeader } from '@components/app-header/app-header';
 import { ProtectedRoute } from '@components/protected-route/protected-route';
 import { getUserData } from '@services/auth/auth-actions';
-import { getIngredients } from '@services/ingredients/ingredients-actions.js';
+import { getIngredients } from '@services/ingredients/ingredients-actions';
 import { ROUTES } from '@utils/constants';
 
 import styles from './app.module.css';
 
-export const App = () => {
-  const dispatch = useDispatch();
+type TLocationState = {
+  background?: Location;
+};
+
+export const App = (): ReactNode => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
-  const background = location.state?.background;
+  const background = (location.state as TLocationState | null)?.background;
 
   useEffect(() => {
     dispatch(getUserData());
@@ -88,7 +91,6 @@ export const App = () => {
         </Routes>
         {background && (
           <Routes>
-            {/*  поп-ап ингридиента вызывается только здесь. IngredientModal есть обертка над модал, и больше он нигде не вызывается, см. импорты */}
             <Route element={<IngredientModal />} path={ROUTES.INGREDIENT} />
           </Routes>
         )}
