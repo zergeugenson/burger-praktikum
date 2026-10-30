@@ -1,7 +1,6 @@
-import { createSlice, createSelector, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { createOrder } from '@services/order/order-actions';
-import type { RootState } from '@services/store';
 import type { TIngredient } from '@/utils/api';
 
 const generateUid = (): string => crypto.randomUUID();
@@ -61,38 +60,33 @@ export const burgerConstructorSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createOrder.fulfilled, () => initialState);
   },
-});
-
-const selectSelf = (state: RootState): TBurgerConstructorState =>
-  state.burgerConstructor;
-
-export const selectOrder = createSelector(
-  selectSelf,
-  (state): TBurgerConstructorState => state
-);
-
-export const selectCounts = createSelector(selectSelf, (order) => {
-  const newCounts: Record<string, number> = {};
-  if (order.bun) {
-    newCounts[order.bun._id] = 1;
-  }
-  order.ingredients.forEach((item) => {
-    newCounts[item._id] = (newCounts[item._id] || 0) + 1;
-  });
-  return newCounts;
-});
-
-export const selectTotalPrice = createSelector(selectSelf, (order) => {
-  let total = 0;
-  if (order.bun) {
-    total += order.bun.price;
-  }
-  // не позволю удваивать стоимость булки для трудящихся, но код написал:
-  // order.ingredients.forEach((item) => {
-  //   total += item.type === 'bun' ? item.price * 2 : item.price;
-  // });
-  return total;
+  selectors: {
+    selectOrder: (state) => state,
+    selectCounts: (state) => {
+      const newCounts: Record<string, number> = {};
+      if (state.bun) {
+        newCounts[state.bun._id] = 1;
+      }
+      state.ingredients.forEach((item) => {
+        newCounts[item._id] = (newCounts[item._id] || 0) + 1;
+      });
+      return newCounts;
+    },
+    selectTotalPrice: (state) => {
+      let total = 0;
+      if (state.bun) {
+        total += state.bun.price;
+      }
+      // state.ingredients.forEach((item) => {
+      //   total += item.type === 'bun' ? item.price * 2 : item.price;
+      // });
+      return total;
+    },
+  },
 });
 
 export const { addItem, removeItem, moveIngredient, clearConstructor } =
   burgerConstructorSlice.actions;
+
+export const { selectOrder, selectCounts, selectTotalPrice } =
+  burgerConstructorSlice.selectors;

@@ -1,4 +1,4 @@
-import { useCallback, type ReactNode } from 'react';
+import { useCallback, type ReactNode, type Ref } from 'react';
 import {
   Button,
   ConstructorElement,
@@ -22,10 +22,7 @@ import { ROUTES } from '@utils/constants';
 import { DND_TYPES } from '@utils/dnd';
 import type { TIngredient } from '@/utils/api';
 import { useAppDispatch, useAppSelector } from '@hooks/hooks';
-
 import { ConstructorElements } from './constructor-elements/constructor-elements';
-
-import type { TBurgerConstructorState } from '@services/burger-constructor/burger-constructor-slice';
 
 import styles from './burger-constructor.module.css';
 
@@ -41,7 +38,7 @@ type TCollectedProps = {
 
 export const BurgerConstructor = (): ReactNode => {
   const dispatch = useAppDispatch();
-  const order = useAppSelector<TBurgerConstructorState>(selectOrder);
+  const order = useAppSelector(selectOrder);
   const totalPrice = useAppSelector(selectTotalPrice);
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
@@ -100,14 +97,18 @@ export const BurgerConstructor = (): ReactNode => {
 
   return (
     <section className={styles.burgerConstructor}>
-      <div className={styles.container} ref={dropRef} style={{ borderColor }}>
+      <div
+        className={styles.container}
+        ref={dropRef as unknown as Ref<HTMLDivElement>}
+        style={{ borderColor }}
+      >
         <div className={styles.bun}>
           <ConstructorElement
             extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
             isLocked
             price={order?.bun?.price ?? 0}
             text={order?.bun?.name ? `${order.bun.name} (верх)` : ''}
-            thumbnail={order?.bun?.image ?? null}
+            thumbnail={order?.bun?.image ?? ''}
             type="top"
           />
         </div>
@@ -131,7 +132,7 @@ export const BurgerConstructor = (): ReactNode => {
             isLocked
             price={order?.bun?.price ?? 0}
             text={order?.bun?.name ? `${order.bun.name} (низ)` : ''}
-            thumbnail={order?.bun?.image ?? null}
+            thumbnail={order?.bun?.image ?? ''}
             type="bottom"
           />
         </div>

@@ -16,6 +16,15 @@ type TConstructorElementsProps = {
   styles: Record<string, string>;
 };
 
+type TConstructorDragItem = {
+  id: string;
+  index: number;
+};
+
+type TDragCollected = {
+  isDragging: boolean;
+};
+
 export const ConstructorElements = ({
   ingredient,
   index,
@@ -23,9 +32,9 @@ export const ConstructorElements = ({
   removeItem,
   styles,
 }: TConstructorElementsProps): ReactNode => {
-  const dragRef = useRef(null);
+  const dragRef = useRef<HTMLLIElement | null>(null);
 
-  const [, drop] = useDrop({
+  const [, drop] = useDrop<TConstructorDragItem, void, unknown>({
     accept: DND_TYPES.CONSTRUCTOR_ITEM,
     hover: (item, monitor) => {
       if (!dragRef.current) return;
@@ -35,20 +44,21 @@ export const ConstructorElements = ({
 
       if (dragIndex === hoverIndex) return;
 
-      const hoverBoundingRect = dragRef.current?.getBoundingClientRect();
+      const hoverBoundingRect = dragRef.current.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
       moveIngredient(dragIndex, hoverIndex);
       item.index = hoverIndex;
-      return false;
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag] = useDrag<TConstructorDragItem, void, TDragCollected>({
     type: DND_TYPES.CONSTRUCTOR_ITEM,
     item: () => ({ id: ingredient.uid, index }),
     collect: (monitor) => ({
@@ -63,8 +73,6 @@ export const ConstructorElements = ({
     <li className={styles.tops} ref={dragRef} style={{ opacity }}>
       <DragIcon type="primary" />
       <ConstructorElement
-        key={ingredient.uid}
-        index={index}
         extraClass={styles.elem}
         price={ingredient.price}
         text={ingredient.name}

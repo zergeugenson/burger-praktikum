@@ -6,7 +6,6 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { NavLink, Link } from 'react-router-dom';
 import { ROUTES } from '@utils/constants';
-
 import type { ReactNode } from 'react';
 
 import styles from './app-header.module.css';
