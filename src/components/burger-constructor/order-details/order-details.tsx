@@ -1,8 +1,13 @@
+import { type ReactNode } from 'react';
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import styles from './order-details.module.css';
 
-export const OrderDetails = ({ orderId }) => {
+type TOrderDetailsProps = {
+  orderId: number | null;
+};
+
+export const OrderDetails = ({ orderId }: TOrderDetailsProps): ReactNode => {
   return (
     <div className={styles.container}>
       <p className={`${styles.id} text_type_digits-large text`}>{orderId}</p>

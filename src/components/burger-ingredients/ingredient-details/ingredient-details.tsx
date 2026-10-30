@@ -1,6 +1,12 @@
 import styles from './ingredient-details.module.css';
+import type { TIngredient } from '@/utils/api';
+import { type ReactNode } from 'react';
 
-export const IngredientDetails = ({ ingredient }) => {
+type TIngredientDetails = {
+  ingredient: TIngredient | null;
+}
+
+export const IngredientDetails = ({ ingredient }:TIngredientDetails): ReactNode => {
   if (!ingredient) return null;
 
   const consistency = [

@@ -1,4 +1,5 @@
 import axios, { type CreateAxiosDefaults, type RawAxiosRequestHeaders } from 'axios';
+import { type TIngredientType } from '@utils/constants';
 import {
   setTokens,
   clearTokens,
@@ -17,7 +18,7 @@ export type TUser = {
 export type TIngredient = {
   _id: string;
   name: string;
-  type: 'bun' | 'sauce' | 'main';
+  type: TIngredientType;
   proteins: number;
   fat: number;
   carbohydrates: number;
@@ -99,10 +100,6 @@ export type TChangeUserDataPayload = Partial<{
   email: string;
   password: string;
   name: string;
-}>;
-
-export type TLostPasswordStepOnePayload = Partial<{
-  email: string;
 }>;
 
 export type TLostPasswordStepTwoPayload = {
@@ -256,11 +253,11 @@ class BurgerApi extends BaseApiClient {
   }
 
   static async LostPasswordStepOne(
-      payload: TLostPasswordStepOnePayload
+      payload: string
   ): Promise<boolean> {
     return this.post<TPasswordResetResponse>(
         '/password-reset',
-        JSON.stringify({ payload }),
+        JSON.stringify({ email: payload }),
         { headers: this.jsonHeaders() }
     ).then((response) => {
       if (response.success) {

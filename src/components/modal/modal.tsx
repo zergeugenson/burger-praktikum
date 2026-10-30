@@ -1,16 +1,22 @@
 import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import { MODALS_ROOT } from '@utils/constants.js';
 
-import { ModalOverlay } from '../modal-overlay/modal-overlay.jsx';
+import { ModalOverlay } from '../modal-overlay/modal-overlay';
 
 import styles from './modal.module.css';
 
-export const Modal = ({ children, close, title }) => {
+type TModalProps = {
+  children: ReactNode;
+  close: () => void;
+  title?: string | null;
+};
+
+export const Modal = ({ children, close, title }: TModalProps): ReactNode => {
   useEffect(() => {
-    const escapeClose = (event) => {
+    const escapeClose = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         close();
       }

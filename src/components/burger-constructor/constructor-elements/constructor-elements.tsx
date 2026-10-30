@@ -2,11 +2,11 @@ import {
   ConstructorElement,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useRef, ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import {type TConstructorIngredient} from '@services/burger-constructor/burger-constructor-slice';
 
-import { DND_TYPES } from '@utils/dnd.js';
+import { DND_TYPES } from '@utils/dnd';
 
 type TConstructorElementsProps = {
   ingredient: TConstructorIngredient;

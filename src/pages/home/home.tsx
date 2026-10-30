@@ -1,10 +1,10 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { OrderDetails } from '@components/burger-constructor/order-details/order-details.jsx';
+import { OrderDetails } from '@components/burger-constructor/order-details/order-details';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { Modal } from '@components/modal/modal.jsx';
+import { Modal } from '@components/modal/modal';
 import { selectIngredientsIsLoading } from '@services/ingredients/ingredients-slice';
 import { closeModal } from '@services/modal/modal-slice';
 import {
@@ -12,21 +12,22 @@ import {
   selectOrderIsLoading,
   selectOrderNumber,
   selectOrderError,
-} from '@services/order/order-slice.js';
-
+} from '@services/order/order-slice';
+import type { ReactNode } from 'react';
 import styles from './home.module.css';
 
-export const Home = () => {
-  const isOrderLoading = useSelector(selectOrderIsLoading);
-  const orderError = useSelector(selectOrderError);
-  const isIngredientLoading = useSelector(selectIngredientsIsLoading);
-  const modalState = useSelector((state) => state.modal);
-  const dispatch = useDispatch();
+
+export const Home = ():ReactNode => {
+  const isOrderLoading = useAppSelector(selectOrderIsLoading);
+  const orderError = useAppSelector(selectOrderError);
+  const isIngredientLoading = useAppSelector(selectIngredientsIsLoading);
+  const modalState = useAppSelector((state) => state.modal);
+  const dispatch = useAppDispatch();
   const isOpen = modalState.type !== null;
   const isLoading = isOrderLoading || isIngredientLoading;
-  const orderNumber = useSelector(selectOrderNumber);
+  const orderNumber = useAppSelector(selectOrderNumber);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (): void => {
     dispatch(closeModal());
     if (modalState.type === 'orderDetails') {
       dispatch(clearOrder());

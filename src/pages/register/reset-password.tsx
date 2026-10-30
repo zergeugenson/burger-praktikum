@@ -3,11 +3,12 @@ import {
   Input,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, type FormEvent, type ReactNode } from 'react'
+
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-import { AppHeaderSmall } from '@components/app-header/app-header-small.tsx';
+import { AppHeaderSmall } from '@components/app-header/app-header-small';
 import { useForm } from '@hooks/useForm';
 import { LostPasswordStepTwo } from '@services/auth/auth-actions';
 import { selectError, selectIsLoading } from '@services/auth/auth-slice';
@@ -20,15 +21,15 @@ const formFields = {
   password: '',
 };
 
-export const ResetPassword = () => {
-  const dispatch = useDispatch();
+export const ResetPassword = ():ReactNode => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useAppSelector(selectIsLoading);
+  const error = useAppSelector(selectError);
   const { values, handleChange } = useForm(formFields);
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
 
       void dispatch(LostPasswordStepTwo(values))

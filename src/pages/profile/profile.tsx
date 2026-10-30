@@ -1,21 +1,21 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@hooks/hooks';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-
+import type { ReactNode } from 'react';
 import { userLogout } from '@services/auth/auth-actions';
 import { ROUTES } from '@utils/constants';
 
 import styles from './profile.module.css';
 
-export const Profile = () => {
-  const dispatch = useDispatch();
+export const Profile = (): ReactNode => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const linkClass = ({ isActive }) =>
+  const linkClass = ({ isActive }: {isActive: boolean}) =>
     `${styles.link} text text_type_main-medium pt-4 pb-4 ${
       isActive ? styles.isActive : ''
     }`;
 
-  const doLogout = async () => {
+  const doLogout = async (): Promise<void> => {
     try {
       await dispatch(userLogout()).unwrap();
       navigate(ROUTES.LOGIN);

@@ -3,11 +3,11 @@ import {
   EmailInput,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, type FormEvent, type ReactNode } from 'react'
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { Link } from 'react-router-dom';
 
-import { AppHeaderSmall } from '@components/app-header/app-header-small.tsx';
+import { AppHeaderSmall } from '@components/app-header/app-header-small';
 import { useForm } from '@hooks/useForm';
 import { userLogin } from '@services/auth/auth-actions';
 import { selectError } from '@services/auth/auth-slice';
@@ -20,12 +20,12 @@ const formFields = {
   password: '',
 };
 
-export const Login = () => {
-  const dispatch = useDispatch();
-  const error = useSelector(selectError);
+export const Login = (): ReactNode => {
+  const dispatch = useAppDispatch();
+  const error = useAppSelector(selectError);
   const { values, handleChange } = useForm(formFields);
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
       void dispatch(userLogin(values));
     },
@@ -56,13 +56,13 @@ export const Login = () => {
         <p className="text text_type_main-default text_color_error mt-6">{error}</p>
       )}
       <div className={styles.linkContainer}>
-        <div className={'flex text text_type_main-default text_color_inactive m-4'}>
+        <div className='flex text text_type_main-default text_color_inactive m-4'>
           Вы — новый пользователь? &nbsp;
           <Link className={styles.link} to={ROUTES.REGISTER}>
             Зарегистрироваться
           </Link>
         </div>
-        <div className={'text text_type_main-default text_color_inactive'}>
+        <div className='text text_type_main-default text_color_inactive'>
           Забыли пароль? &nbsp;
           <Link className={styles.link} to={ROUTES.FORGOT_PASSWORD}>
             Восстановить пароль

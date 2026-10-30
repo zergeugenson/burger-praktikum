@@ -1,22 +1,28 @@
 import { Input, Button } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, type ReactNode, type FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 
-import { useForm } from '@hooks/useForm.js';
+import { useForm } from '@hooks/useForm';
 import { changeUserData } from '@services/auth/auth-actions';
 import { selectUser, selectIsLoading, selectError } from '@services/auth/auth-slice';
 
 import styles from './profile-view.module.css';
 
-export const ProfileView = () => {
-  const user = useSelector(selectUser);
+import type { TUser } from '@/utils/api';
+
+export const ProfileView = (): ReactNode => {
+  const user = useAppSelector(selectUser);
   return <ProfileForm key={user?.email ?? 'no-user'} user={user} />;
 };
 
-const ProfileForm = ({ user }) => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+type TProfileFormProps = {
+  user: TUser | null;
+};
+
+const ProfileForm = ({ user }: TProfileFormProps): ReactNode => {
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectIsLoading);
+  const error = useAppSelector(selectError);
 
   const { values, handleChange, setValues } = useForm({
     email: user?.email ?? '',
@@ -26,14 +32,14 @@ const ProfileForm = ({ user }) => {
 
   const handleCancel = useCallback(() => {
     setValues({
-      email: user.email ?? '',
-      name: user.name ?? '',
+      email: user?.email ?? '',
+      name: user?.name ?? '',
       password: '',
     });
   }, [user, setValues]);
 
   const onSubmit = useCallback(
-    async (e) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       try {
@@ -46,16 +52,16 @@ const ProfileForm = ({ user }) => {
         ).unwrap();
 
         setValues((prev) => ({ ...prev, password: '' }));
-      } catch (error) {
-        console.log('Ошибка сохранения профиля', error);
+      } catch (err) {
+        console.log('Ошибка сохранения профиля', err);
       }
     },
     [dispatch, values, setValues]
   );
 
   const isChanged =
-    Boolean(user) &&
-    (values.name !== user?.name ||
+    user !== null &&
+    (values.name !== user.name ||
       values.email !== user.email ||
       values.password.length > 0);
 

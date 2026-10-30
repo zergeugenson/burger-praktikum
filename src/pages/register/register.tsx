@@ -4,11 +4,11 @@ import {
   PasswordInput,
   Input,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, type ReactNode, type FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { Link } from 'react-router-dom';
 
-import { AppHeaderSmall } from '@components/app-header/app-header-small.tsx';
+import { AppHeaderSmall } from '@components/app-header/app-header-small';
 import { useForm } from '@hooks/useForm';
 import { userRegister } from '@services/auth/auth-actions';
 import { selectError } from '@services/auth/auth-slice';
@@ -26,12 +26,12 @@ const formFields = {
 // adsdasd@sdf.com
 // qweqwqeq
 
-export const Register = () => {
-  const dispatch = useDispatch();
+export const Register = (): ReactNode => {
+  const dispatch = useAppDispatch();
   const { values, handleChange } = useForm(formFields);
-  const error = useSelector(selectError);
+  const error = useAppSelector(selectError);
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
       void dispatch(userRegister(values));
     },

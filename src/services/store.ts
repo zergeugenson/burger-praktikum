@@ -1,4 +1,6 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineSlices, configureStore } from '@reduxjs/toolkit';
+import type { UnknownAction } from 'redux';
+import type { ThunkDispatch } from 'redux-thunk';
 
 import { authSlice } from './auth/auth-slice';
 import { burgerConstructorSlice } from './burger-constructor/burger-constructor-slice';
@@ -6,13 +8,13 @@ import { ingredientsSlice } from './ingredients/ingredients-slice';
 import { modalSlice } from './modal/modal-slice';
 import { orderSlice } from './order/order-slice';
 
-const rootReducer = combineReducers({
-  auth: authSlice.reducer,
-  burgerConstructor: burgerConstructorSlice.reducer,
-  ingredients: ingredientsSlice.reducer,
-  modal: modalSlice.reducer,
-  order: orderSlice.reducer,
-});
+export const rootReducer = combineSlices(
+  ingredientsSlice,
+  orderSlice,
+  modalSlice,
+  burgerConstructorSlice,
+  authSlice
+);
 
 export const store = configureStore({
   devTools: true,
@@ -20,4 +22,4 @@ export const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, undefined, UnknownAction>;

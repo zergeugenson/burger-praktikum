@@ -1,9 +1,9 @@
 import { Button, EmailInput } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, type ReactNode, type FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { AppHeaderSmall } from '@components/app-header/app-header-small.js';
+import { AppHeaderSmall } from '@components/app-header/app-header-small';
 import { useForm } from '@hooks/useForm';
 import { LostPasswordStepOne } from '@services/auth/auth-actions';
 import { selectError, selectIsLoading } from '@services/auth/auth-slice';
@@ -11,15 +11,15 @@ import { ROUTES } from '@utils/constants';
 
 import styles from '../login/login.module.css';
 
-export const ForgotPassword = () => {
-  const dispatch = useDispatch();
+export const ForgotPassword = (): ReactNode => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useAppSelector(selectIsLoading);
+  const error = useAppSelector(selectError);
   const { values, handleChange } = useForm({ email: '' });
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(LostPasswordStepOne(values.email))
         .unwrap()

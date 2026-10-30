@@ -28,6 +28,7 @@ const initialState: TAuthState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
         .addCase(userRegister.pending, (state) => {

@@ -82,7 +82,7 @@ export const BurgerConstructor = (): ReactNode => {
     dispatch(
         createOrder([
           order.bun._id,
-          ...order.ingredients.map((ingredient) => ingredient._id),
+          ...order.ingredients.map((ingredient:TIngredient) => ingredient._id),
           order.bun._id,
         ])
     );
@@ -113,7 +113,7 @@ export const BurgerConstructor = (): ReactNode => {
           </div>
 
           <div className={`${styles.ingredients} custom-scroll`}>
-            {order.ingredients.map((ingredient, index) => (
+            {order.ingredients.map((ingredient, index:number) => (
                 <ConstructorElements
                     key={ingredient.uid}
                     ingredient={ingredient}

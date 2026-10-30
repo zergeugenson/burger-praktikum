@@ -7,7 +7,6 @@ import type {
     TLoginPayload,
     TRegisterPayload,
     TChangeUserDataPayload,
-    TLostPasswordStepOnePayload,
     TLostPasswordStepTwoPayload,
 } from '@utils/api';
 
@@ -58,7 +57,7 @@ export const changeUserData = createAsyncThunk<TUser, TChangeUserDataPayload, { 
     }
 });
 
-export const LostPasswordStepOne = createAsyncThunk<boolean, TLostPasswordStepOnePayload, { rejectValue: string }>('auth/LostPasswordStepOne', async (payload:TLostPasswordStepOnePayload, { rejectWithValue }) => {
+export const LostPasswordStepOne = createAsyncThunk<boolean, string, { rejectValue: string }>('auth/LostPasswordStepOne', async (payload:string, { rejectWithValue }) => {
     try {
         return await BurgerApi.LostPasswordStepOne(payload);
     } catch (error) {
