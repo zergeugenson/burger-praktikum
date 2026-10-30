@@ -106,9 +106,9 @@ export const BurgerConstructor = (): ReactNode => {
           <ConstructorElement
             extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
             isLocked
-            price={order?.bun?.price ?? 0}
+            price={order?.bun?.price ?? null}
             text={order?.bun?.name ? `${order.bun.name} (верх)` : ''}
-            thumbnail={order?.bun?.image ?? ''}
+            thumbnail={order?.bun?.image ?? null}
             type="top"
           />
         </div>
@@ -130,9 +130,9 @@ export const BurgerConstructor = (): ReactNode => {
           <ConstructorElement
             extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
             isLocked
-            price={order?.bun?.price ?? 0}
+            price={order?.bun?.price ?? null}
             text={order?.bun?.name ? `${order.bun.name} (низ)` : ''}
-            thumbnail={order?.bun?.image ?? ''}
+            thumbnail={order?.bun?.image ?? null}
             type="bottom"
           />
         </div>

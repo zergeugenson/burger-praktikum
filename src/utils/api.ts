@@ -163,7 +163,6 @@ class BurgerApi extends BaseApiClient {
       headers: this.jsonHeaders(),
     }).then((response) => {
       if (response.success) {
-        console.log('логин', response);
         setTokens(response.accessToken, response.refreshToken);
         return response.user;
       }
