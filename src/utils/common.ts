@@ -8,8 +8,6 @@ export const clearTokens = (): void => {
   localStorage.removeItem('refreshToken');
 };
 
-export const getRefreshToken = (): string | null =>
-    localStorage.getItem('refreshToken');
+export const getRefreshToken = (): string | null => localStorage.getItem('refreshToken');
 
-export const getAccessToken = (): string | null =>
-    localStorage.getItem('accessToken');
+export const getAccessToken = (): string | null => localStorage.getItem('accessToken');

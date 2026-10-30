@@ -4,9 +4,9 @@ import { type ReactNode } from 'react';
 
 type TIngredientDetails = {
   ingredient: TIngredient | null;
-}
+};
 
-export const IngredientDetails = ({ ingredient }:TIngredientDetails): ReactNode => {
+export const IngredientDetails = ({ ingredient }: TIngredientDetails): ReactNode => {
   if (!ingredient) return null;
 
   const consistency = [

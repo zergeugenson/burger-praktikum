@@ -18,11 +18,9 @@ type TRenderProps = {
 
 export const AppHeader = (): ReactNode => {
   const linkClass =
-      (extra: string = '') =>
-          ({ isActive }: TRenderProps): string =>
-              [styles.link, extra, isActive ? styles.link_active : '']
-                  .filter(Boolean)
-                  .join(' ');
+    (extra: string = '') =>
+    ({ isActive }: TRenderProps): string =>
+      [styles.link, extra, isActive ? styles.link_active : ''].filter(Boolean).join(' ');
 
   return (
     <header className={styles.header}>

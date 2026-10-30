@@ -21,18 +21,18 @@ export const ingredientsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-        .addCase(getIngredients.pending, (state) => {
-          state.isLoading = true;
-          state.error = null;
-        })
-        .addCase(getIngredients.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.items = action.payload.data;
-        })
-        .addCase(getIngredients.rejected, (state, action) => {
-          state.isLoading = false;
-          state.error = action.payload ?? 'Ошибка загрузки';
-        });
+      .addCase(getIngredients.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getIngredients.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload.data;
+      })
+      .addCase(getIngredients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload ?? 'Ошибка загрузки';
+      });
   },
   selectors: {
     selectIngredients: (state) => state.items,
@@ -41,8 +41,5 @@ export const ingredientsSlice = createSlice({
   },
 });
 
-export const {
-  selectIngredients,
-  selectIngredientsError,
-  selectIngredientsIsLoading,
-} = ingredientsSlice.selectors;
+export const { selectIngredients, selectIngredientsError, selectIngredientsIsLoading } =
+  ingredientsSlice.selectors;

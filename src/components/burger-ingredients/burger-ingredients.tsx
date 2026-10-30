@@ -1,11 +1,5 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import {
-  useMemo,
-  useRef,
-  useState,
-  useCallback,
-  type ReactNode,
-} from 'react';
+import { useMemo, useRef, useState, useCallback, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { selectCounts } from '@services/burger-constructor/burger-constructor-slice';
@@ -88,7 +82,7 @@ export const BurgerIngredients = (): ReactNode => {
       }
     }
     setActiveTab(closestType);
-  }, [ingredientsGroups]);
+  }, []);
 
   const showIngredient = (item: TIngredient): void => {
     navigate(`/ingredients/${item._id}`, {
@@ -100,12 +94,7 @@ export const BurgerIngredients = (): ReactNode => {
     <div className={styles.burgerIngredients}>
       <nav className={styles.tabs}>
         {ingredientsGroups.map(({ label, type }) => (
-          <Tab
-            key={type}
-            active={activeTab === type}
-            onClick={clickTab}
-            value={type}
-          >
+          <Tab key={type} active={activeTab === type} onClick={clickTab} value={type}>
             {label}
           </Tab>
         ))}

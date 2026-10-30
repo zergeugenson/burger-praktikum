@@ -7,14 +7,17 @@ import { type ReactNode, useCallback, type RefCallback } from 'react';
 
 import styles from './ingredients-item.module.css';
 
-
 type TIngredientsItemProps = {
   ingredient: TIngredient | null;
-  counter: number | null
-  onClick: ()=>void;
-}
+  counter: number | null;
+  onClick: () => void;
+};
 
-export const IngredientsItem = ({ ingredient, counter, onClick }: TIngredientsItemProps): ReactNode => {
+export const IngredientsItem = ({
+  ingredient,
+  counter,
+  onClick,
+}: TIngredientsItemProps): ReactNode => {
   const [, dragRef] = useDrag(
     () => ({
       type: DND_TYPES.BUN,
@@ -26,13 +29,13 @@ export const IngredientsItem = ({ ingredient, counter, onClick }: TIngredientsIt
     [ingredient]
   );
   const setDragRef = useCallback<RefCallback<HTMLLIElement>>(
-  (node) => {
-    if (node) {
-      dragRef(node);
-    }
-  },
-  [dragRef]
-);
+    (node) => {
+      if (node) {
+        dragRef(node);
+      }
+    },
+    [dragRef]
+  );
 
   return (
     <li className={styles.container} ref={setDragRef} onClick={() => onClick()}>

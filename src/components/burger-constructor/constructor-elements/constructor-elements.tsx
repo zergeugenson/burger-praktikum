@@ -4,7 +4,7 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { useRef, type ReactNode } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import {type TConstructorIngredient} from '@services/burger-constructor/burger-constructor-slice';
+import { type TConstructorIngredient } from '@services/burger-constructor/burger-constructor-slice';
 
 import { DND_TYPES } from '@utils/dnd';
 
@@ -17,13 +17,12 @@ type TConstructorElementsProps = {
 };
 
 export const ConstructorElements = ({
-    ingredient,
-    index,
-    moveIngredient,
-    removeItem,
-    styles,
-  }: TConstructorElementsProps): ReactNode => {
-
+  ingredient,
+  index,
+  moveIngredient,
+  removeItem,
+  styles,
+}: TConstructorElementsProps): ReactNode => {
   const dragRef = useRef(null);
 
   const [, drop] = useDrop({

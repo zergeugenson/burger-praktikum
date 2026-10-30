@@ -10,7 +10,7 @@ export const Profile = (): ReactNode => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const linkClass = ({ isActive }: {isActive: boolean}) =>
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
     `${styles.link} text text_type_main-medium pt-4 pb-4 ${
       isActive ? styles.isActive : ''
     }`;

@@ -3,7 +3,7 @@ import {
   Input,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, type FormEvent, type ReactNode } from 'react'
+import { useCallback, type FormEvent, type ReactNode } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ const formFields = {
   password: '',
 };
 
-export const ResetPassword = ():ReactNode => {
+export const ResetPassword = (): ReactNode => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoading = useAppSelector(selectIsLoading);

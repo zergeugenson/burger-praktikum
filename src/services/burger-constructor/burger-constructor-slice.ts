@@ -1,8 +1,4 @@
-import {
-  createSlice,
-  createSelector,
-  type PayloadAction,
-} from '@reduxjs/toolkit';
+import { createSlice, createSelector, type PayloadAction } from '@reduxjs/toolkit';
 
 import { createOrder } from '@services/order/order-actions';
 import type { RootState } from '@services/store';
@@ -45,14 +41,12 @@ export const burgerConstructorSlice = createSlice({
       const uidToRemove = action.payload;
       if (state.bun && state.bun.uid === uidToRemove) return;
 
-      state.ingredients = state.ingredients.filter(
-          (item) => item.uid !== uidToRemove
-      );
+      state.ingredients = state.ingredients.filter((item) => item.uid !== uidToRemove);
     },
 
     moveIngredient: (
-        state,
-        action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
+      state,
+      action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
     ) => {
       const { dragIndex, hoverIndex } = action.payload;
       const newIngredients = [...state.ingredients];
@@ -70,11 +64,11 @@ export const burgerConstructorSlice = createSlice({
 });
 
 const selectSelf = (state: RootState): TBurgerConstructorState =>
-    state.burgerConstructor;
+  state.burgerConstructor;
 
 export const selectOrder = createSelector(
-    selectSelf,
-    (state): TBurgerConstructorState => state
+  selectSelf,
+  (state): TBurgerConstructorState => state
 );
 
 export const selectCounts = createSelector(selectSelf, (order) => {
@@ -101,4 +95,4 @@ export const selectTotalPrice = createSelector(selectSelf, (order) => {
 });
 
 export const { addItem, removeItem, moveIngredient, clearConstructor } =
-    burgerConstructorSlice.actions;
+  burgerConstructorSlice.actions;

@@ -13,7 +13,7 @@ export const IngredientModal = (): ReactNode => {
   const navigate = useNavigate();
 
   if (!ingredient) return null;
-  
+
   return (
     <Modal close={() => navigate(-1)} title="Детали ингредиента">
       <IngredientDetails ingredient={ingredient} />

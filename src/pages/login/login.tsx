@@ -3,7 +3,7 @@ import {
   EmailInput,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, type FormEvent, type ReactNode } from 'react'
+import { useCallback, type FormEvent, type ReactNode } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { Link } from 'react-router-dom';
 
@@ -56,13 +56,13 @@ export const Login = (): ReactNode => {
         <p className="text text_type_main-default text_color_error mt-6">{error}</p>
       )}
       <div className={styles.linkContainer}>
-        <div className='flex text text_type_main-default text_color_inactive m-4'>
+        <div className="flex text text_type_main-default text_color_inactive m-4">
           Вы — новый пользователь? &nbsp;
           <Link className={styles.link} to={ROUTES.REGISTER}>
             Зарегистрироваться
           </Link>
         </div>
-        <div className='text text_type_main-default text_color_inactive'>
+        <div className="text text_type_main-default text_color_inactive">
           Забыли пароль? &nbsp;
           <Link className={styles.link} to={ROUTES.FORGOT_PASSWORD}>
             Восстановить пароль

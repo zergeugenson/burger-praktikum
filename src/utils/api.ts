@@ -1,11 +1,6 @@
 import axios, { type CreateAxiosDefaults, type RawAxiosRequestHeaders } from 'axios';
 import { type TIngredientType } from '@utils/constants';
-import {
-  setTokens,
-  clearTokens,
-  getRefreshToken,
-  getAccessToken,
-} from '@utils/common';
+import { setTokens, clearTokens, getRefreshToken, getAccessToken } from '@utils/common';
 
 import { BaseApiClient } from './base-api-client';
 import { BASE_API_URL } from './constants';
@@ -116,9 +111,7 @@ class BurgerApi extends BaseApiClient {
     return { authorization: getAccessToken() ?? '' } as RawAxiosRequestHeaders;
   }
 
-  static async fetchWithRefresh<T>(
-      requestFn: () => Promise<T>
-  ): Promise<T> {
+  static async fetchWithRefresh<T>(requestFn: () => Promise<T>): Promise<T> {
     try {
       return await requestFn();
     } catch (error) {
@@ -132,9 +125,9 @@ class BurgerApi extends BaseApiClient {
       }
 
       const refreshResponse = await this.post<TRefreshTokenResponse>(
-          '/auth/token',
-          JSON.stringify({ token: refreshToken }),
-          { headers: this.jsonHeaders() }
+        '/auth/token',
+        JSON.stringify({ token: refreshToken }),
+        { headers: this.jsonHeaders() }
       );
 
       if (!refreshResponse.success) {
@@ -150,20 +143,18 @@ class BurgerApi extends BaseApiClient {
     return this.get<TGetIngredientsResponse>('/ingredients');
   }
 
-  static async createOrder(
-      ingredientIds: string[]
-  ): Promise<TCreateOrderResponse> {
+  static async createOrder(ingredientIds: string[]): Promise<TCreateOrderResponse> {
     return this.fetchWithRefresh(() =>
-        this.post<TCreateOrderResponse>(
-            '/orders',
-            { ingredients: ingredientIds },
-            {
-              headers: {
-                ...this.jsonHeaders(),
-                ...this.authHeaders(),
-              },
-            }
-        )
+      this.post<TCreateOrderResponse>(
+        '/orders',
+        { ingredients: ingredientIds },
+        {
+          headers: {
+            ...this.jsonHeaders(),
+            ...this.authHeaders(),
+          },
+        }
+      )
     );
   }
 
@@ -195,41 +186,37 @@ class BurgerApi extends BaseApiClient {
 
   static async getUserData(): Promise<TUser> {
     return this.fetchWithRefresh(() =>
-        this.get<TGetUserResponse>(
-            '/auth/user',
-            {},
-            {
-              headers: {
-                ...this.jsonHeaders(),
-                ...this.authHeaders(),
-              },
-            }
-        ).then((response) => {
-          if (response.success) {
-            return response.user;
-          }
-          return Promise.reject(new Error('Ошибка данных пользователя'));
-        })
-    );
-  }
-
-  static async changeUserData(
-      payload: TChangeUserDataPayload
-  ): Promise<TUser> {
-    return this.fetchWithRefresh(() =>
-        this.patch<TGetUserResponse>('/auth/user', payload, {
+      this.get<TGetUserResponse>(
+        '/auth/user',
+        {},
+        {
           headers: {
             ...this.jsonHeaders(),
             ...this.authHeaders(),
           },
-        }).then((response) => {
-          if (response.success) {
-            return response.user;
-          }
-          return Promise.reject(
-              new Error('Ошибка изменения данных пользователя')
-          );
-        })
+        }
+      ).then((response) => {
+        if (response.success) {
+          return response.user;
+        }
+        return Promise.reject(new Error('Ошибка данных пользователя'));
+      })
+    );
+  }
+
+  static async changeUserData(payload: TChangeUserDataPayload): Promise<TUser> {
+    return this.fetchWithRefresh(() =>
+      this.patch<TGetUserResponse>('/auth/user', payload, {
+        headers: {
+          ...this.jsonHeaders(),
+          ...this.authHeaders(),
+        },
+      }).then((response) => {
+        if (response.success) {
+          return response.user;
+        }
+        return Promise.reject(new Error('Ошибка изменения данных пользователя'));
+      })
     );
   }
 
@@ -240,9 +227,9 @@ class BurgerApi extends BaseApiClient {
     }
 
     return this.post<TLogoutResponse>(
-        '/auth/logout',
-        { token: getRefreshToken() },
-        { headers: this.jsonHeaders() }
+      '/auth/logout',
+      { token: getRefreshToken() },
+      { headers: this.jsonHeaders() }
     ).then((response) => {
       if (response.success) {
         clearTokens();
@@ -252,36 +239,34 @@ class BurgerApi extends BaseApiClient {
     });
   }
 
-  static async LostPasswordStepOne(
-      payload: string
-  ): Promise<boolean> {
+  static async LostPasswordStepOne(payload: string): Promise<boolean> {
     return this.post<TPasswordResetResponse>(
-        '/password-reset',
-        JSON.stringify({ email: payload }),
-        { headers: this.jsonHeaders() }
+      '/password-reset',
+      JSON.stringify({ email: payload }),
+      { headers: this.jsonHeaders() }
     ).then((response) => {
       if (response.success) {
         return true;
       }
       return Promise.reject(
-          new Error('Ошибка восстановления пароля: имейл юзера не найден')
+        new Error('Ошибка восстановления пароля: имейл юзера не найден')
       );
     });
   }
 
   static async LostPasswordStepTwo(
-      payload: TLostPasswordStepTwoPayload
+    payload: TLostPasswordStepTwoPayload
   ): Promise<boolean> {
     return this.post<TPasswordResetResponse>(
-        '/password-reset/reset',
-        JSON.stringify({ payload }),
-        { headers: this.jsonHeaders() }
+      '/password-reset/reset',
+      JSON.stringify({ payload }),
+      { headers: this.jsonHeaders() }
     ).then((response) => {
       if (response.success) {
         return true;
       }
       return Promise.reject(
-          new Error('Ошибка восстановления пароля: какая-то ошибка на втором шаге')
+        new Error('Ошибка восстановления пароля: какая-то ошибка на втором шаге')
       );
     });
   }

@@ -7,13 +7,16 @@ import { selectIsAuthChecked, selectUser } from '@services/auth/auth-slice';
 type TProtectedRouteProps = {
   children: ReactNode;
   onlyUnAuth?: boolean;
-}
+};
 
 type TLocationState = {
   from?: Location;
 };
 
-export const ProtectedRoute = ({ children, onlyUnAuth = false }: TProtectedRouteProps): ReactNode => {
+export const ProtectedRoute = ({
+  children,
+  onlyUnAuth = false,
+}: TProtectedRouteProps): ReactNode => {
   const isAuthChecked = useAppSelector(selectIsAuthChecked);
   const user = useAppSelector(selectUser);
   const location = useLocation();

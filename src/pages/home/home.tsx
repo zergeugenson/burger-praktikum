@@ -16,8 +16,7 @@ import {
 import type { ReactNode } from 'react';
 import styles from './home.module.css';
 
-
-export const Home = ():ReactNode => {
+export const Home = (): ReactNode => {
   const isOrderLoading = useAppSelector(selectOrderIsLoading);
   const orderError = useAppSelector(selectOrderError);
   const isIngredientLoading = useAppSelector(selectIngredientsIsLoading);

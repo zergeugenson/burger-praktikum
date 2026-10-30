@@ -22,9 +22,9 @@ const formFields = {
   password: '',
 };
 
-// hahdsj
-// adsdasd@sdf.com
-// qweqwqeq
+// qqq
+// chimchimr@gmail.com
+// 1111111
 
 export const Register = (): ReactNode => {
   const dispatch = useAppDispatch();

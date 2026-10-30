@@ -1,8 +1,6 @@
 import { useCallback, useState, type ChangeEvent } from 'react';
 
-export function useForm<T extends Record<string, string | boolean>>(
-  initialValues: T
-) {
+export function useForm<T extends Record<string, string | boolean>>(initialValues: T) {
   const [values, setValues] = useState<T>(initialValues);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

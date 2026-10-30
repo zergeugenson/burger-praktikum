@@ -59,17 +59,17 @@ export const BurgerConstructor = (): ReactNode => {
   };
 
   const [{ isOver, canDrop }, dropRef] = useDrop<TDragItem, void, TCollectedProps>(
-      () => ({
-        accept: [DND_TYPES.BUN, DND_TYPES.ELEMENTS],
-        drop: (item) => {
-          handleAdd(item.ingredient);
-        },
-        collect: (monitor) => ({
-          isOver: !!monitor.isOver(),
-          canDrop: !!monitor.canDrop(),
-        }),
+    () => ({
+      accept: [DND_TYPES.BUN, DND_TYPES.ELEMENTS],
+      drop: (item) => {
+        handleAdd(item.ingredient);
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
       }),
-      []
+    }),
+    []
   );
 
   const makeOrder = useCallback((): void => {
@@ -80,17 +80,17 @@ export const BurgerConstructor = (): ReactNode => {
     }
 
     dispatch(
-        createOrder([
-          order.bun._id,
-          ...order.ingredients.map((ingredient:TIngredient) => ingredient._id),
-          order.bun._id,
-        ])
+      createOrder([
+        order.bun._id,
+        ...order.ingredients.map((ingredient: TIngredient) => ingredient._id),
+        order.bun._id,
+      ])
     );
 
     dispatch(
-        openModal({
-          type: MODAL_TYPES.ORDER_DETAILS,
-        })
+      openModal({
+        type: MODAL_TYPES.ORDER_DETAILS,
+      })
     );
   }, [dispatch, order, user, navigate]);
 
@@ -99,57 +99,52 @@ export const BurgerConstructor = (): ReactNode => {
   else if (canDrop) borderColor = '#777';
 
   return (
-      <section className={styles.burgerConstructor}>
-        <div className={styles.container} ref={dropRef} style={{ borderColor }}>
-          <div className={styles.bun}>
-            <ConstructorElement
-                extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
-                isLocked
-                price={order?.bun?.price ?? 0}
-                text={order?.bun?.name ? `${order.bun.name} (верх)` : ''}
-                thumbnail={order?.bun?.image ?? null}
-                type="top"
-            />
-          </div>
-
-          <div className={`${styles.ingredients} custom-scroll`}>
-            {order.ingredients.map((ingredient, index:number) => (
-                <ConstructorElements
-                    key={ingredient.uid}
-                    ingredient={ingredient}
-                    index={index}
-                    moveIngredient={handleMove}
-                    removeItem={handleRemove}
-                    styles={styles}
-                />
-            ))}
-          </div>
-
-          <div className={styles.bun}>
-            <ConstructorElement
-                extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
-                isLocked
-                price={order?.bun?.price ?? 0}
-                text={order?.bun?.name ? `${order.bun.name} (низ)` : ''}
-                thumbnail={order?.bun?.image ?? null}
-                type="bottom"
-            />
-          </div>
+    <section className={styles.burgerConstructor}>
+      <div className={styles.container} ref={dropRef} style={{ borderColor }}>
+        <div className={styles.bun}>
+          <ConstructorElement
+            extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
+            isLocked
+            price={order?.bun?.price ?? 0}
+            text={order?.bun?.name ? `${order.bun.name} (верх)` : ''}
+            thumbnail={order?.bun?.image ?? null}
+            type="top"
+          />
         </div>
-        <div className={styles.footer}>
-          <div className={styles.totalPrice}>
-            <span className="text_type_digits-medium text">{totalPrice}</span>
-            <CurrencyIcon type="primary" />
-          </div>
-          <Button
-              htmlType="button"
-              size="large"
-              type="primary"
-              onClick={makeOrder}
-          >
-            Оформить заказ
-          </Button>
+
+        <div className={`${styles.ingredients} custom-scroll`}>
+          {order.ingredients.map((ingredient, index: number) => (
+            <ConstructorElements
+              key={ingredient.uid}
+              ingredient={ingredient}
+              index={index}
+              moveIngredient={handleMove}
+              removeItem={handleRemove}
+              styles={styles}
+            />
+          ))}
         </div>
-      </section>
+
+        <div className={styles.bun}>
+          <ConstructorElement
+            extraClass={cn(styles.element, { [styles.empty]: !order?.bun?.name })}
+            isLocked
+            price={order?.bun?.price ?? 0}
+            text={order?.bun?.name ? `${order.bun.name} (низ)` : ''}
+            thumbnail={order?.bun?.image ?? null}
+            type="bottom"
+          />
+        </div>
+      </div>
+      <div className={styles.footer}>
+        <div className={styles.totalPrice}>
+          <span className="text_type_digits-medium text">{totalPrice}</span>
+          <CurrencyIcon type="primary" />
+        </div>
+        <Button htmlType="button" size="large" type="primary" onClick={makeOrder}>
+          Оформить заказ
+        </Button>
+      </div>
+    </section>
   );
 };
