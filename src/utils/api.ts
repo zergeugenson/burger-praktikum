@@ -102,6 +102,24 @@ export type TLostPasswordStepTwoPayload = {
   token: string;
 };
 
+export type TFeedOrderStatus = 'done' | 'pending' | 'created' | 'canceled';
+
+export type TFeedOrder = {
+  ingredients: string[];
+  _id: string;
+  status: TFeedOrderStatus;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TFeedMessage = {
+  success: boolean;
+  orders: TFeedOrder[];
+  total: number;
+  totalToday: number;
+};
+
 class BurgerApi extends BaseApiClient {
   static api = axios.create({
     baseURL: BASE_API_URL,

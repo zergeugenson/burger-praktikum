@@ -34,7 +34,7 @@ export const AppHeader = (): ReactNode => {
             )}
           </NavLink>
 
-          <NavLink to={ROUTES.ORDERS} className={linkClass('ml-10')}>
+          <NavLink to={ROUTES.FEED} className={linkClass('ml-10')}>
             {({ isActive }: TRenderProps): ReactNode => (
               <>
                 <ListIcon type={isActive ? 'primary' : 'secondary'} />

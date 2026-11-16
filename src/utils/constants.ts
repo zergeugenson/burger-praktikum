@@ -19,4 +19,7 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   ORDERS: '/orders',
+  FEED: '/feed',
 } as const;
+
+export const WS_FEED_URL = 'wss://new-stellarburgers.education-services.ru/orders/all';

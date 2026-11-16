@@ -16,6 +16,8 @@ import { ProtectedRoute } from '@components/protected-route/protected-route';
 import { getUserData } from '@services/auth/auth-actions';
 import { getIngredients } from '@services/ingredients/ingredients-actions';
 import { ROUTES } from '@utils/constants';
+import { Feed } from '@/pages/feed/feed';
+import { feedConnect, feedDisconnect } from '@services/feed/feed-slice';
 
 import styles from './app.module.css';
 
@@ -33,6 +35,13 @@ export const App = (): ReactNode => {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(feedConnect());
+    return () => {
+      dispatch(feedDisconnect());
+    };
+  }, [dispatch]);
+  
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -88,6 +97,7 @@ export const App = (): ReactNode => {
             <Route index element={<ProfileView />} />
             <Route path="orders" element={<ProfileOrders />} />
           </Route>
+          <Route element={<Feed />} path={ROUTES.FEED} />
         </Routes>
         {background && (
           <Routes>
