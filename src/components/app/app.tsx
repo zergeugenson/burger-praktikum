@@ -20,8 +20,9 @@ import { Feed } from '@/pages/feed/feed';
 
 import styles from './app.module.css';
 
-type TLocationState = {
+export type TLocationState = {
   background?: Location;
+  from?: string;
 };
 
 export const App = (): ReactNode => {

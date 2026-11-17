@@ -1,7 +1,9 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { FeedCard } from '@components/feed-card/feed-card';
-import { useEffect, type ReactNode } from 'react';
+import { FeedCard } from '@components/feeds/feed-card/feed-card';
+import { FeedOrders } from '@components/feeds/feed-orders/feed-orders';
+import { useEffect, type ReactNode, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+import { selectIngredients } from '@services/ingredients/ingredients-slice';
 import {
   feedConnect,
   feedDisconnect,
@@ -11,6 +13,8 @@ import {
   selectFeedStatus,
   selectFeedError,
 } from '@services/feed/feed-slice';
+import {type TFeedOrderWithIngredients, fullOrderWithIngredients } from '@/utils/common'
+import styles from './feed.module.css';
 
 export const Feed = (): ReactNode => {
   const dispatch = useAppDispatch();
@@ -19,6 +23,15 @@ export const Feed = (): ReactNode => {
   const totalToday = useAppSelector(selectFeedTotalToday);
   const status = useAppSelector(selectFeedStatus);
   const error = useAppSelector(selectFeedError);
+const ingredients = useAppSelector(selectIngredients);
+
+  const fullOrders = useMemo(
+    () =>
+      orders
+        .map((order) => fullOrderWithIngredients(order, ingredients))
+        .filter((order): order is TFeedOrderWithIngredients => order !== null),
+    [orders, ingredients]
+  );
 
   useEffect(() => {
     dispatch(feedConnect());
@@ -32,22 +45,42 @@ export const Feed = (): ReactNode => {
   }
 
   if (status === 'error') {
-    return <p className="text text_type_main-default text_color_error">{error}</p>;
+    return (
+      <p className="text text_type_main-default text_color_error">
+        {error ?? 'Ошибка подключения'}
+      </p>
+    );
+  }
+
+  if (orders.length === 0) {
+    if (status === 'closed') {
+      return (
+        <p className="text text_type_main-default text_color_inactive">
+          Соединение потеряно. Переподключаемся…
+        </p>
+      );
+    }
+    return <Preloader />;
   }
 
   return (
-    <div>
-      <h1>Лента заказов</h1>
-      <p>Всего: {total}</p>
-      <p>Сегодня: {totalToday}</p>
-      <ul>
-        {orders.map((order) => (
-          <li key={order._id}>
-            #{order.number} — {order.status}
-            <FeedCard />
-          </li>
-        ))}
-      </ul>
+    <div className={styles.container}>
+      <div className={styles.feed}>
+        <h1 className={`${styles.title} text text_type_main-large`}>
+          Лента заказов
+        </h1>
+        <ul className={`${styles.feedList} custom-scroll`}>
+          {fullOrders.map((order) => (
+            <FeedCard
+              key={order._id}
+              order={order}
+              showStatus={false}
+              to={`/feed/${order._id}`}
+            />
+          ))}
+        </ul>
+      </div>
+      <FeedOrders orders={fullOrders} total={total} totalToday={totalToday} />
     </div>
   );
 };

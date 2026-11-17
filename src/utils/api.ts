@@ -102,15 +102,15 @@ export type TLostPasswordStepTwoPayload = {
   token: string;
 };
 
-export type TFeedOrderStatus = 'done' | 'pending' | 'created' | 'canceled';
-
 export type TFeedOrder = {
-  ingredients: string[];
+  ingredients: TIngredient[];
   _id: string;
-  status: TFeedOrderStatus;
+  status: string;
   number: number;
   createdAt: string;
   updatedAt: string;
+  name?: string;
+  price?:number;
 };
 
 export type TFeedMessage = {
