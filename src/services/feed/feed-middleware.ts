@@ -1,4 +1,4 @@
-import type { Middleware, MiddlewareAPI } from '@reduxjs';
+import type { Middleware } from '@reduxjs/toolkit';
 import { WS_FEED_URL } from '@utils/constants';
 
 import {
@@ -12,30 +12,45 @@ import {
 import type { TFeedMessage } from '@/utils/api';
 
 let socket: WebSocket | null = null;
+let currentSocketId = 0;
 
 export const feedMiddleware: Middleware =
-  (store: MiddlewareAPI) => (next) => (action) => {
+  (store) => (next) => (action) => {
     if (feedConnect.match(action)) {
       if (socket) {
         socket.close();
         socket = null;
       }
 
+      const mySocketId = ++currentSocketId;
       socket = new WebSocket(WS_FEED_URL);
 
       socket.onopen = () => {
-        store.dispatch(feedOpen());
+        if (mySocketId === currentSocketId) {
+          store.dispatch(feedOpen());
+        }
       };
 
       socket.onclose = () => {
-        store.dispatch(feedClosed());
+        if (mySocketId === currentSocketId) {
+          store.dispatch(feedClosed());
+          // Переподключение через 3 секунды
+          setTimeout(() => {
+            if (mySocketId === currentSocketId) {
+              store.dispatch(feedConnect());
+            }
+          }, 3000);
+        }
       };
 
       socket.onerror = () => {
-        store.dispatch(feedError('Ошибка WebSocket-соединения'));
+        if (mySocketId === currentSocketId) {
+          store.dispatch(feedError('Ошибка WebSocket-соединения'));
+        }
       };
 
       socket.onmessage = (event) => {
+        if (mySocketId !== currentSocketId) return;
         try {
           const data: TFeedMessage = JSON.parse(event.data);
           store.dispatch(feedMessage(data));
@@ -46,6 +61,7 @@ export const feedMiddleware: Middleware =
     }
 
     if (feedDisconnect.match(action)) {
+      currentSocketId++;
       if (socket) {
         socket.close();
         socket = null;

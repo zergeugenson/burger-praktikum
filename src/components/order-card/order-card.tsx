@@ -6,7 +6,7 @@ export const OrderCard = (): ReactNode => {
 
   return (
     <div>
-      карточка фида
+      карточка заказа в профиле
     </div>
   );
 };

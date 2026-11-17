@@ -287,6 +287,27 @@ class BurgerApi extends BaseApiClient {
       );
     });
   }
+
+  static async refreshAccessToken(): Promise<void> {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+      clearTokens();
+      throw new Error('Нет refresh-токена');
+    }
+
+    const response = await this.post<TRefreshTokenResponse>(
+      '/auth/token',
+      { token: refreshToken },
+      { headers: this.jsonHeaders() }
+    );
+
+    if (!response.success) {
+      clearTokens();
+      throw new Error('Не удалось обновить токен');
+    }
+
+    setTokens(response.accessToken, response.refreshToken);
+  }
 }
 
 export default BurgerApi;

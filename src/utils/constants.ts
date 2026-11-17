@@ -23,3 +23,4 @@ export const ROUTES = {
 } as const;
 
 export const WS_FEED_URL = 'wss://new-stellarburgers.education-services.ru/orders/all';
+export const WS_PROFILE_ORDERS_URL = 'wss://new-stellarburgers.education-services.ru/orders';
