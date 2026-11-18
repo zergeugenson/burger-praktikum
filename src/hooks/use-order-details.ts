@@ -13,9 +13,7 @@ type TUseOrderDetailsResult = {
   error: string | null;
 };
 
-export const useOrderDetails = (
-  orderId: string | null
-): TUseOrderDetailsResult => {
+export const useOrderDetails = (orderId: string | null): TUseOrderDetailsResult => {
   const feedOrders = useAppSelector(selectFeedOrders);
   const profileOrders = useAppSelector(selectProfileOrders);
   const ingredients = useAppSelector(selectIngredients);
@@ -58,9 +56,7 @@ export const useOrderDetails = (
       })
       .catch((err) => {
         if (isCancelled) return;
-        setError(
-          err instanceof Error ? err.message : 'Не удалось загрузить заказ'
-        );
+        setError(err instanceof Error ? err.message : 'Не удалось загрузить заказ');
         setHttpIsLoading(false);
       });
 
@@ -77,8 +73,7 @@ export const useOrderDetails = (
     return fullOrderWithIngredients(rawOrder, ingredients);
   }, [rawOrder, ingredients]);
 
-  const isLoading =
-    httpIsLoading || (!!rawOrder && ingredients.length === 0 && !error);
+  const isLoading = httpIsLoading || (!!rawOrder && ingredients.length === 0 && !error);
 
   return {
     order,

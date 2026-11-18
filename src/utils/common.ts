@@ -40,8 +40,7 @@ export const fullOrderWithIngredients = (
 
   for (const item of order.ingredients) {
     // Нормализуем: если item — строка, ищем в каталоге; если объект — берём как есть
-    const ingredient =
-      typeof item === 'string' ? catalogMap.get(item) : item;
+    const ingredient = typeof item === 'string' ? catalogMap.get(item) : item;
 
     if (!ingredient) return null;
 

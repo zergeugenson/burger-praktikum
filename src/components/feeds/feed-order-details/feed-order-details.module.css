@@ -36,16 +36,16 @@
 }
 
 .ingredients {
-  list-style: none;
-  margin: 24px 0 0;
-  padding: 0 8px 0 0;
-  box-sizing: border-box;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: calc(100vh - 320px);
+  box-sizing: border-box;
   min-height: 0;
+  max-height: calc(100vh - 320px);
+  margin: 24px 0 0;
+  padding: 0 8px 0 0;
+  overflow-y: auto;
+  list-style: none;
 }
 
 .ingredients::-webkit-scrollbar {
@@ -85,8 +85,8 @@
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .price,
@@ -106,7 +106,7 @@
   margin-top: 40px;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .containerPage {
     padding: 24px 16px 32px;
   }

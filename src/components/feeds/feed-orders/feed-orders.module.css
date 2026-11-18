@@ -30,14 +30,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  list-style: none;
+  min-width: 80px;
   margin: 0;
   padding: 0;
-  min-width: 80px;
+  list-style: none;
 }
 
 .done {
-  color: #00cccc;
+  color: #0cc;
 }
 
 .pending {
@@ -60,7 +60,7 @@
   margin: 0;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .container {
     gap: 16px;
   }

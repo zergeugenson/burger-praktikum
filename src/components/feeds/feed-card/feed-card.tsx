@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
-import { CurrencyIcon, FormattedDate } from '@krgaa/react-developer-burger-ui-components';
-import { ORDER_STATUS} from '@utils/constants'
+import {
+  CurrencyIcon,
+  FormattedDate,
+} from '@krgaa/react-developer-burger-ui-components';
+import { ORDER_STATUS } from '@utils/constants';
 
 import { Link, useLocation } from 'react-router-dom';
 
@@ -15,11 +18,7 @@ type TOrderCardProps = {
   to: string;
 };
 
-export const FeedCard = ({
-  order,
-  showStatus,
-  to,
-}: TOrderCardProps): ReactNode => {
+export const FeedCard = ({ order, showStatus, to }: TOrderCardProps): ReactNode => {
   const location = useLocation();
   const createdAt = new Date(order.createdAt);
   const state: TLocationState = { background: location };
@@ -40,22 +39,17 @@ export const FeedCard = ({
         </div>
         <h2 className={`${styles.name} text text_type_main-medium`}>{order.name}</h2>
         {showStatus && (
-          <div className={`${styles.status} text text_type_main-default ${order.status === 'done' ? 'text_color_success' : ''}`}>
+          <div
+            className={`${styles.status} text text_type_main-default ${order.status === 'done' ? 'text_color_success' : ''}`}
+          >
             {ORDER_STATUS[order.status]}
           </div>
         )}
         <div className={styles.bottom}>
           <ul className={styles.ingredients}>
             {order.ingredients.map((item, index) => (
-              <li
-                key={item._id + index + Math.random()}
-                className={styles.item}
-              >
-                <img
-                  alt={item.name}
-                  className={styles.image}
-                  src={item.image_mobile}
-                />
+              <li key={item._id + index + Math.random()} className={styles.item}>
+                <img alt={item.name} className={styles.image} src={item.image_mobile} />
               </li>
             ))}
           </ul>
@@ -68,4 +62,3 @@ export const FeedCard = ({
     </li>
   );
 };
-

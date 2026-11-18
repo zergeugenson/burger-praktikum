@@ -12,7 +12,6 @@ import { orderSlice } from './order/order-slice';
 import { profileOrdersSlice } from './profile-orders/profile-orders-slice';
 import { profileOrdersMiddleware } from './profile-orders/profile-orders-middleware';
 
-
 export const rootReducer = combineSlices(
   ingredientsSlice,
   orderSlice,
@@ -20,7 +19,7 @@ export const rootReducer = combineSlices(
   burgerConstructorSlice,
   authSlice,
   feedSlice,
-  profileOrdersSlice,
+  profileOrdersSlice
 );
 
 export const store = configureStore({

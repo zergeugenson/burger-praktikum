@@ -33,9 +33,7 @@ const StatusColumn = ({
 
   return (
     <div className={styles.statusGroup}>
-      <h2 className={`${styles.title} text text_type_main-medium`}>
-        {title}:
-      </h2>
+      <h2 className={`${styles.title} text text_type_main-medium`}>{title}:</h2>
       <div className={styles.columns}>
         {columns.map((col, colIndex) => (
           <ul key={colIndex} className={styles.column}>
@@ -59,9 +57,7 @@ export const FeedOrders = ({
   total,
   totalToday,
 }: TFeedOrdersProps): ReactNode => {
-  const doneNumbers = orders
-    .filter((o) => o.status === 'done')
-    .map((o) => o.number);
+  const doneNumbers = orders.filter((o) => o.status === 'done').map((o) => o.number);
 
   const pendingNumbers = orders
     .filter((o) => o.status === 'pending')
@@ -70,16 +66,8 @@ export const FeedOrders = ({
   return (
     <div className={styles.container}>
       <div className={styles.row}>
-        <StatusColumn
-          title="Готовы"
-          numbers={doneNumbers}
-          variant="done"
-        />
-        <StatusColumn
-          title="В работе"
-          numbers={pendingNumbers}
-          variant="pending"
-        />
+        <StatusColumn title="Готовы" numbers={doneNumbers} variant="done" />
+        <StatusColumn title="В работе" numbers={pendingNumbers} variant="pending" />
       </div>
 
       <div className={styles.totals}>
@@ -87,9 +75,7 @@ export const FeedOrders = ({
           <h2 className={`${styles.title} text text_type_main-medium`}>
             Выполнено за всё время:
           </h2>
-          <p className={`text text_type_digits-large ${styles.totalNumber}`}>
-            {total}
-          </p>
+          <p className={`text text_type_digits-large ${styles.totalNumber}`}>{total}</p>
         </div>
         <div className={styles.totalGroup}>
           <h2 className={`${styles.title} text text_type_main-medium`}>

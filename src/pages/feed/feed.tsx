@@ -13,7 +13,10 @@ import {
   selectFeedStatus,
   selectFeedError,
 } from '@services/feed/feed-slice';
-import {type TFeedOrderWithIngredients, fullOrderWithIngredients } from '@/utils/common'
+import {
+  type TFeedOrderWithIngredients,
+  fullOrderWithIngredients,
+} from '@/utils/common';
 import styles from './feed.module.css';
 
 export const Feed = (): ReactNode => {
@@ -23,7 +26,7 @@ export const Feed = (): ReactNode => {
   const totalToday = useAppSelector(selectFeedTotalToday);
   const status = useAppSelector(selectFeedStatus);
   const error = useAppSelector(selectFeedError);
-const ingredients = useAppSelector(selectIngredients);
+  const ingredients = useAppSelector(selectIngredients);
 
   const fullOrders = useMemo(
     () =>
@@ -66,9 +69,7 @@ const ingredients = useAppSelector(selectIngredients);
   return (
     <div className={styles.container}>
       <div className={styles.feed}>
-        <h1 className={`${styles.title} text text_type_main-large`}>
-          Лента заказов
-        </h1>
+        <h1 className={`${styles.title} text text_type_main-large`}>Лента заказов</h1>
         <ul className={`${styles.feedList} custom-scroll`}>
           {fullOrders.map((order) => (
             <FeedCard

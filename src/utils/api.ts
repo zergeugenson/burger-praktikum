@@ -110,7 +110,7 @@ export type TFeedOrder = {
   createdAt: string;
   updatedAt: string;
   name?: string;
-  price?:number;
+  price?: number;
 };
 
 export type TFeedMessage = {
@@ -315,9 +315,7 @@ class BurgerApi extends BaseApiClient {
   }
 
   static async getOrderDetails(orderId: string): Promise<TFeedOrder | null> {
-    const response = await this.get<TGetOrderDetailsResponse>(
-      `/orders/${orderId}`
-    );
+    const response = await this.get<TGetOrderDetailsResponse>(`/orders/${orderId}`);
 
     if (!response.success) {
       throw new Error('Сервер вернул ошибку при получении заказа');

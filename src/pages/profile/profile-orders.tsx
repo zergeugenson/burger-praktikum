@@ -1,8 +1,12 @@
 import { OrderCard } from '@components/order-card/order-card';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, type ReactNode, useMemo } from 'react';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-
+import { selectIngredients } from '@services/ingredients/ingredients-slice';
 import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+import {
+  type TFeedOrderWithIngredients,
+  fullOrderWithIngredients,
+} from '@/utils/common';
 import {
   profileOrdersConnect,
   profileOrdersDisconnect,
@@ -20,6 +24,15 @@ export const ProfileOrders = (): ReactNode => {
   const error = useAppSelector(selectProfileOrdersError);
   const total = useAppSelector(selectProfileOrdersTotal);
   const totalToday = useAppSelector(selectProfileOrdersTotalToday);
+  const ingredients = useAppSelector(selectIngredients);
+
+  const fullOrders = useMemo(
+    () =>
+      orders
+        .map((order) => fullOrderWithIngredients(order, ingredients))
+        .filter((order): order is TFeedOrderWithIngredients => order !== null),
+    [orders, ingredients]
+  );
 
   useEffect(() => {
     dispatch(profileOrdersConnect());
@@ -33,20 +46,16 @@ export const ProfileOrders = (): ReactNode => {
   }
 
   if (status === 'error') {
-    return (
-      <p className="text text_type_main-default text_color_error">
-        {error}
-      </p>
-    );
+    return <p className="text text_type_main-default text_color_error">{error}</p>;
   }
 
   if (orders.length === 0) {
     return (
-      <p className="text text_type_main-default text_color_inactive">
-        Заказов пока нет
-      </p>
+      <p className="text text_type_main-default text_color_inactive">Заказов пока нет</p>
     );
   }
+
+  console.log('orders', orders, fullOrders);
 
   return (
     <div>

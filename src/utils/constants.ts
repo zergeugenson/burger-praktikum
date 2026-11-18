@@ -30,4 +30,5 @@ export const ORDER_STATUS: Record<string, string> = {
 };
 
 export const WS_FEED_URL = 'wss://new-stellarburgers.education-services.ru/orders/all';
-export const WS_PROFILE_ORDERS_URL = 'wss://new-stellarburgers.education-services.ru/orders';
+export const WS_PROFILE_ORDERS_URL =
+  'wss://new-stellarburgers.education-services.ru/orders';

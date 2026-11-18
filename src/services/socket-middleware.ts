@@ -93,7 +93,6 @@ export const createSocketMiddleware = <TMessage>(
         'message' in data &&
         (data as { message: string }).message === 'Invalid or missing token'
       ) {
-
         if (!onAuthError) {
           store.dispatch(actions.onError('Токен невалиден'));
           return;
