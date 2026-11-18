@@ -120,6 +120,11 @@ export type TFeedMessage = {
   totalToday: number;
 };
 
+export type TGetOrderDetailsResponse = {
+  success: boolean;
+  order: TFeedOrder;
+};
+
 class BurgerApi extends BaseApiClient {
   static api = axios.create({
     baseURL: BASE_API_URL,
@@ -307,6 +312,18 @@ class BurgerApi extends BaseApiClient {
     }
 
     setTokens(response.accessToken, response.refreshToken);
+  }
+
+  static async getOrderDetails(orderId: string): Promise<TFeedOrder | null> {
+    const response = await this.get<TGetOrderDetailsResponse>(
+      `/orders/${orderId}`
+    );
+
+    if (!response.success) {
+      throw new Error('Сервер вернул ошибку при получении заказа');
+    }
+
+    return response.order ?? null;
   }
 }
 

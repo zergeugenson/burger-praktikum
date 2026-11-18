@@ -20,6 +20,7 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password',
   ORDERS: '/orders',
   FEED: '/feed',
+  FEED_ORDER: '/feed/:id',
 } as const;
 
 export const ORDER_STATUS: Record<string, string> = {

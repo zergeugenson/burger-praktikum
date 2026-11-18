@@ -3,6 +3,7 @@ import { useAppDispatch } from '@hooks/hooks';
 import { Route, Routes, useLocation, type Location } from 'react-router-dom';
 import { Home } from '@/pages/home/home';
 import { IngredientModal } from '@/pages/ingredient/ingredient-modal';
+import { FeedModal, FeedPage } from '@/components/feeds/feed-modal/feed-modal';
 import { IngredientPage } from '@/pages/ingredient/ingredient-page';
 import { Login } from '@/pages/login/login';
 import { ProfileOrders } from '@/pages/profile/profile-orders';
@@ -91,10 +92,12 @@ export const App = (): ReactNode => {
             <Route path="orders" element={<ProfileOrders />} />
           </Route>
           <Route element={<Feed />} path={ROUTES.FEED} />
+          <Route element={<FeedPage />} path={ROUTES.FEED_ORDER} />
         </Routes>
         {background && (
           <Routes>
             <Route element={<IngredientModal />} path={ROUTES.INGREDIENT} />
+            <Route element={<FeedModal />} path={ROUTES.FEED_ORDER} />
           </Routes>
         )}
       </main>
