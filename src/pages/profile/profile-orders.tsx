@@ -1,4 +1,4 @@
-import { OrderCard } from '@components/order-card/order-card';
+import { FeedCard } from '@components/feeds/feed-card/feed-card';
 import { useEffect, type ReactNode, useMemo } from 'react';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { selectIngredients } from '@services/ingredients/ingredients-slice';
@@ -13,17 +13,15 @@ import {
   selectProfileOrders,
   selectProfileOrdersStatus,
   selectProfileOrdersError,
-  selectProfileOrdersTotal,
-  selectProfileOrdersTotalToday,
 } from '@services/profile-orders/profile-orders-slice';
+
+import styles from '@/pages/feed/feed.module.css';
 
 export const ProfileOrders = (): ReactNode => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector(selectProfileOrders);
   const status = useAppSelector(selectProfileOrdersStatus);
   const error = useAppSelector(selectProfileOrdersError);
-  const total = useAppSelector(selectProfileOrdersTotal);
-  const totalToday = useAppSelector(selectProfileOrdersTotalToday);
   const ingredients = useAppSelector(selectIngredients);
 
   const fullOrders = useMemo(
@@ -55,18 +53,17 @@ export const ProfileOrders = (): ReactNode => {
     );
   }
 
-  console.log('orders', orders, fullOrders);
-
   return (
-    <div>
-      <p>Всего заказов: {total}</p>
-      <p>Сегодня: {totalToday}</p>
-      <ul>
-        {orders.map((order) => (
-          <li key={order._id}>
-            #{order.number} — {order.status}
-            <OrderCard />
-          </li>
+    <div className={styles.feed}>
+      <h1 className={`${styles.title} text text_type_main-large`}>Лента заказов</h1>
+      <ul className={`${styles.feedList} custom-scroll`}>
+        {fullOrders.map((order) => (
+          <FeedCard
+            key={order._id}
+            order={order}
+            showStatus={true}
+            to={`/profile/orders/${order._id}`}
+          />
         ))}
       </ul>
     </div>

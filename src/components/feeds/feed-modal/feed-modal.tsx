@@ -5,6 +5,7 @@ import { type ReactNode } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FeedOrderDetails } from '@/components/feeds/feed-order-details/feed-order-details';
 import styles from '@components/feeds/feed-order-details/feed-order-details.module.css';
+import { ProtectedRoute } from '@components/protected-route/protected-route';
 
 export const FeedModal = (): ReactNode => {
   const navigate = useNavigate();
@@ -46,3 +47,9 @@ export const FeedPage = (): ReactNode => {
     </section>
   );
 };
+
+export const ProfileOrderModal = (): React.JSX.Element => (
+  <ProtectedRoute>
+    <FeedModal />
+  </ProtectedRoute>
+);

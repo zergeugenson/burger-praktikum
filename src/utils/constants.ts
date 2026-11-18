@@ -15,6 +15,7 @@ export const ROUTES = {
   LOGIN: '/login',
   PROFILE: '/profile',
   PROFILE_ORDERS: '/profile/orders',
+  PROFILE_ORDER: '/profile/orders/:id',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
