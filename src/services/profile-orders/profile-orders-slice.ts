@@ -43,7 +43,8 @@ export const profileOrdersSlice = createSlice({
       state.error = action.payload;
     },
     profileOrdersMessage: (state, action: PayloadAction<TFeedMessage>) => {
-      state.orders = action.payload.orders;
+      // инвертирую-ка, пусть новые будут сверху
+      state.orders = [...action.payload.orders].reverse();
       state.total = action.payload.total;
       state.totalToday = action.payload.totalToday;
     },

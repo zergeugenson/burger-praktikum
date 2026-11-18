@@ -10,12 +10,13 @@
 .main {
   display: flex;
   flex: 1 1 auto;
-  flex-direction: column;
+  flex-direction: row;
   box-sizing: border-box;
   width: 1240px;
   min-height: 0;
   margin: 0 auto;
   overflow: auto;
+  gap: 20px;
 }
 
 @media (width <= 1259px) {

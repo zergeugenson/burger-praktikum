@@ -7,6 +7,8 @@ import { useDrag, useDrop } from 'react-dnd';
 import { type TConstructorIngredient } from '@services/burger-constructor/burger-constructor-slice';
 
 import { DND_TYPES } from '@utils/dnd';
+import classes  from './constructor-elements.module.css';
+
 
 type TConstructorElementsProps = {
   ingredient: TConstructorIngredient;
@@ -70,7 +72,7 @@ export const ConstructorElements = ({
   const opacity = isDragging ? 0.3 : 1;
 
   return (
-    <li className={styles.tops} ref={dragRef} style={{ opacity }}>
+    <li className={classes.tops} ref={dragRef} style={{ opacity }}>
       <DragIcon type="primary" />
       <ConstructorElement
         extraClass={styles.elem}

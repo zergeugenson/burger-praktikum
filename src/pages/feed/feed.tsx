@@ -69,7 +69,7 @@ export const Feed = (): ReactNode => {
   return (
     <div className={styles.container}>
       <div className={styles.feed}>
-        <h1 className={`${styles.title} text text_type_main-large`}>Лента заказов</h1>
+        <h1 className={`${styles.title} text_type_main-large`}>Лента заказов</h1>
         <ul className={`${styles.feedList} custom-scroll`}>
           {fullOrders.map((order) => (
             <FeedCard
