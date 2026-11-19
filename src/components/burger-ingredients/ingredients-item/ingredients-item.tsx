@@ -13,7 +13,11 @@ type TIngredientsItemProps = {
   onClick: () => void;
 };
 
-export const IngredientsItem = ({ ingredient, counter, onClick }: TIngredientsItemProps): ReactNode => {
+export const IngredientsItem = ({
+  ingredient,
+  counter,
+  onClick,
+}: TIngredientsItemProps): ReactNode => {
   const [, dragRef] = useDrag(
     () => ({
       type: DND_TYPES.BUN,

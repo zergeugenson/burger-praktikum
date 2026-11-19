@@ -1,16 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { type ReactNode } from 'react';
 import { useAppSelector } from '@hooks/hooks';
+import type { TLocationState } from '@components/app/app';
 
 import { selectIsAuthChecked, selectUser } from '@services/auth/auth-slice';
 
 type TProtectedRouteProps = {
   children: ReactNode;
   onlyUnAuth?: boolean;
-};
-
-type TLocationState = {
-  from?: Location;
 };
 
 export const ProtectedRoute = ({

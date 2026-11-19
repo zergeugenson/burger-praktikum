@@ -102,6 +102,29 @@ export type TLostPasswordStepTwoPayload = {
   token: string;
 };
 
+export type TFeedOrder = {
+  ingredients: TIngredient[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name?: string;
+  price?: number;
+};
+
+export type TFeedMessage = {
+  success: boolean;
+  orders: TFeedOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TGetOrderDetailsResponse = {
+  success: boolean;
+  order: TFeedOrder;
+};
+
 class BurgerApi extends BaseApiClient {
   static api = axios.create({
     baseURL: BASE_API_URL,
@@ -268,6 +291,37 @@ class BurgerApi extends BaseApiClient {
         new Error('Ошибка восстановления пароля: какая-то ошибка на втором шаге')
       );
     });
+  }
+
+  static async refreshAccessToken(): Promise<void> {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+      clearTokens();
+      throw new Error('Нет refresh-токена');
+    }
+
+    const response = await this.post<TRefreshTokenResponse>(
+      '/auth/token',
+      { token: refreshToken },
+      { headers: this.jsonHeaders() }
+    );
+
+    if (!response.success) {
+      clearTokens();
+      throw new Error('Не удалось обновить токен');
+    }
+
+    setTokens(response.accessToken, response.refreshToken);
+  }
+
+  static async getOrderDetails(orderId: string): Promise<TFeedOrder | null> {
+    const response = await this.get<TGetOrderDetailsResponse>(`/orders/${orderId}`);
+
+    if (!response.success) {
+      throw new Error('Сервер вернул ошибку при получении заказа');
+    }
+
+    return response.order ?? null;
   }
 }
 

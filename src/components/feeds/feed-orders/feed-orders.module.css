@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 54px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.statusGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 80px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.done {
+  color: #0cc;
+}
+
+.pending {
+  color: #f2f2f3;
+}
+
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.totalGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.totalNumber {
+  margin: 0;
+}
+
+@media (width <= 768px) {
+  .container {
+    gap: 16px;
+  }
+
+  .columns {
+    gap: 12px;
+  }
+}

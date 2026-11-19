@@ -6,7 +6,9 @@ type TIngredientDetailsProps = {
   ingredient: TIngredient | null;
 };
 
-export const IngredientDetails = ({ ingredient }: TIngredientDetailsProps): ReactNode => {
+export const IngredientDetails = ({
+  ingredient,
+}: TIngredientDetailsProps): ReactNode => {
   if (!ingredient) return null;
 
   const consistency = [

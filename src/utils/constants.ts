@@ -15,8 +15,21 @@ export const ROUTES = {
   LOGIN: '/login',
   PROFILE: '/profile',
   PROFILE_ORDERS: '/profile/orders',
+  PROFILE_ORDER: '/profile/orders/:id',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   ORDERS: '/orders',
+  FEED: '/feed',
+  FEED_ORDER: '/feed/:id',
 } as const;
+
+export const ORDER_STATUS: Record<string, string> = {
+  created: 'Создан',
+  pending: 'Готовится',
+  done: 'Выполнен',
+};
+
+export const WS_FEED_URL = 'wss://new-stellarburgers.education-services.ru/orders/all';
+export const WS_PROFILE_ORDERS_URL =
+  'wss://new-stellarburgers.education-services.ru/orders';

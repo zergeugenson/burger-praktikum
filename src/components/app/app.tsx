@@ -3,6 +3,11 @@ import { useAppDispatch } from '@hooks/hooks';
 import { Route, Routes, useLocation, type Location } from 'react-router-dom';
 import { Home } from '@/pages/home/home';
 import { IngredientModal } from '@/pages/ingredient/ingredient-modal';
+import {
+  FeedModal,
+  FeedPage,
+  ProfileOrderModal,
+} from '@/components/feeds/feed-modal/feed-modal';
 import { IngredientPage } from '@/pages/ingredient/ingredient-page';
 import { Login } from '@/pages/login/login';
 import { ProfileOrders } from '@/pages/profile/profile-orders';
@@ -16,11 +21,13 @@ import { ProtectedRoute } from '@components/protected-route/protected-route';
 import { getUserData } from '@services/auth/auth-actions';
 import { getIngredients } from '@services/ingredients/ingredients-actions';
 import { ROUTES } from '@utils/constants';
+import { Feed } from '@/pages/feed/feed';
 
 import styles from './app.module.css';
 
-type TLocationState = {
+export type TLocationState = {
   background?: Location;
+  from?: string;
 };
 
 export const App = (): ReactNode => {
@@ -88,10 +95,22 @@ export const App = (): ReactNode => {
             <Route index element={<ProfileView />} />
             <Route path="orders" element={<ProfileOrders />} />
           </Route>
+          <Route
+            element={
+              <ProtectedRoute>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+            path={ROUTES.PROFILE_ORDER}
+          />
+          <Route element={<Feed />} path={ROUTES.FEED} />
+          <Route element={<FeedPage />} path={ROUTES.FEED_ORDER} />
         </Routes>
         {background && (
           <Routes>
             <Route element={<IngredientModal />} path={ROUTES.INGREDIENT} />
+            <Route element={<FeedModal />} path={ROUTES.FEED_ORDER} />
+            <Route element={<ProfileOrderModal />} path={ROUTES.PROFILE_ORDER} />
           </Routes>
         )}
       </main>
