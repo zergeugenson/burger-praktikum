@@ -33,11 +33,7 @@ const mockResponse: TGetIngredientsResponse = {
   ],
 };
 
-const initialState: TIngredientsState = {
-  error: null,
-  isLoading: false,
-  items: [],
-};
+const initialState: TIngredientsState = ingredientsSlice.getInitialState();
 
 // === Tests ===
 describe('ingredientsSlice', () => {

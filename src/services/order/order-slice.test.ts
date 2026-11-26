@@ -4,11 +4,7 @@ import { orderSlice, clearOrder, type TOrderState } from './order-slice';
 import { createOrder } from './order-actions';
 
 describe('orderSlice', () => {
-  const initialState: TOrderState = {
-    error: null,
-    isLoading: false,
-    number: null,
-  };
+  const initialState: TOrderState = orderSlice.getInitialState();
 
   describe('начальное состояние', () => {
     it('должно быть корректным', () => {

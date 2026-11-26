@@ -62,13 +62,7 @@ const mockMessage: TFeedMessage = {
   totalToday: 10,
 };
 
-const initialState: TProfileOrdersState = {
-  orders: [],
-  total: 0,
-  totalToday: 0,
-  status: 'idle',
-  error: null,
-};
+const initialState: TProfileOrdersState = profileOrdersSlice.getInitialState();
 
 describe('profileOrdersSlice', () => {
   describe('начальное состояние', () => {

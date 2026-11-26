@@ -28,10 +28,7 @@ const mockIngredient = (overrides: Partial<TIngredient> = {}): TIngredient => ({
 const mockBun = (overrides: Partial<TIngredient> = {}): TIngredient =>
   mockIngredient({ type: 'bun', _id: 'bun-id', ...overrides });
 
-const initialState: TBurgerConstructorState = {
-  bun: null,
-  ingredients: [],
-};
+const initialState: TBurgerConstructorState = burgerConstructorSlice.getInitialState();
 
 describe('burgerConstructorSlice', () => {
   describe('начальное состояние', () => {

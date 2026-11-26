@@ -9,11 +9,7 @@ import {
 } from './modal-slice';
 
 describe('modalSlice', () => {
-  const initialState: TModalState = {
-    type: null,
-    data: null,
-    title: null,
-  };
+  const initialState: TModalState = modalSlice.getInitialState();
 
   describe('начальное состояние', () => {
     it('должно быть корректным', () => {

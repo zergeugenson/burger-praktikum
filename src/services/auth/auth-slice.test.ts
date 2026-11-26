@@ -15,12 +15,7 @@ const mockUser: TUser = {
   name: 'Test User',
 };
 
-const initialState: TAuthState = {
-  error: null,
-  isLoading: false,
-  isAuthChecked: false,
-  user: null,
-};
+const initialState: TAuthState = authSlice.getInitialState();
 
 describe('authSlice', () => {
   describe('начальное состояние state', () => {
