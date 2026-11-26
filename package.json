@@ -1,6 +1,6 @@
 {
   "name": "vite_bundler",
-  "homepage": "https://kaa-it-js.github.io/react-burger-js-starter/",
+  "homepage": "https://zergeugenson.github.io/burger-praktikum",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,10 +11,8 @@
     "e2e": "npx playwright test",
     "e2e:ui": "npx playwright test --ui",
     "dev": "vite",
-    "deploy": "gh-pages -d dist",
     "eslint": "eslint src/ --fix",
     "lint": "npm run stylelint && npm run eslint && npm run prettier",
-    "predeploy": "npm run build",
     "prepare": "husky",
     "prettier": "prettier \"./src/**/*.{js,jsx,ts,tsx,json,html,css,md}\" --write",
     "preview": "vite preview",
@@ -24,7 +22,9 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:pr": "npx playwright test e2e/tests/constructor.spec.ts"
+    "test:pr": "npx playwright test e2e/tests/constructor.spec.ts",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
