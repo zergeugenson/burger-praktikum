@@ -9,9 +9,6 @@ import path from 'node:path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    // checker({
-    //   typescript: true,
-    // }),
     react(),
     readableClassnames(),
     sassDts({
@@ -29,11 +26,12 @@ export default defineConfig({
       '@utils':     path.resolve(__dirname, './src/utils'),
     },
   },
-  base: '',
+  base: '/burger-praktikum/',
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest-setup.js'],
+    include: ['src/**/*.test.{ts,tsx}'],
   },
   server: {
     open: true,

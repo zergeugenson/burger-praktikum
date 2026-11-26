@@ -7,8 +7,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { type TConstructorIngredient } from '@services/burger-constructor/burger-constructor-slice';
 
 import { DND_TYPES } from '@utils/dnd';
-import classes  from './constructor-elements.module.css';
-
+import classes from './constructor-elements.module.css';
 
 type TConstructorElementsProps = {
   ingredient: TConstructorIngredient;
